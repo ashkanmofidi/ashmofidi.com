@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ash Mofidi</title>
+<meta name="description" content="Product manager. 10+ years building zero-to-one platforms across pricing, commerce, and compliance.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9670;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lexend:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#0B1222;--dark2:#101828;
+  --light:#F7F8FC;--white:#FFFFFF;--light2:#EEF0F6;
+  --tx:#0F1729;--tx2:#5A6478;--tx3:#9CA3AF;
+  --bd:#E2E5EF;--bd2:#D1D5E0;
+  --bl:#2F6FED;--bl2:#1B5AD5;--bl3:#5B8FF7;--bl-s:rgba(47,111,237,.07);--bl-m:rgba(47,111,237,.12);
+  --sh:0 1px 3px rgba(15,23,42,.04);--shm:0 4px 20px rgba(15,23,42,.06);--shl:0 8px 40px rgba(15,23,42,.08);
+  --display:'Syne',sans-serif;--body:'Lexend',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--light);color:var(--tx2);font-family:var(--body);font-size:16px;font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(47,111,237,.15);color:var(--bl2)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--light)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+a{color:var(--bl);text-decoration:none;transition:all .25s}a:hover{color:var(--bl2)}
+.wrap{max-width:1060px;margin:0 auto;padding:0 40px}
+
+/* Progress */
+.prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--bl2),var(--bl),var(--bl3));z-index:200;width:0;box-shadow:0 0 10px rgba(47,111,237,.4)}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s,box-shadow .4s,padding .3s}
+nav.light{background:rgba(247,248,252,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(226,229,239,.5);box-shadow:var(--sh);padding:14px 40px;transition:background .3s,border-color .3s,box-shadow .3s,padding .3s}
+nav.dark{background:transparent;border-bottom:1px solid transparent}
+.n-name{font-family:var(--display);font-size:18px;font-weight:700;transition:color .4s}
+nav.dark .n-name{color:#fff}nav.light .n-name{color:var(--tx)}
+.n-name span{color:var(--bl)}
+.n-right{display:flex;gap:8px}
+.n-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;transition:all .3s;border:1px solid transparent}
+nav.dark .n-icon{color:rgba(255,255,255,.5)}nav.dark .n-icon:hover{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);background:var(--bl-s);border-color:var(--bd)}
+.n-icon svg{width:17px;height:17px}
+
+/* Hero */
+.hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+
+/* ═══ STAR FIELD ═══ */
+.stars{position:absolute;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;animation:twinkle var(--dur) ease-in-out var(--delay) infinite alternate}
+/* Core dot */
+.star::before{content:'';position:absolute;top:50%;left:50%;width:var(--sz);height:var(--sz);background:var(--color);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 calc(var(--sz)*3) var(--color)}
+/* Cross rays - creates 4-pointed star flare */
+.star::after{content:'';position:absolute;top:50%;left:50%;width:calc(var(--sz)*5);height:1px;background:linear-gradient(90deg,transparent,var(--color),transparent);transform:translate(-50%,-50%);box-shadow:0 0 calc(var(--sz)*2) var(--color)}
+.star{width:calc(var(--sz)*5);height:calc(var(--sz)*5)}
+/* Vertical ray via shadow on the main element */
+.star>span{position:absolute;top:50%;left:50%;width:1px;height:calc(var(--sz)*5);background:linear-gradient(180deg,transparent,var(--color),transparent);transform:translate(-50%,-50%)}
+@keyframes twinkle{0%{opacity:.05;transform:scale(.5) rotate(0deg)}100%{opacity:var(--peak);transform:scale(1.2) rotate(15deg)}}
+
+/* Ambient orbs - alive from frame 1 */
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;will-change:transform}
+.hero-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(47,111,237,.1),transparent 70%);top:10%;left:15%;animation:orbDrift1 18s ease-in-out infinite}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(91,143,247,.07),transparent 70%);bottom:15%;right:10%;animation:orbDrift2 22s ease-in-out infinite}
+@keyframes orbDrift1{0%,100%{transform:translate(0,0)}25%{transform:translate(40px,30px)}50%{transform:translate(10px,60px)}75%{transform:translate(-30px,20px)}}
+@keyframes orbDrift2{0%,100%{transform:translate(0,0)}33%{transform:translate(-35px,-25px)}66%{transform:translate(25px,-40px)}}
+
+/* Grid - visible from start */
+.hero-grid{position:absolute;inset:0;opacity:.03;pointer-events:none;
+  background-image:linear-gradient(rgba(47,111,237,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(47,111,237,.3) 1px,transparent 1px);
+  background-size:80px 80px}
+
+.hero-content{position:relative;z-index:2;width:100%;max-width:1060px;padding:0 40px;will-change:transform,opacity;display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+
+/* Label with expanding lines */
+.hero-label-wrap{display:flex;align-items:center;gap:16px;margin-bottom:28px;opacity:0;animation:fadeIn .4s ease .15s forwards}
+.hero-label-line{height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(91,143,247,.4));animation:lineExpand .6s ease .25s forwards}
+.hero-label-line.right{background:linear-gradient(90deg,rgba(91,143,247,.4),transparent)}
+@keyframes lineExpand{to{width:60px}}
+.hero-label{font-family:var(--mono);font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--bl3);white-space:nowrap}
+
+/* Name with clip-path reveal - FAST */
+.hero-name{font-family:var(--display);font-size:clamp(48px,10vw,120px);font-weight:800;color:#fff;line-height:.95;letter-spacing:-.02em;margin-bottom:24px;position:relative}
+.hero-word-wrap{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:6px}
+.hero-word{display:inline-block;transform:translateY(105%);animation:wordReveal .55s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes wordReveal{to{transform:translateY(0)}}
+
+/* Shimmer sweep */
+.hero-name::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(91,143,247,.15),transparent);animation:shimmerSweep 1s ease .9s forwards;pointer-events:none}
+@keyframes shimmerSweep{to{left:200%}}
+
+/* Rule line */
+.hero-rule{width:0;height:1px;background:linear-gradient(90deg,rgba(91,143,247,.3),transparent);margin:0 0 28px;animation:ruleExpand .7s ease .5s forwards}
+@keyframes ruleExpand{to{width:180px}}
+
+.hero-sub{font-size:18px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.7;max-width:480px;margin-bottom:36px;opacity:0;animation:fadeUp .5s ease .6s forwards}
+.hero-btns{display:flex;gap:12px;opacity:0;animation:fadeUp .4s ease .75s forwards}
+
+/* ═══ BECOMING HERO CARD ═══ */
+.hero-bec{background:rgba(15,20,35,.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(47,111,237,.15);border-radius:20px;padding:36px 32px;display:flex;flex-direction:column;align-items:center;gap:18px;width:280px;opacity:0;animation:fadeUp .6s ease .5s forwards;transition:border-color .3s,box-shadow .3s}
+.hero-bec:hover{border-color:rgba(47,111,237,.3);box-shadow:0 8px 40px rgba(47,111,237,.08)}
+.hero-bec-ring{width:100px;height:100px;position:relative}
+.hero-bec-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.hero-bec-ring .hrt{fill:none;stroke:rgba(47,111,237,.1);stroke-width:2.5}
+.hero-bec-ring .hrp{fill:none;stroke:var(--bl);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:263.9;stroke-dashoffset:66;animation:heroRingPulse 6s ease-in-out infinite alternate}
+@keyframes heroRingPulse{0%{stroke-dashoffset:220;stroke:var(--bl2)}100%{stroke-dashoffset:50;stroke:var(--bl3)}}
+.hero-bec-ring .hrc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;color:#fff;letter-spacing:.04em}
+.hero-bec-name{font-family:var(--display);font-size:20px;font-weight:700;color:#fff}
+.hero-bec-name .hbd{color:var(--bl3)}
+.hero-bec-desc{font-size:12px;color:rgba(255,255,255,.4);text-align:center;line-height:1.55}
+.hero-bec-cta{font-family:var(--body);font-size:12px;font-weight:500;color:var(--bl3);display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border:1px solid rgba(47,111,237,.2);border-radius:8px;transition:all .3s}
+.hero-bec-cta:hover{border-color:var(--bl3);color:#fff;background:rgba(47,111,237,.1)}
+.hero-bec-cta svg{width:12px;height:12px}
+.btn{padding:12px 28px;font-family:var(--body);font-size:14px;font-weight:500;border-radius:10px;transition:all .3s;cursor:pointer;border:none;letter-spacing:.02em}
+.btn-w{background:#fff;color:var(--dark)}.btn-w:hover{box-shadow:0 4px 20px rgba(255,255,255,.2);transform:translateY(-2px);color:var(--dark)}
+.btn-o{background:transparent;color:rgba(255,255,255,.6);border:1.5px solid rgba(255,255,255,.15)}.btn-o:hover{border-color:rgba(255,255,255,.3);color:#fff}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;animation:fadeUp .5s ease 1s forwards;transition:opacity .4s}
+.scroll-hint.hide{opacity:0!important}
+.scroll-mouse{width:26px;height:42px;border:2px solid rgba(91,143,247,.35);border-radius:13px;position:relative;display:flex;justify-content:center}
+.scroll-mouse::after{content:'';width:3px;height:8px;background:var(--bl3);border-radius:2px;position:absolute;top:8px;animation:scrollDot 1.8s ease-in-out infinite}
+@keyframes scrollDot{0%{opacity:1;transform:translateY(0)}50%{opacity:.2;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+.scroll-chevrons{display:flex;flex-direction:column;align-items:center;animation:chevBounce 2s ease-in-out infinite}
+.scroll-chevrons svg{width:18px;height:10px;color:rgba(91,143,247,.4)}
+.scroll-chevrons svg:last-child{margin-top:-4px;opacity:.25}
+@keyframes chevBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.scroll-hint span{font-family:var(--mono);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+
+/* Transition - DAWN: dark navy through rose-indigo to warm morning light */
+.transition{height:200px;background:linear-gradient(180deg,#0B1222 0%,#141833 20%,#1E1B3A 40%,#3D2548 55%,#7A4258 65%,#C47752 75%,#E8B87A 85%,#F2E4CC 93%,#F7F4EE 100%);position:relative;z-index:1}
+
+/* Main - day cycle target */
+.main{background:var(--light);padding:80px 0 0;position:relative;z-index:1;transition:background .1s linear}
+
+/* Bento */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+.bento-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+
+/* Cards - reversible animation */
+.card{background:var(--white);border:1px solid var(--bd);border-radius:16px;padding:32px;opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s}
+.card.vis{opacity:1;transform:translateY(0)}
+.card:hover{box-shadow:var(--shm);border-color:var(--bd2)}
+
+/* Metric cards */
+.card-metric{text-align:center;padding:36px 24px;will-change:transform,opacity}
+.card-metric:hover{transform:translateY(-4px)!important;box-shadow:var(--shl)}
+.card-metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bl),var(--bl3));transform:scaleX(0);transform-origin:left;transition:transform .5s ease;border-radius:16px 16px 0 0}
+.card-metric{position:relative;overflow:hidden}
+.card-metric:hover::before{transform:scaleX(1)}
+.cm-num{font-family:var(--display);font-size:42px;font-weight:800;color:var(--tx);line-height:1}
+.cm-num span{color:var(--bl)}
+.cm-label{font-family:var(--mono);font-size:11px;color:var(--tx3);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+
+/* Feature card */
+.card-feature{grid-column:1/-1;padding:40px;will-change:transform,opacity}
+.cf-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bl);padding:4px 12px;background:var(--bl-s);border-radius:6px;display:inline-block;margin-bottom:16px}
+.cf-title{font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--tx);margin-bottom:4px}
+.cf-sub{font-size:14px;color:var(--tx3);margin-bottom:14px}
+.cf-body{font-size:15px;color:var(--tx2);line-height:1.75;max-width:680px;margin-bottom:24px}
+.cf-domains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.domain{padding:24px;background:var(--light);border:1px solid var(--bd);border-radius:12px;transition:all .3s;opacity:0;transform:translateY(12px)}
+.domain.vis{opacity:1;transform:translateY(0);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
+.domain:hover{border-color:var(--bl);box-shadow:0 2px 12px rgba(47,111,237,.06)}
+.dm-title{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--bl);margin-bottom:8px}
+.dm-text{font-size:14px;color:var(--tx2);line-height:1.65}
+
+/* Becoming card */
+.card-bec{background:var(--dark);border-color:rgba(47,111,237,.15);color:#fff;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:40px;will-change:transform,opacity}
+.card-bec:hover{border-color:rgba(47,111,237,.3);box-shadow:0 8px 40px rgba(11,18,34,.3)}
+.cb-tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bl3);margin-bottom:12px}
+.cb-title{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:800;color:#fff;margin-bottom:8px}.cb-title .dots{color:var(--bl3)}
+.cb-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:10px}
+.cb-phil{font-size:13px;font-weight:300;line-height:1.6;padding-left:16px;border-left:2px solid var(--bl);margin:14px 0;font-style:italic}
+.cb-phil .word{color:rgba(255,255,255,.2);transition:color .2s ease;display:inline}
+.cb-phil .word.lit{color:rgba(255,255,255,.8)}
+.cb-chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.cb-chip{font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;color:rgba(255,255,255,.4);opacity:0;transform:scale(.9);transition:all .3s}
+.cb-chip.vis{opacity:1;transform:scale(1)}.cb-chip:hover{border-color:var(--bl3);color:var(--bl3)}
+.cb-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--bl3);transition:gap .3s}.cb-link:hover{gap:12px;color:#fff}
+.cb-link svg{width:14px;height:14px}
+.ring-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px}
+.ring-glow{position:absolute;top:50%;left:50%;width:160px;height:160px;transform:translate(-50%,-55%);border-radius:50%;background:radial-gradient(circle,rgba(47,111,237,.1),transparent 70%);opacity:0;transition:opacity .15s}
+.bec-ring{width:120px;height:120px;position:relative}
+.bec-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.bec-rt{fill:none;stroke:rgba(255,255,255,.06);stroke-width:2.5}
+.bec-rp{fill:none;stroke:var(--bl);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:none}
+.bec-rc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;color:#fff;letter-spacing:.04em}
+.ring-label{font-family:var(--display);font-size:16px;color:rgba(255,255,255,.7)}.ring-label .rd{color:var(--bl3)}
+
+/* Side cards */
+.card-stack{display:flex;flex-direction:column;gap:16px}
+.card-sm{padding:28px}
+.cs-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--bl);margin-bottom:6px}
+.cs-title{font-family:var(--display);font-size:18px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.cs-sub{font-size:13px;color:var(--tx3);margin-bottom:8px}
+.cs-body{font-size:14px;color:var(--tx2);line-height:1.65}
+
+/* Education */
+.card-edu{grid-column:1/-1;display:flex;align-items:center;gap:20px;padding:24px 32px;flex-wrap:wrap}
+.edu-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bl);flex-shrink:0}
+.edu-text{font-size:14px;color:var(--tx2)}.edu-text b{color:var(--tx);font-weight:500}
+
+/* Contact */
+.contact{padding:80px 0 60px;text-align:center;transition:background .1s linear}
+.ct-h{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--tx);margin-bottom:8px;opacity:0;transform:translateY(16px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.ct-h.vis{opacity:1;transform:translateY(0)}.ct-h .bl{color:var(--bl)}
+.ct-sub{font-size:15px;color:var(--tx3);margin-bottom:32px;opacity:0;transform:translateY(10px);transition:all .5s ease .1s}
+.ct-sub.vis{opacity:1;transform:translateY(0)}
+.ct-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.ct-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--white);border:1px solid var(--bd);border-radius:12px;font-family:var(--body);font-size:14px;color:var(--tx2);box-shadow:var(--sh);transition:all .3s;opacity:0;transform:translateY(12px)}
+.ct-btn.vis{opacity:1;transform:translateY(0)}
+.ct-btn:hover{border-color:var(--bl);color:var(--bl);box-shadow:var(--shm);transform:translateY(-3px)!important}
+.ct-btn svg{width:16px;height:16px;color:var(--tx3);transition:color .3s}.ct-btn:hover svg{color:var(--bl)}
+
+footer{padding:32px 40px;text-align:center;border-top:1px solid var(--bd)}
+footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.04em}
+
+@media(max-width:900px){
+  .wrap{padding:0 20px}nav{padding:14px 20px}
+  .bento{grid-template-columns:1fr}.cf-domains{grid-template-columns:1fr}
+  .bento-2{grid-template-columns:1fr}.card-bec{grid-template-columns:1fr}
+  .ring-wrap{padding-top:20px}
+  .hero-content{grid-template-columns:1fr;gap:40px;padding:0 24px}
+  .hero-bec{width:100%;max-width:280px;margin:0 auto}
+  .hero-btns{flex-direction:column;align-items:flex-start;gap:10px}
+  .card-edu{flex-direction:column;align-items:flex-start;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+
+<nav id="nav" class="dark">
+  <div class="n-name">Ash Mofidi<span>.</span></div>
+  <div class="n-right">
+    <a href="mailto:ashkan.mofidi@gmail.com" class="n-icon" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+    <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" class="n-icon" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="stars" id="starField"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content" id="heroContent">
+    <div class="hero-left">
+      <div class="hero-label-wrap">
+        <div class="hero-label-line"></div>
+        <div class="hero-label">Product Manager</div>
+        <div class="hero-label-line right"></div>
+      </div>
+      <h1 class="hero-name">
+        <span class="hero-word-wrap"><span class="hero-word" style="animation-delay:.35s">Ash</span></span>
+        <span class="hero-word-wrap"><span class="hero-word" style="animation-delay:.48s">Mofidi</span></span>
+      </h1>
+      <div class="hero-rule"></div>
+      <p class="hero-sub">I build zero-to-one platforms at the intersection of engineering, data, and product. 10+ years shipping systems people rely on.</p>
+      <div class="hero-btns">
+        <a href="#work" class="btn btn-w">See my work</a>
+        <a href="#connect" class="btn btn-o">Get in touch</a>
+      </div>
+    </div>
+    <a href="https://becoming.ashmofidi.com" target="_blank" class="hero-bec">
+      <div class="hero-bec-ring">
+        <svg viewBox="0 0 100 100"><circle class="hrt" cx="50" cy="50" r="42"/><circle class="hrp" cx="50" cy="50" r="42"/></svg>
+        <div class="hrc">25:00</div>
+      </div>
+      <div class="hero-bec-name">Becoming<span class="hbd" id="heroDotsAnim">...</span></div>
+      <div class="hero-bec-desc">A focus timer I built from scratch to help people protect their deep work. Real users, real infrastructure.</div>
+      <div class="hero-bec-cta">Try it free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+    </a>
+  </div>
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-mouse"></div>
+    <div class="scroll-chevrons">
+      <svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,2 9,8 16,2"/></svg>
+      <svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,2 9,8 16,2"/></svg>
+    </div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<div class="transition"></div>
+
+<div class="main" id="work">
+  <div class="wrap">
+
+    <div class="bento" id="metricGrid">
+      <div class="card card-metric" data-count="10" data-stagger="0"><div class="cm-num"><span class="counter">0</span><span>+</span></div><div class="cm-label">Years in Product</div></div>
+      <div class="card card-metric" data-count="3" data-stagger="1"><div class="cm-num"><span class="counter">0</span></div><div class="cm-label">Zero-to-One Platforms</div></div>
+      <div class="card card-metric" data-count="1" data-stagger="2"><div class="cm-num"><span class="counter">0</span></div><div class="cm-label">Patent Pending</div></div>
+    </div>
+
+    <div class="bento" id="featureGrid">
+      <div class="card card-feature" id="featureCard">
+        <span class="cf-tag">Walmart Global Tech . ~6 Years</span>
+        <div class="cf-title">Three platforms. Three domains. One thread: turning chaos into systems.</div>
+        <div class="cf-sub">PM to Staff PM across Pricing, Brand Identity, Cross-Border Commerce</div>
+        <div class="cf-body">Built three zero-to-one platforms across a 200+ engineer organization at the intersection of engineering, data science, legal, and operations.</div>
+        <div class="cf-domains" id="domainGrid">
+          <div class="domain" data-stagger="0"><div class="dm-title">Cross-Border Compliance</div><div class="dm-text">Supply chain platform for Mexico and Canada expansion. $5M GMV in 90 days. Seller onboarding scaled 30X.</div></div>
+          <div class="domain" data-stagger="1"><div class="dm-title">Brand Classification (Patent)</div><div class="dm-text">ML system resolving $10B in discrepancies across 600K+ brands. Counterfeits down 40%. $50M+ incremental GMV.</div></div>
+          <div class="domain" data-stagger="2"><div class="dm-title">Global Pricing (PriceX)</div><div class="dm-text">Cloud pricing across 7 countries. Manual work reduced 75%. Latency from 24h to under 1 min.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento-2">
+      <div class="card card-bec" id="becCard">
+        <div>
+          <div class="cb-tag">Side Project . Live</div>
+          <div class="cb-title">Becoming<span class="dots">...</span></div>
+          <div class="cb-desc">A focus timer I designed, built, and deployed end-to-end. Google OAuth, cloud sync, analytics, cross-device support, and a 10-user beta.</div>
+          <div class="cb-phil" id="becPhil"></div>
+          <div class="cb-chips" id="becChips">
+            <span class="cb-chip">OAuth</span><span class="cb-chip">Cloud Sync</span><span class="cb-chip">Analytics</span><span class="cb-chip">Export</span><span class="cb-chip">Cross-Device</span>
+          </div>
+          <a href="https://becoming.ashmofidi.com" target="_blank" class="cb-link">Try it free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+        </div>
+        <div class="ring-wrap">
+          <div class="ring-glow" id="ringGlow"></div>
+          <div class="bec-ring" id="becRing"><svg viewBox="0 0 120 120"><circle class="bec-rt" cx="60" cy="60" r="54"/><circle class="bec-rp" id="ringPath" cx="60" cy="60" r="54"/></svg><div class="bec-rc">25:00</div></div>
+          <div class="ring-label">Becoming<span class="rd" id="becDots">...</span></div>
+        </div>
+      </div>
+      <div class="card-stack">
+        <div class="card card-sm" data-stagger="0">
+          <div class="cs-tag">PathNav . 2018 to 2020</div>
+          <div class="cs-title">Product Manager</div>
+          <div class="cs-sub">AR Navigation for Retail</div>
+          <div class="cs-body">Increased foot traffic 15% with an AR app using ARKit and BLE beacons. Led concept to MVP.</div>
+        </div>
+        <div class="card card-sm" data-stagger="1">
+          <div class="cs-tag">Excibo . 2015 to 2017</div>
+          <div class="cs-title">Co-Founder</div>
+          <div class="cs-sub">Campus Food Delivery</div>
+          <div class="cs-body">Raised $40K seed. Built 3 apps. 1,200 deliveries in 5 months.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento">
+      <div class="card card-edu">
+        <span class="edu-label">Education</span>
+        <span class="edu-text"><b>B.S. Computer Science</b> (SF State) . <b>B.S. Mechanical Engineering</b> (CSU Long Beach) . <b>PM Certificate</b> (Cornell)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="contact" id="connect">
+  <div class="wrap">
+    <h2 class="ct-h" id="ctH">Let's build something <span class="bl">together.</span></h2>
+    <p class="ct-sub" id="ctSub">Always open to interesting conversations and new opportunities.</p>
+    <div class="ct-links">
+      <a href="mailto:ashkan.mofidi@gmail.com" class="ct-btn" data-stagger="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        ashkan.mofidi@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" class="ct-btn" data-stagger="1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer><span>&copy; 2026 Ash Mofidi</span></footer>
+
+<script>
+/* ══════════════════════════════════════════
+   SCROLL ANIMATION ENGINE v2
+   Spec-compliant. Reversible. Performance-first.
+   ══════════════════════════════════════════ */
+
+/* Philosophy text injection */
+const PHIL="Every focused session is an act of becoming. Not arriving somewhere, but continuously building toward something better.";
+document.getElementById('becPhil').innerHTML=PHIL.split(' ').map((w,i)=>`<span class="word">${w} </span>`).join('');
+
+let ticking=false;
+window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(scrollFrame);ticking=true}},{passive:true});
+
+function scrollFrame(){
+  ticking=false;
+  const sy=window.pageYOffset;
+  const vh=window.innerHeight;
+  const docH=document.documentElement.scrollHeight-vh;
+
+  /* 1. Progress bar */
+  document.getElementById('prog').style.width=(sy/docH*100)+'%';
+
+  /* 2. Nav dark/light */
+  const heroH=document.getElementById('hero').offsetHeight;
+  document.getElementById('nav').className=sy<heroH-80?'dark':'light';
+
+  /* 3. Scroll hint (one-way: hides, never returns) */
+  if(sy>60)document.getElementById('scrollHint').classList.add('hide');
+
+  /* 4. Hero parallax fade (fully reversible) + orb scroll drift */
+  const heroFade=Math.max(0,1-sy/(vh*.45));
+  const hc=document.getElementById('heroContent');
+  hc.style.opacity=heroFade;
+  hc.style.transform=`translateY(${sy*.12}px)`;
+  const o1=document.querySelector('.hero-orb-1');
+  const o2=document.querySelector('.hero-orb-2');
+  if(o1)o1.style.transform=`translate(${Math.sin(sy*.001)*30}px,${sy*-0.05}px)`;
+  if(o2)o2.style.transform=`translate(${Math.cos(sy*.0012)*20}px,${sy*0.03}px)`;
+
+  /* 5. Becoming ring fill (scroll-linked, reversible) */
+  const ring=document.getElementById('becRing');
+  if(ring){
+    const rr=ring.getBoundingClientRect();
+    const rp=Math.min(1,Math.max(0,(vh-rr.top)/(vh*.65)));
+    document.getElementById('ringPath').style.strokeDashoffset=339.3*(1-rp*.75);
+    document.getElementById('ringGlow').style.opacity=rp*.45;
+  }
+
+  /* 6. Philosophy word highlight (scroll-linked, reversible) */
+  const phil=document.getElementById('becPhil');
+  if(phil){
+    const pr=phil.getBoundingClientRect();
+    const pp=Math.min(1,Math.max(0,(vh*.8-pr.top)/(pr.height+100)));
+    const words=phil.querySelectorAll('.word');
+    const lit=Math.floor(pp*words.length);
+    words.forEach((w,i)=>w.classList.toggle('lit',i<lit));
+  }
+
+  /* 7. Subtle parallax on major cards */
+  parallaxCard('featureCard',.02);
+  parallaxCard('becCard',.025);
+
+  /* 8. DAY CYCLE - scroll-linked color temperature shift */
+  const dayP=Math.min(1,Math.max(0,sy/docH)); // 0=night, 1=dusk
+
+  // Stars fade out as you leave the hero (night → dawn)
+  const starFade=Math.max(0,1-sy/(heroH*.8));
+  document.getElementById('starField').style.opacity=starFade;
+
+  // Main content background warms: cool white → warm white → golden
+  const mainEl=document.querySelector('.main');
+  if(mainEl){
+    // Scroll through content area: 0=just entered, 1=bottom
+    const mainTop=mainEl.offsetTop;
+    const mainH=mainEl.offsetHeight;
+    const mainP=Math.min(1,Math.max(0,(sy-mainTop+vh)/(mainH+vh)));
+    // Interpolate: cool (#F7F8FC) → neutral (#FAFBF8) → warm (#FDF5EB)
+    const r=Math.round(247+mainP*6);
+    const g=Math.round(248-mainP*3);
+    const b=Math.round(252-mainP*17);
+    mainEl.style.background=`rgb(${r},${g},${b})`;
+  }
+
+  // Contact section gets golden hour warmth
+  const contact=document.querySelector('.contact');
+  if(contact){
+    const ctRect=contact.getBoundingClientRect();
+    const ctP=Math.min(1,Math.max(0,(vh-ctRect.top)/(vh*.6)));
+    // Warm tint overlay
+    contact.style.background=`rgba(253,${245-Math.round(ctP*5)},${235-Math.round(ctP*10)},${ctP*.3})`;
+  }
+
+  // Footer cools slightly
+  const footer=document.querySelector('footer');
+  if(footer&&dayP>.85){
+    const coolP=(dayP-.85)/.15;
+    footer.style.borderColor=`rgba(200,195,${185+Math.round(coolP*20)},.3)`;
+  }
+}
+
+function parallaxCard(id,rate){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const r=el.getBoundingClientRect();
+  const center=r.top+r.height/2;
+  const vh=window.innerHeight;
+  const offset=(center-vh/2)*rate;
+  // Only apply if card is in viewport
+  if(r.top<vh&&r.bottom>0){
+    el.style.transform=el.classList.contains('vis')?`translateY(${offset}px)`:'translateY(20px)';
+  }
+}
+
+/* ═══ REVERSIBLE CARD OBSERVER ═══
+   Cards fade in on entry, fade out on exit.
+   Re-entering re-triggers the animation. */
+
+function createReversibleObserver(threshold=0.1){
+  return new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      const el=en.target;
+      const stagger=parseInt(el.dataset.stagger||0)*80;
+      if(en.isIntersecting){
+        setTimeout(()=>el.classList.add('vis'),stagger);
+      }else{
+        el.classList.remove('vis');
+      }
+    });
+  },{threshold,rootMargin:'0px 0px -30px 0px'});
+}
+
+const cardObs=createReversibleObserver(0.08);
+
+// Observe all reversible cards
+document.querySelectorAll('.card').forEach(c=>cardObs.observe(c));
+
+/* ═══ METRIC COUNTERS (one-shot) ═══ */
+let counted=false;
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting&&!counted){
+      counted=true;
+      document.querySelectorAll('.card-metric').forEach((c,i)=>{
+        const t=parseInt(c.dataset.count);
+        const el=c.querySelector('.counter');
+        const dur=900;
+        const start=performance.now();
+        setTimeout(()=>{
+          (function tick(now){
+            const p=Math.min(1,(now-start)/dur);
+            const e=1-Math.pow(1-p,3);
+            el.textContent=Math.round(t*e);
+            if(p<1)requestAnimationFrame(tick);
+          })(performance.now());
+        },i*80);
+      });
+    }
+  });
+},{threshold:0.2});
+counterObs.observe(document.getElementById('metricGrid'));
+
+/* ═══ DOMAIN CARDS (stagger after parent) ═══ */
+const domainObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      // Stagger domain cards 100ms apart, 300ms after parent
+      document.querySelectorAll('.domain').forEach((d,i)=>{
+        setTimeout(()=>d.classList.add('vis'),300+i*100);
+      });
+    }else{
+      document.querySelectorAll('.domain').forEach(d=>d.classList.remove('vis'));
+    }
+  });
+},{threshold:0.1});
+domainObs.observe(document.getElementById('featureCard'));
+
+/* ═══ BECOMING CHIPS (one-shot) ═══ */
+let chipped=false;
+const chipObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting&&!chipped){
+      chipped=true;
+      document.querySelectorAll('.cb-chip').forEach((c,i)=>{
+        setTimeout(()=>c.classList.add('vis'),300+i*50);
+      });
+    }
+  });
+},{threshold:0.1});
+chipObs.observe(document.getElementById('becCard'));
+
+/* ═══ CONTACT (reversible) ═══ */
+const contactObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      document.getElementById('ctH').classList.add('vis');
+      document.getElementById('ctSub').classList.add('vis');
+      document.querySelectorAll('.ct-btn').forEach((b,i)=>{
+        setTimeout(()=>{b.style.transition='all .5s cubic-bezier(.16,1,.3,1)';b.classList.add('vis')},200+i*100);
+      });
+    }else{
+      document.getElementById('ctH').classList.remove('vis');
+      document.getElementById('ctSub').classList.remove('vis');
+      document.querySelectorAll('.ct-btn').forEach(b=>b.classList.remove('vis'));
+    }
+  });
+},{threshold:0.15});
+contactObs.observe(document.querySelector('.contact'));
+
+/* ═══ UTILS ═══ */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})});
+});
+
+let ds=0;setInterval(()=>{ds=(ds+1)%3;const d=['.','..','...'][ds];const el=document.getElementById('becDots');if(el)el.textContent=d;const el2=document.getElementById('heroDotsAnim');if(el2)el2.textContent=d},600);
+
+/* ═══ STAR FIELD ═══ */
+(function(){
+  const field=document.getElementById('starField');
+  const colors=['#fff','#fff','#E0E8FF','#B8CCFF','#93B4FF'];
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const span=document.createElement('span');
+    s.appendChild(span);
+    const sz=Math.random()*2+.8;
+    const peak=Math.random()*.5+.35;
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    s.style.cssText=`top:${Math.random()*100}%;left:${Math.random()*100}%;--sz:${sz}px;--dur:${(Math.random()*3+1.5).toFixed(1)}s;--delay:${(Math.random()*5).toFixed(1)}s;--peak:${peak.toFixed(2)};--color:${color}`;
+    field.appendChild(s);
+  }
+})();
+
+requestAnimationFrame(scrollFrame);
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Ash Mofidi
+
+> Staff-caliber AI Product Manager with 10+ years building zero-to-one platforms at the intersection of engineering, data science, and product.
+
+## About
+
+Ash Mofidi is a product leader based in San Jose, California specializing in AI/ML-powered platform products at massive scale. He has built three zero-to-one platforms at Walmart Global Tech across global pricing, brand identity/classification (patent pending), and cross-border commerce, collectively driving $50M+ in incremental GMV and serving operations across 7 countries. He currently leads product for workforce enablement and in-store optimization at Radar, building RFID-powered mobile experiences for major retailers. He holds dual BS degrees in Computer Science and Mechanical Engineering, plus a Cornell PM Certificate.
+
+## Key Platforms Built
+
+- **PriceX (Walmart)**: Cloud-native global pricing engine. 7 countries. Reduced latency from 24 hours to under 1 minute. 75% manual workflow reduction.
+- **BrandHub (Walmart)**: ML-powered brand classification resolving $10B+ in discrepancies across 600K+ brands. 40% counterfeit reduction. Patent pending.
+- **Cross-Border Trade Engine (Walmart)**: Compliance and supply chain platform for Mexico/Canada expansion. $5M GMV in 90 days. 30X seller onboarding scale.
+- **Radar In-Store Mobile**: RFID-powered associate and manager experiences for AEO, Gap, Skims, DSW, Old Navy Canada.
+- **Becoming...**: Focus timer app designed, built, and deployed end-to-end (becoming.ashmofidi.com).
+
+## Expertise
+
+AI/ML product strategy, zero-to-one platform building, global commerce, cross-border trade, RFID retail technology, data platform architecture, pricing intelligence, computer vision, enterprise stakeholder management.
+
+## Links
+
+- Website: https://ashmofidi.com
+- LinkedIn: https://www.linkedin.com/in/ashkanmofidi/
+- GitHub: https://github.com/ashkanmofidi
+- Email: ashkan.mofidi@gmail.com
+- Becoming... App: https://becoming.ashmofidi.com

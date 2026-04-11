@@ -308,9 +308,10 @@ nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);backg
 .cs-body{font-size:14px;color:var(--tx2);line-height:1.65}
 
 /* Education */
-.card-edu{grid-column:1/-1;display:flex;align-items:center;gap:20px;padding:24px 32px;flex-wrap:wrap}
-.edu-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bl);flex-shrink:0}
-.edu-text{font-size:14px;color:var(--tx2)}.edu-text b{color:var(--tx);font-weight:500}
+.edu-grid{grid-template-columns:repeat(4,1fr)}
+.card-edu-item{padding:20px 24px;text-align:center}
+.edu-degree{font-family:var(--display);font-size:15px;font-weight:600;color:var(--tx);margin-bottom:4px}
+.edu-school{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.04em}
 
 /* Contact */
 .contact{padding:80px 0 60px;text-align:center;transition:background .1s linear}
@@ -333,12 +334,9 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 @media(max-width:900px){
   .wrap{padding:0 20px}nav{padding:14px 20px}
   .bento{grid-template-columns:1fr}.cf-domains{grid-template-columns:1fr}
-  .bento-2{grid-template-columns:1fr}.card-bec{grid-template-columns:1fr}
-  .ring-wrap{padding-top:20px}
-  .hero-content{grid-template-columns:1fr;gap:40px;padding:0 24px}
-  .hero-bec{width:100%;max-width:280px;margin:0 auto}
+  .hero-content{padding:0 24px}
   .hero-btns{flex-direction:column;align-items:flex-start;gap:10px}
-  .card-edu{flex-direction:column;align-items:flex-start;gap:8px}
+  .edu-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -430,44 +428,43 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
       </article>
     </div>
 
-    <div class="bento-2">
-      <article class="card card-bec" id="becCard">
-        <div>
-          <div class="cb-tag">Side Project . Live</div>
-          <h2 class="cb-title">Becoming<span class="dots">...</span></h2>
-          <div class="cb-desc">A focus timer I designed, built, and deployed end-to-end. Google OAuth, cloud sync, analytics, cross-device support, and a 10-user beta.</div>
-          <div class="cb-phil" id="becPhil"></div>
-          <div class="cb-chips" id="becChips">
-            <span class="cb-chip">OAuth</span><span class="cb-chip">Cloud Sync</span><span class="cb-chip">Analytics</span><span class="cb-chip">Export</span><span class="cb-chip">Cross-Device</span>
-          </div>
-          <a href="https://becoming.ashmofidi.com" target="_blank" rel="noopener" class="cb-link" aria-label="Try Becoming focus timer app">Try it free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
-        </div>
-        <div class="ring-wrap">
-          <div class="ring-glow" id="ringGlow"></div>
-          <div class="bec-ring" id="becRing"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bec-rt" cx="60" cy="60" r="54"/><circle class="bec-rp" id="ringPath" cx="60" cy="60" r="54"/></svg><div class="bec-rc">25:00</div></div>
-          <div class="ring-label">Becoming<span class="rd" id="becDots">...</span></div>
-        </div>
+    <div class="bento">
+      <article class="card card-sm" data-stagger="0">
+        <div class="cs-tag">Becoming... . Side Project . Live</div>
+        <h2 class="cs-title">Focus Timer App</h2>
+        <div class="cs-sub">Designed, built, and deployed end-to-end</div>
+        <div class="cs-body">Google OAuth, cloud sync, analytics, cross-device support. <a href="https://becoming.ashmofidi.com" target="_blank" rel="noopener">becoming.ashmofidi.com</a></div>
       </article>
-      <div class="card-stack">
-        <article class="card card-sm" data-stagger="0">
-          <div class="cs-tag">PathNav . 2018 to 2020</div>
-          <h2 class="cs-title">Product Manager</h2>
-          <div class="cs-sub">AR Navigation for Retail</div>
-          <div class="cs-body">Increased foot traffic 15% with an AR app using ARKit and BLE beacons. Led concept to MVP.</div>
-        </article>
-        <article class="card card-sm" data-stagger="1">
-          <div class="cs-tag">Excibo . 2015 to 2017</div>
-          <h2 class="cs-title">Co-Founder</h2>
-          <div class="cs-sub">Campus Food Delivery</div>
-          <div class="cs-body">Raised $40K seed. Built 3 apps. 1,200 deliveries in 5 months.</div>
-        </article>
-      </div>
+      <article class="card card-sm" data-stagger="1">
+        <div class="cs-tag">PathNav . 2018 to 2020</div>
+        <h2 class="cs-title">Product Manager</h2>
+        <div class="cs-sub">AR Navigation for Retail</div>
+        <div class="cs-body">Increased foot traffic 15% with an AR app using ARKit and BLE beacons. Led concept to MVP.</div>
+      </article>
+      <article class="card card-sm" data-stagger="2">
+        <div class="cs-tag">Excibo . 2015 to 2017</div>
+        <h2 class="cs-title">Co-Founder</h2>
+        <div class="cs-sub">Campus Food Delivery</div>
+        <div class="cs-body">Raised $40K seed. Built 3 apps. 1,200 deliveries in 5 months.</div>
+      </article>
     </div>
 
-    <div class="bento">
-      <div class="card card-edu" role="complementary" aria-label="Education">
-        <span class="edu-label">Education</span>
-        <span class="edu-text"><b>B.S. Computer Science</b> (SF State) . <b>B.S. Mechanical Engineering</b> (CSU Long Beach) . <b>PM Certificate</b> (Cornell)</span>
+    <div class="bento edu-grid" role="complementary" aria-label="Education and credentials">
+      <div class="card card-edu-item" data-stagger="0">
+        <div class="edu-degree">B.S. Computer Science</div>
+        <div class="edu-school">San Francisco State University</div>
+      </div>
+      <div class="card card-edu-item" data-stagger="1">
+        <div class="edu-degree">B.S. Mechanical Engineering</div>
+        <div class="edu-school">CSU Long Beach</div>
+      </div>
+      <div class="card card-edu-item" data-stagger="2">
+        <div class="edu-degree">PM Certificate</div>
+        <div class="edu-school">Cornell University</div>
+      </div>
+      <div class="card card-edu-item" data-stagger="3">
+        <div class="edu-degree">Patent Pending</div>
+        <div class="edu-school">USPTO &middot; AI/ML Brand Classification</div>
       </div>
     </div>
     </section>
@@ -476,7 +473,7 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 
 <section class="contact" id="connect">
   <div class="wrap">
-    <h2 class="ct-h" id="ctH">Let's build something <span class="bl">together.</span></h2>
+    <h2 class="ct-h" id="ctH">Say <span class="bl">hello.</span></h2>
     <p class="ct-sub" id="ctSub">Always open to interesting conversations and new opportunities.</p>
     <div class="ct-links">
       <a href="mailto:ashkan.mofidi@gmail.com" class="ct-btn" data-stagger="0" aria-label="Email ashkan.mofidi@gmail.com">
@@ -522,10 +519,6 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
    Spec-compliant. Reversible. Performance-first.
    ══════════════════════════════════════════ */
 
-/* Philosophy text injection */
-const PHIL="Every focused session is an act of becoming. Not arriving somewhere, but continuously building toward something better.";
-document.getElementById('becPhil').innerHTML=PHIL.split(' ').map((w,i)=>`<span class="word">${w} </span>`).join('');
-
 let ticking=false;
 window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(scrollFrame);ticking=true}},{passive:true});
 
@@ -555,28 +548,8 @@ function scrollFrame(){
   if(o1)o1.style.transform=`translate(${Math.sin(sy*.001)*30}px,${sy*-0.05}px)`;
   if(o2)o2.style.transform=`translate(${Math.cos(sy*.0012)*20}px,${sy*0.03}px)`;
 
-  /* 5. Becoming ring fill (scroll-linked, reversible) */
-  const ring=document.getElementById('becRing');
-  if(ring){
-    const rr=ring.getBoundingClientRect();
-    const rp=Math.min(1,Math.max(0,(vh-rr.top)/(vh*.65)));
-    document.getElementById('ringPath').style.strokeDashoffset=339.3*(1-rp*.75);
-    document.getElementById('ringGlow').style.opacity=rp*.45;
-  }
-
-  /* 6. Philosophy word highlight (scroll-linked, reversible) */
-  const phil=document.getElementById('becPhil');
-  if(phil){
-    const pr=phil.getBoundingClientRect();
-    const pp=Math.min(1,Math.max(0,(vh*.8-pr.top)/(pr.height+100)));
-    const words=phil.querySelectorAll('.word');
-    const lit=Math.floor(pp*words.length);
-    words.forEach((w,i)=>w.classList.toggle('lit',i<lit));
-  }
-
-  /* 7. Subtle parallax on major cards */
+  /* 5. Subtle parallax on major cards */
   parallaxCard('featureCard',.02);
-  parallaxCard('becCard',.025);
 
   /* 8. DAY CYCLE - scroll-linked color temperature shift */
   const dayP=Math.min(1,Math.max(0,sy/docH)); // 0=night, 1=dusk
@@ -693,20 +666,6 @@ const domainObs=new IntersectionObserver(entries=>{
 },{threshold:0.1});
 domainObs.observe(document.getElementById('featureCard'));
 
-/* ═══ BECOMING CHIPS (one-shot) ═══ */
-let chipped=false;
-const chipObs=new IntersectionObserver(entries=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting&&!chipped){
-      chipped=true;
-      document.querySelectorAll('.cb-chip').forEach((c,i)=>{
-        setTimeout(()=>c.classList.add('vis'),300+i*50);
-      });
-    }
-  });
-},{threshold:0.1});
-chipObs.observe(document.getElementById('becCard'));
-
 /* ═══ CONTACT (reversible) ═══ */
 const contactObs=new IntersectionObserver(entries=>{
   entries.forEach(en=>{
@@ -730,7 +689,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})});
 });
 
-let ds=0;setInterval(()=>{ds=(ds+1)%3;const d=['.','..','...'][ds];const el=document.getElementById('becDots');if(el)el.textContent=d;const el2=document.getElementById('heroDotsAnim');if(el2)el2.textContent=d},600);
 
 /* ═══ STAR FIELD ═══ */
 (function(){

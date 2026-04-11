@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta name="google-site-verification" content="qRfrPHbN0NC0ZpDSv6moE6b7nyDgTwivskBwaDJHK84" />
+<meta name="msvalidate.01" content="DCD2E1836016CCFD48CFB6DDF38DB6C7" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ash Mofidi - AI Product Manager | Zero-to-One Platforms at Scale</title>
@@ -34,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Ash Mofidi",
-  "alternateName": "Ashkan Mofidi",
+  "alternateName": ["Ashkan Mofidi", "Ashkon Mofidi", "Ashkun Mofidi", "Ash Mofidi"],
   "url": "https://ashmofidi.com",
   "image": "https://ashmofidi.com/og-image.png",
   "jobTitle": "Lead Product Manager",
@@ -97,8 +98,8 @@
 }
 </script>
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9670;</text></svg>">
-<link rel="apple-touch-icon" href="/og-image.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lexend:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -135,6 +136,24 @@ nav.dark .n-icon{color:rgba(255,255,255,.5)}nav.dark .n-icon:hover{color:#fff;ba
 nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);background:var(--bl-s);border-color:var(--bd)}
 .n-icon svg{width:17px;height:17px}
 
+/* Logo */
+.n-logo{display:flex;align-items:center;text-decoration:none;background:#0B1829;border-radius:12px;padding:6px 8px}
+.am-logo{width:60px;height:auto;display:block}
+/* 7s cycle: draw ~2.2s, hold ~3s, fade ~0.8s, gap ~1s
+   Each stroke bakes its start-delay into keyframe %s */
+.am-m-red{stroke-dasharray:165;stroke-dashoffset:165;opacity:1;animation:drawRed 7s ease infinite}
+.am-m-green{stroke-dasharray:165;stroke-dashoffset:165;opacity:1;animation:drawGreen 7s ease infinite}
+.am-a{stroke-dasharray:195;stroke-dashoffset:195;opacity:1;animation:drawA 7s ease infinite}
+.am-crossbar{stroke-dasharray:34;stroke-dashoffset:34;opacity:1;animation:drawBar 7s ease infinite}
+/* Red M: starts 0%, drawn by 14% (~1s), holds, fades at 75% */
+@keyframes drawRed{0%{stroke-dashoffset:165;opacity:1}14%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:165;opacity:0}}
+/* Green M: starts 3%, drawn by 17% */
+@keyframes drawGreen{0%,3%{stroke-dashoffset:165;opacity:1}17%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:165;opacity:0}}
+/* White A: starts 11%, drawn by 26% */
+@keyframes drawA{0%,11%{stroke-dashoffset:195;opacity:1}26%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:195;opacity:0}}
+/* Crossbar: starts 23%, drawn by 31% */
+@keyframes drawBar{0%,23%{stroke-dashoffset:34;opacity:1}31%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:34;opacity:0}}
+
 /* Hero */
 .hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 
@@ -162,7 +181,7 @@ nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);backg
   background-image:linear-gradient(rgba(47,111,237,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(47,111,237,.3) 1px,transparent 1px);
   background-size:80px 80px}
 
-.hero-content{position:relative;z-index:2;width:100%;max-width:1060px;padding:0 40px;will-change:transform,opacity;display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+.hero-content{position:relative;z-index:2;width:100%;max-width:1060px;padding:0 40px;will-change:transform,opacity}
 
 /* Label with expanding lines */
 .hero-label-wrap{display:flex;align-items:center;gap:16px;margin-bottom:28px;opacity:0;animation:fadeIn .4s ease .15s forwards}
@@ -328,7 +347,14 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 <div class="prog" id="prog"></div>
 
 <nav id="nav" class="dark" aria-label="Main navigation">
-  <div class="n-name">Ash Mofidi<span>.</span></div>
+  <a href="/" class="n-logo" aria-label="Ash Mofidi home">
+    <svg class="am-logo" viewBox="0 0 140 148" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polyline class="am-m-red" points="20,120 20,45 50,80 70,45" stroke="#C41E3A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <polyline class="am-m-green" points="70,45 90,80 120,45 120,120" stroke="#1A6B3C" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <polyline class="am-a" points="45,120 70,28 95,120" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <line class="am-crossbar" x1="55" y1="85" x2="85" y2="85" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none"/>
+    </svg>
+  </a>
   <div class="n-right">
     <a href="mailto:ashkan.mofidi@gmail.com" class="n-icon" title="Email" aria-label="Send email to Ash Mofidi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
     <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" rel="noopener" class="n-icon" title="LinkedIn" aria-label="View Ash Mofidi on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -338,6 +364,7 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 
 <div class="sr-only" role="complementary" aria-label="About Ash Mofidi">
   <p>Ash Mofidi is a staff-caliber AI Product Manager with 10+ years building zero-to-one platforms at the intersection of engineering, data science, and product. He currently leads product at Radar, building RFID-powered mobile experiences for major retailers. Previously, he built three zero-to-one platforms at Walmart Global Tech, including PriceX (global pricing engine serving 7 countries), BrandHub (ML-powered brand classification with a patent pending), and a Cross-Border Trade Engine, collectively driving $50M+ in incremental GMV.</p>
+  <p>Also known as Ashkan Mofidi, Ashkon Mofidi, Ashkun Mofidi.</p>
 </div>
 
 <main>
@@ -364,15 +391,6 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
         <a href="#connect" class="btn btn-o">Get in touch</a>
       </div>
     </div>
-    <a href="https://becoming.ashmofidi.com" target="_blank" rel="noopener" class="hero-bec" aria-label="Try Becoming, a focus timer app">
-      <div class="hero-bec-ring">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="hrt" cx="50" cy="50" r="42"/><circle class="hrp" cx="50" cy="50" r="42"/></svg>
-        <div class="hrc">25:00</div>
-      </div>
-      <div class="hero-bec-name">Becoming<span class="hbd" id="heroDotsAnim">...</span></div>
-      <div class="hero-bec-desc">A focus timer I built from scratch to help people protect their deep work. Real users, real infrastructure.</div>
-      <div class="hero-bec-cta">Try it free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-    </a>
   </div>
   <div class="scroll-hint" id="scrollHint">
     <div class="scroll-mouse"></div>
@@ -401,9 +419,9 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
     <div class="bento" id="featureGrid">
       <article class="card card-feature" id="featureCard">
         <span class="cf-tag">Walmart Global Tech . ~6 Years</span>
-        <h2 class="cf-title">Three platforms. Three domains. One thread: turning chaos into systems.</h2>
+        <h2 class="cf-title">Three platforms. Three domains. One thread: turning chaos into systems that scale.</h2>
         <div class="cf-sub">PM to Staff PM across Pricing, Brand Identity, Cross-Border Commerce</div>
-        <div class="cf-body">Built three zero-to-one platforms across a 200+ engineer organization at the intersection of engineering, data science, legal, and operations.</div>
+        <div class="cf-body">Built three platforms from scratch across a 200+ engineer organization at the intersection of engineering, data science, legal, and operations.</div>
         <div class="cf-domains" id="domainGrid">
           <article class="domain" data-stagger="0"><h3 class="dm-title">Cross-Border Compliance</h3><div class="dm-text">Supply chain platform for Mexico and Canada expansion. $5M GMV in 90 days. Seller onboarding scaled 30X.</div></article>
           <article class="domain" data-stagger="1"><h3 class="dm-title">Brand Classification (Patent)</h3><div class="dm-text">ML system resolving $10B in discrepancies across 600K+ brands. Counterfeits down 40%. $50M+ incremental GMV.</div></article>

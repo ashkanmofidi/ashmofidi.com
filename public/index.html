@@ -105,18 +105,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lexend:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --dark:#0B1222;--dark2:#101828;
-  --light:#F7F8FC;--white:#FFFFFF;--light2:#EEF0F6;
-  --tx:#0F1729;--tx2:#5A6478;--tx3:#9CA3AF;
-  --bd:#E2E5EF;--bd2:#D1D5E0;
-  --bl:#2F6FED;--bl2:#1B5AD5;--bl3:#5B8FF7;--bl-s:rgba(47,111,237,.07);--bl-m:rgba(47,111,237,.12);
-  --sh:0 1px 3px rgba(15,23,42,.04);--shm:0 4px 20px rgba(15,23,42,.06);--shl:0 8px 40px rgba(15,23,42,.08);
+  --dark:#0B1829;--dark2:#0B1829;
+  --light:#0B1829;--white:#111D2E;--light2:#111D2E;
+  --tx:#FFFFFF;--tx2:#CBD5E1;--tx3:#8BA3B9;
+  --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.14);
+  --bl:#60A5FA;--bl2:#93C5FD;--bl3:#60A5FA;--bl-s:rgba(96,165,250,.08);--bl-m:rgba(96,165,250,.16);
+  --sh:0 1px 3px rgba(0,0,0,.25);--shm:0 4px 20px rgba(0,0,0,.35);--shl:0 8px 40px rgba(0,0,0,.45);
   --display:'Syne',sans-serif;--body:'Lexend',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{background:var(--light);color:var(--tx2);font-family:var(--body);font-size:16px;font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::selection{background:rgba(47,111,237,.15);color:var(--bl2)}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--light)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+body{background:var(--dark);color:var(--tx2);font-family:var(--body);font-size:16px;font-weight:400;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(96,165,250,.25);color:#fff}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--dark)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
 a{color:var(--bl);text-decoration:none;transition:all .25s}a:hover{color:var(--bl2)}
 .wrap{max-width:1060px;margin:0 auto;padding:0 40px}
 
@@ -125,15 +125,13 @@ a{color:var(--bl);text-decoration:none;transition:all .25s}a:hover{color:var(--b
 
 /* Nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,border-color .4s,box-shadow .4s,padding .3s}
-nav.light{background:rgba(247,248,252,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(226,229,239,.5);box-shadow:var(--sh);padding:14px 40px;transition:background .3s,border-color .3s,box-shadow .3s,padding .3s}
+nav.scrolled{background:rgba(11,24,41,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:14px 40px}
 nav.dark{background:transparent;border-bottom:1px solid transparent}
-.n-name{font-family:var(--display);font-size:18px;font-weight:700;transition:color .4s}
-nav.dark .n-name{color:#fff}nav.light .n-name{color:var(--tx)}
+.n-name{font-family:var(--display);font-size:18px;font-weight:700;color:#fff;transition:color .4s}
 .n-name span{color:var(--bl)}
 .n-right{display:flex;gap:8px}
-.n-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;transition:all .3s;border:1px solid transparent}
-nav.dark .n-icon{color:rgba(255,255,255,.5)}nav.dark .n-icon:hover{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
-nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);background:var(--bl-s);border-color:var(--bd)}
+.n-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;transition:all .3s;border:1px solid transparent;color:rgba(255,255,255,.55)}
+.n-icon:hover{color:#fff;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
 .n-icon svg{width:17px;height:17px}
 
 /* Logo */
@@ -172,7 +170,7 @@ nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);backg
 .hero-content{position:relative;z-index:2;width:100%;max-width:1060px;padding:0 40px;will-change:transform,opacity}
 
 /* Proof points row — muted, separator-delimited credential strip */
-.hero-proof{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 32px;color:#6B8EA8;font-family:var(--mono);font-size:14px;letter-spacing:1px;text-transform:uppercase;opacity:0;animation:fadeUp .5s ease .7s forwards}
+.hero-proof{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 32px;color:#6B8EA8;font-family:var(--mono);font-size:14px;letter-spacing:1px;text-transform:uppercase}
 .hero-proof .hp-dot{color:rgba(107,142,168,.5)}
 
 /* Name with clip-path reveal - FAST */
@@ -189,8 +187,8 @@ nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);backg
 .hero-rule{width:0;height:1px;background:linear-gradient(90deg,rgba(91,143,247,.3),transparent);margin:0 0 28px;animation:ruleExpand .7s ease .5s forwards}
 @keyframes ruleExpand{to{width:180px}}
 
-.hero-sub{font-size:18px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.7;max-width:480px;margin-bottom:36px;opacity:0;animation:fadeUp .5s ease .6s forwards}
-.hero-btns{display:flex;gap:12px;opacity:0;animation:fadeUp .4s ease .75s forwards}
+.hero-sub{font-size:18px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.7;max-width:480px;margin-bottom:36px}
+.hero-btns{display:flex;gap:12px}
 
 /* ═══ BECOMING HERO CARD ═══ */
 .hero-bec{background:rgba(15,20,35,.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(47,111,237,.15);border-radius:20px;padding:36px 32px;display:flex;flex-direction:column;align-items:center;gap:18px;width:280px;opacity:0;animation:fadeUp .6s ease .5s forwards;transition:border-color .3s,box-shadow .3s}
@@ -223,95 +221,133 @@ nav.light .n-icon{color:var(--tx3)}nav.light .n-icon:hover{color:var(--bl);backg
 @keyframes chevBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 .scroll-hint span{font-family:var(--mono);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.2)}
 
-/* Transition - DAWN: dark navy through rose-indigo to warm morning light */
-.transition{height:200px;background:linear-gradient(180deg,#0B1222 0%,#141833 20%,#1E1B3A 40%,#3D2548 55%,#7A4258 65%,#C47752 75%,#E8B87A 85%,#F2E4CC 93%,#F7F4EE 100%);position:relative;z-index:1}
+/* Transition - subtle navy fade between hero and main */
+.transition{height:80px;background:linear-gradient(180deg,#0B1829 0%,#0B1829 100%);position:relative;z-index:1}
 
-/* Main - day cycle target */
-.main{background:var(--light);padding:80px 0 0;position:relative;z-index:1;transition:background .1s linear}
+/* Main - stays navy for full-page dark continuity */
+.main{background:var(--dark);padding:80px 0 0;position:relative;z-index:1}
 
 /* Bento */
 .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
 .bento-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 
-/* Cards - reversible animation */
-.card{background:var(--white);border:1px solid var(--bd);border-radius:16px;padding:32px;opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s}
-.card.vis{opacity:1;transform:translateY(0)}
+/* Cards — visual styles only; reveal handled by .reveal system */
+.card{background:var(--white);border:1px solid var(--bd);border-radius:16px;padding:32px;transition:box-shadow .3s,border-color .3s,transform .3s}
 .card:hover{box-shadow:var(--shm);border-color:var(--bd2)}
 
-/* Metric cards */
-.card-metric{text-align:center;padding:36px 24px;will-change:transform,opacity}
+/* Unified scroll-reveal system */
+.reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:0;transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94);will-change:opacity,transform}
+.reveal{transform:translateY(30px)}
+.reveal-left{transform:translateX(-40px)}
+.reveal-right{transform:translateX(40px)}
+.reveal-scale{transform:scale(.95)}
+.reveal.active,.reveal-left.active,.reveal-right.active,.reveal-scale.active{opacity:1;transform:none}
+.stagger-1{transition-delay:.1s}.stagger-2{transition-delay:.2s}.stagger-3{transition-delay:.3s}
+.stagger-4{transition-delay:.4s}.stagger-5{transition-delay:.5s}.stagger-6{transition-delay:.6s}
+@media (prefers-reduced-motion:reduce){
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;transition:none}
+  .nm-border,.nm-glow,.nm-colon,.nm-dot{animation:none}.nm-dot{opacity:1}
+}
+
+/* Metric cards — white numbers, slate labels on dark cards */
+.card-metric{text-align:center;padding:36px 24px;will-change:transform,opacity;position:relative;overflow:hidden}
 .card-metric:hover{transform:translateY(-4px)!important;box-shadow:var(--shl)}
-.card-metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bl),var(--bl3));transform:scaleX(0);transform-origin:left;transition:transform .5s ease;border-radius:16px 16px 0 0}
-.card-metric{position:relative;overflow:hidden}
+.card-metric::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#A8243B,#FFFFFF,#1B7A42);transform:scaleX(0);transform-origin:left;transition:transform .5s ease;border-radius:16px 16px 0 0}
 .card-metric:hover::before{transform:scaleX(1)}
-.cm-num{font-family:var(--display);font-size:42px;font-weight:800;color:var(--tx);line-height:1}
-.cm-num span{color:var(--bl)}
-.cm-label{font-family:var(--mono);font-size:11px;color:var(--tx3);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+.cm-num{font-family:var(--display);font-size:48px;font-weight:800;color:#FFFFFF;line-height:1}
+.cm-num span{color:#FFFFFF}
+.cm-label{font-family:var(--mono);font-size:11px;color:#8BA3B9;margin-top:8px;letter-spacing:.12em;text-transform:uppercase}
 
-/* Feature card */
-.card-feature{grid-column:1/-1;padding:40px;will-change:transform,opacity}
-.cf-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bl);padding:4px 12px;background:var(--bl-s);border-radius:6px;display:inline-block;margin-bottom:16px}
-.cf-title{font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--tx);margin-bottom:4px}
-.cf-sub{font-size:14px;color:var(--tx3);margin-bottom:14px}
-.cf-body{font-size:15px;color:var(--tx2);line-height:1.75;max-width:680px;margin-bottom:24px}
-.cf-domains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.domain{padding:24px;background:var(--light);border:1px solid var(--bd);border-radius:12px;transition:all .3s;opacity:0;transform:translateY(12px)}
-.domain.vis{opacity:1;transform:translateY(0);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
-.domain:hover{border-color:var(--bl);box-shadow:0 2px 12px rgba(47,111,237,.06)}
-.dm-title{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--bl);margin-bottom:8px}
-.dm-text{font-size:14px;color:var(--tx2);line-height:1.65}
+/* Feature card — Walmart, the dominant centerpiece */
+.card-feature{grid-column:1/-1;padding:56px 48px;will-change:transform,opacity}
+.cf-tag{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#FFFFFF;padding:8px 18px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:6px;display:inline-block;margin-bottom:24px}
+.cf-title{font-family:var(--display);font-size:clamp(28px,3.6vw,40px);font-weight:700;color:#FFFFFF;line-height:1.15;margin-bottom:10px}
+.cf-sub{font-size:15px;color:#8BA3B9;margin-bottom:18px}
+.cf-body{font-size:16px;color:#CBD5E1;line-height:1.75;max-width:780px;margin-bottom:36px}
+.cf-domains{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.domain{padding:32px 28px;background:#0B1829;border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--accent,#60A5FA);border-radius:12px;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.domain:hover{border-color:rgba(255,255,255,.15);border-left-color:var(--accent,#60A5FA);box-shadow:0 8px 28px rgba(0,0,0,.45);transform:translateY(-4px)}
+.domain.acc-emerald{--accent:#1B7A42}
+.domain.acc-white{--accent:#FFFFFF}
+.domain.acc-crimson{--accent:#A8243B}
+.dm-title{font-family:var(--display);font-size:18px;font-weight:700;color:#FFFFFF;margin-bottom:10px;line-height:1.25}
+.dm-text{font-size:14.5px;color:#CBD5E1;line-height:1.7}
 
-/* Becoming card */
-.card-bec{background:var(--dark);border-color:rgba(47,111,237,.15);color:#fff;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:40px;will-change:transform,opacity}
-.card-bec:hover{border-color:rgba(47,111,237,.3);box-shadow:0 8px 40px rgba(11,18,34,.3)}
-.cb-tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bl3);margin-bottom:12px}
-.cb-title{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:800;color:#fff;margin-bottom:8px}.cb-title .dots{color:var(--bl3)}
-.cb-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:10px}
-.cb-phil{font-size:13px;font-weight:300;line-height:1.6;padding-left:16px;border-left:2px solid var(--bl);margin:14px 0;font-style:italic}
-.cb-phil .word{color:rgba(255,255,255,.2);transition:color .2s ease;display:inline}
-.cb-phil .word.lit{color:rgba(255,255,255,.8)}
-.cb-chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
-.cb-chip{font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:12px;color:rgba(255,255,255,.4);opacity:0;transform:scale(.9);transition:all .3s}
-.cb-chip.vis{opacity:1;transform:scale(1)}.cb-chip:hover{border-color:var(--bl3);color:var(--bl3)}
-.cb-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--bl3);transition:gap .3s}.cb-link:hover{gap:12px;color:#fff}
-.cb-link svg{width:14px;height:14px}
-.ring-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px}
-.ring-glow{position:absolute;top:50%;left:50%;width:160px;height:160px;transform:translate(-50%,-55%);border-radius:50%;background:radial-gradient(circle,rgba(47,111,237,.1),transparent 70%);opacity:0;transition:opacity .15s}
-.bec-ring{width:120px;height:120px;position:relative}
-.bec-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.bec-rt{fill:none;stroke:rgba(255,255,255,.06);stroke-width:2.5}
-.bec-rp{fill:none;stroke:var(--bl);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3;transition:none}
-.bec-rc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;color:#fff;letter-spacing:.04em}
-.ring-label{font-family:var(--display);font-size:16px;color:rgba(255,255,255,.7)}.ring-label .rd{color:var(--bl3)}
+/* Patent banner — full-width subtle callout */
+.patent-banner{margin:32px 0;padding:24px 32px;text-align:center;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);font-family:var(--display);font-size:clamp(15px,1.6vw,18px);font-weight:600;color:#FFFFFF;letter-spacing:.01em}
+.patent-banner em{font-style:normal;color:#8BA3B9;font-weight:400;margin:0 10px}
 
-/* Side cards */
-.card-stack{display:flex;flex-direction:column;gap:16px}
-.card-sm{padding:28px}
-.cs-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--bl);margin-bottom:6px}
-.cs-title{font-family:var(--display);font-size:18px;font-weight:700;color:var(--tx);margin-bottom:4px}
-.cs-sub{font-size:13px;color:var(--tx3);margin-bottom:8px}
-.cs-body{font-size:14px;color:var(--tx2);line-height:1.65}
+/* Earlier list — footnote-style row */
+.earlier{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;padding:24px 4px}
+.earlier-h{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8BA3B9;margin-bottom:6px}
+.earlier-item{font-size:14px;color:#8BA3B9;line-height:1.6}
+.earlier-item strong{color:#CBD5E1;font-weight:500}
 
-/* Education */
-.edu-grid{grid-template-columns:repeat(4,1fr)}
-.card-edu-item{padding:20px 24px;text-align:center}
-.edu-degree{font-family:var(--display);font-size:15px;font-weight:600;color:var(--tx);margin-bottom:4px}
-.edu-school{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.04em}
+/* Nights & weekends — Becoming embed */
+.nights{margin:48px 0 32px;padding:8px 4px}
+.nights-h{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:700;color:#FFFFFF;line-height:1.2;margin-bottom:28px;letter-spacing:-.01em}
+.nights-grid{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:center}
+.nights-mock{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:280px;height:360px;padding:32px 24px 24px;border-radius:16px;background:#111D2E;text-decoration:none;color:inherit;box-shadow:0 12px 40px rgba(0,0,0,.4);transition:transform .4s ease,box-shadow .4s ease;overflow:hidden;isolation:isolate}
+/* Rotating tricolor conic-gradient border */
+.nm-border{position:absolute;inset:-2px;border-radius:18px;padding:2px;background:conic-gradient(from 0deg,transparent 0deg,#A8243B 60deg,#FFFFFF 140deg,#1B7A42 220deg,transparent 300deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:nmRotate 8s linear infinite;pointer-events:none;z-index:0}
+@keyframes nmRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* Breathing radial glow */
+.nm-glow{position:absolute;top:50%;left:50%;width:240px;height:240px;transform:translate(-50%,-58%);background:radial-gradient(circle,rgba(27,122,66,.18) 0%,transparent 65%);animation:nmBreathe 4s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes nmBreathe{0%,100%{opacity:.3}50%{opacity:.8}}
+/* Ring stage */
+.nm-stage{position:relative;width:180px;height:180px;margin-top:14px;display:flex;align-items:center;justify-content:center;z-index:2}
+.nm-ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.nm-ring circle{fill:none;stroke-linecap:round}
+.nm-ring-track{stroke:rgba(255,255,255,.12);stroke-width:3}
+.nm-ring-progress{stroke:rgba(255,255,255,.55);stroke-width:3;stroke-dasharray:502.65;stroke-dashoffset:0;transition:stroke-dashoffset .9s linear}
+/* Live countdown */
+.nm-time{position:relative;font-family:var(--mono);font-size:42px;font-weight:500;color:#FFFFFF;letter-spacing:.02em;display:flex;align-items:center;line-height:1}
+.nm-d{display:inline-block;min-width:.62em;text-align:center}
+.nm-colon{display:inline-block;padding:0 2px;animation:nmColon 1s steps(2,end) infinite}
+@keyframes nmColon{50%{opacity:.35}}
+/* Becoming + thinking dots */
+.nm-name{margin-top:18px;font-family:var(--display);font-size:14px;color:#8BA3B9;letter-spacing:.14em;text-transform:uppercase;z-index:2;position:relative}
+.nm-dot{display:inline-block;opacity:0}
+.nm-dot:nth-child(1){animation:nmDot1 2s ease-in-out infinite}
+.nm-dot:nth-child(2){animation:nmDot2 2s ease-in-out infinite}
+.nm-dot:nth-child(3){animation:nmDot3 2s ease-in-out infinite}
+@keyframes nmDot1{0%,5%{opacity:0}10%,90%{opacity:1}95%,100%{opacity:0}}
+@keyframes nmDot2{0%,30%{opacity:0}35%,90%{opacity:1}95%,100%{opacity:0}}
+@keyframes nmDot3{0%,55%{opacity:0}60%,90%{opacity:1}95%,100%{opacity:0}}
+/* Try it live CTA */
+.nm-cta{position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:#6B8EA8;letter-spacing:.14em;text-transform:uppercase;z-index:2}
+.nm-arrow{display:inline-block;transition:transform .3s ease}
+/* Hover */
+.nights-mock:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(27,122,66,.2)}
+.nights-mock:hover .nm-border{animation-duration:3s}
+.nights-mock:hover .nm-glow{animation-name:nmBreatheStrong}
+@keyframes nmBreatheStrong{0%,100%{opacity:.8}50%{opacity:1}}
+.nights-mock:hover .nm-arrow{transform:translateX(4px)}
+.nights-mock:hover .nm-cta{color:#CBD5E1}
+.nights-body{display:flex;flex-direction:column;gap:18px}
+.nights-desc{font-size:16px;color:#CBD5E1;line-height:1.7;max-width:540px}
+.nights-pills{display:flex;flex-wrap:wrap;gap:8px}
+.nights-pill{font-family:var(--mono);font-size:12px;color:#8BA3B9;background:rgba(255,255,255,.06);padding:5px 12px;border-radius:999px;letter-spacing:.02em}
+.nights-link{font-size:14px;color:#60A5FA;align-self:flex-start;transition:color .25s}
+.nights-link:hover{color:#93C5FD}
+
+/* Education — 3 dark cards */
+.edu-grid{grid-template-columns:repeat(3,1fr)}
+.card-edu-item{padding:22px 24px;text-align:center;background:#111D2E;border:1px solid rgba(255,255,255,.08)}
+.edu-degree{font-family:var(--display);font-size:15px;font-weight:600;color:#FFFFFF;margin-bottom:4px}
+.edu-school{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:.04em}
 
 /* Contact */
-.contact{padding:80px 0 60px;text-align:center;transition:background .1s linear}
-.ct-h{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--tx);margin-bottom:8px;opacity:0;transform:translateY(16px);transition:all .6s cubic-bezier(.16,1,.3,1)}
-.ct-h.vis{opacity:1;transform:translateY(0)}.ct-h .bl{color:var(--bl)}
-.ct-sub{font-size:15px;color:var(--tx3);margin-bottom:32px;opacity:0;transform:translateY(10px);transition:all .5s ease .1s}
-.ct-sub.vis{opacity:1;transform:translateY(0)}
+.contact{padding:80px 0 60px;text-align:center;background:var(--dark)}
+.ct-h{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:800;color:#FFFFFF;margin-bottom:8px}
+.ct-sub{font-size:15px;color:#8BA3B9;margin-bottom:32px}
 .ct-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.ct-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--white);border:1px solid var(--bd);border-radius:12px;font-family:var(--body);font-size:14px;color:var(--tx2);box-shadow:var(--sh);transition:all .3s;opacity:0;transform:translateY(12px)}
-.ct-btn.vis{opacity:1;transform:translateY(0)}
-.ct-btn:hover{border-color:var(--bl);color:var(--bl);box-shadow:var(--shm);transform:translateY(-3px)!important}
-.ct-btn svg{width:16px;height:16px;color:var(--tx3);transition:color .3s}.ct-btn:hover svg{color:var(--bl)}
+.ct-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#111D2E;border:1px solid rgba(255,255,255,.08);border-radius:12px;font-family:var(--body);font-size:14px;color:#CBD5E1;transition:border-color .3s,color .3s,box-shadow .3s,transform .3s}
+.ct-btn:hover{border-color:#60A5FA;color:#FFFFFF;box-shadow:0 4px 20px rgba(96,165,250,.15);transform:translateY(-3px)}
+.ct-btn svg{width:16px;height:16px;color:#8BA3B9;transition:color .3s}.ct-btn:hover svg{color:#60A5FA}
 
-footer{padding:32px 40px;text-align:center;border-top:1px solid var(--bd)}
-footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.04em}
+footer{padding:32px 40px;text-align:center;border-top:1px solid rgba(255,255,255,.06);background:var(--dark)}
+footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:.04em}
 
 /* Visually hidden but crawlable */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -319,13 +355,17 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 @media(max-width:900px){
   .wrap{padding:0 20px}nav{padding:14px 20px}
   .bento{grid-template-columns:1fr}.cf-domains{grid-template-columns:1fr}
+  .card-feature{padding:36px 28px}
   .hero-content{padding:0 24px}
   .hero-btns{flex-direction:column;align-items:flex-start;gap:10px}
-  .edu-grid{grid-template-columns:1fr 1fr}
+  .nights-grid{grid-template-columns:1fr;gap:28px;justify-items:center}
+  .nights-mock{width:100%;max-width:320px}
+  .edu-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+<script>if('scrollRestoration' in history){history.scrollRestoration='manual'}window.scrollTo(0,0);</script>
 
 <div class="prog" id="prog"></div>
 
@@ -362,8 +402,8 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
         <span class="hero-word-wrap"><span class="hero-word" style="animation-delay:.28s">Mofidi</span></span>
       </h1>
       <div class="hero-rule"></div>
-      <p class="hero-sub">I build the platform that doesn't exist yet, then I scale it to millions. Patent holder. $50M+ GMV. Three zero-to-one systems shipped at Walmart scale.</p>
-      <div class="hero-proof" aria-label="Proof points">
+      <p class="hero-sub reveal">I build the platform that doesn't exist yet, then I scale it to millions. Patent holder. $50M+ GMV. Three zero-to-one systems shipped at Walmart scale.</p>
+      <div class="hero-proof reveal stagger-1" aria-label="Proof points">
         <span>Walmart Global Tech</span>
         <span class="hp-dot" aria-hidden="true">&middot;</span>
         <span>Patent Pending, USPTO</span>
@@ -372,7 +412,7 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
         <span class="hp-dot" aria-hidden="true">&middot;</span>
         <span>$50M+ GMV</span>
       </div>
-      <div class="hero-btns">
+      <div class="hero-btns reveal stagger-2">
         <a href="#work" class="btn btn-w">View platforms</a>
         <a href="#connect" class="btn btn-o">Get in touch</a>
       </div>
@@ -395,64 +435,80 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 
     <section aria-label="Key metrics">
     <div class="bento" id="metricGrid">
-      <div class="card card-metric" data-count="10" data-stagger="0"><div class="cm-num"><span class="counter">10</span><span>+</span></div><div class="cm-label">Years in Product</div></div>
-      <div class="card card-metric" data-count="3" data-stagger="1"><div class="cm-num"><span class="counter">3</span></div><div class="cm-label">Zero-to-One Platforms</div></div>
-      <div class="card card-metric" data-count="1" data-stagger="2"><div class="cm-num"><span class="counter">1</span></div><div class="cm-label">Patent Pending</div></div>
+      <div class="card card-metric reveal stagger-1" data-count="10"><div class="cm-num"><span class="counter">10</span><span>+</span></div><div class="cm-label">Years in Product</div></div>
+      <div class="card card-metric reveal stagger-2" data-count="3"><div class="cm-num"><span class="counter">3</span></div><div class="cm-label">Zero-to-One Platforms</div></div>
+      <div class="card card-metric reveal stagger-3" data-count="1"><div class="cm-num"><span class="counter">1</span></div><div class="cm-label">Patent Pending</div></div>
     </div>
     </section>
 
     <section aria-label="Work experience">
     <div class="bento" id="featureGrid">
       <article class="card card-feature" id="featureCard">
-        <span class="cf-tag">Walmart Global Tech . ~6 Years</span>
-        <h2 class="cf-title">Three platforms. Three domains. One thread: turning chaos into systems that scale.</h2>
-        <div class="cf-sub">PM to Staff PM across Pricing, Brand Identity, Cross-Border Commerce</div>
-        <div class="cf-body">Built three platforms from scratch across a 200+ engineer organization at the intersection of engineering, data science, legal, and operations.</div>
+        <span class="cf-tag reveal">Walmart Global Tech . ~6 Years</span>
+        <h2 class="cf-title reveal stagger-1">Three platforms. Three domains. One thread: turning chaos into systems that scale.</h2>
+        <div class="cf-sub reveal stagger-2">PM to Staff PM across Pricing, Brand Identity, Cross-Border Commerce</div>
+        <div class="cf-body reveal stagger-3">Built three platforms from scratch across a 200+ engineer organization at the intersection of engineering, data science, legal, and operations.</div>
         <div class="cf-domains" id="domainGrid">
-          <article class="domain" data-stagger="0"><h3 class="dm-title">Cross-Border Compliance</h3><div class="dm-text">Supply chain platform for Mexico and Canada expansion. $5M GMV in 90 days. Seller onboarding scaled 30X.</div></article>
-          <article class="domain" data-stagger="1"><h3 class="dm-title">Brand Classification (Patent)</h3><div class="dm-text">ML system resolving $10B in discrepancies across 600K+ brands. Counterfeits down 40%. $50M+ incremental GMV.</div></article>
-          <article class="domain" data-stagger="2"><h3 class="dm-title">Global Pricing (PriceX)</h3><div class="dm-text">Cloud pricing across 7 countries. Manual work reduced 75%. Latency from 24h to under 1 min.</div></article>
+          <article class="domain acc-emerald reveal stagger-1"><h3 class="dm-title">Cross-Border Compliance</h3><div class="dm-text">Supply chain platform for Mexico and Canada expansion. $5M GMV in 90 days. Seller onboarding scaled 30X.</div></article>
+          <article class="domain acc-white reveal stagger-2"><h3 class="dm-title">Brand Classification</h3><div class="dm-text">ML system resolving $10B in discrepancies across 600K+ brands. Counterfeits down 40%. $50M+ incremental GMV.</div></article>
+          <article class="domain acc-crimson reveal stagger-3"><h3 class="dm-title">Global Pricing (PriceX)</h3><div class="dm-text">Cloud pricing across 7 countries. Manual work reduced 75%. Latency from 24h to under 1 min.</div></article>
         </div>
       </article>
     </div>
 
-    <div class="bento">
-      <article class="card card-sm" data-stagger="0">
-        <div class="cs-tag">Becoming... . Side Project . Live</div>
-        <h2 class="cs-title">Focus Timer App</h2>
-        <div class="cs-sub">Designed, built, and deployed end-to-end</div>
-        <div class="cs-body">Google OAuth, cloud sync, analytics, cross-device support. <a href="https://becoming.ashmofidi.com" target="_blank" rel="noopener">becoming.ashmofidi.com</a></div>
-      </article>
-      <article class="card card-sm" data-stagger="1">
-        <div class="cs-tag">PathNav . 2018 to 2020</div>
-        <h2 class="cs-title">Product Manager</h2>
-        <div class="cs-sub">AR Navigation for Retail</div>
-        <div class="cs-body">Increased foot traffic 15% with an AR app using ARKit and BLE beacons. Led concept to MVP.</div>
-      </article>
-      <article class="card card-sm" data-stagger="2">
-        <div class="cs-tag">Excibo . 2015 to 2017</div>
-        <h2 class="cs-title">Co-Founder</h2>
-        <div class="cs-sub">Campus Food Delivery</div>
-        <div class="cs-body">Raised $40K seed. Built 3 apps. 1,200 deliveries in 5 months.</div>
-      </article>
+    <div class="patent-banner reveal-scale" id="patentBanner" role="note">
+      Patent Pending, USPTO <em>&mdash;</em> AI/ML Brand Classification System
     </div>
 
+    <section class="nights" aria-label="Nights and weekends side project">
+      <h2 class="nights-h reveal-left">I ship on nights and weekends too.</h2>
+      <div class="nights-grid">
+        <a class="nights-mock reveal-scale" id="becomingMock" href="https://becoming.ashmofidi.com" target="_blank" rel="noopener" aria-label="Try Becoming focus timer">
+          <span class="nm-border" aria-hidden="true"></span>
+          <span class="nm-glow" aria-hidden="true"></span>
+          <div class="nm-stage">
+            <svg class="nm-ring" viewBox="0 0 180 180" aria-hidden="true">
+              <circle class="nm-ring-track" cx="90" cy="90" r="80"></circle>
+              <circle class="nm-ring-progress" cx="90" cy="90" r="80"></circle>
+            </svg>
+            <div class="nm-time" id="becomingTimer" aria-label="Pomodoro countdown">
+              <span class="nm-d">2</span><span class="nm-d">5</span><span class="nm-colon">:</span><span class="nm-d">0</span><span class="nm-d">0</span>
+            </div>
+          </div>
+          <div class="nm-name">Becoming<span class="nm-dot">.</span><span class="nm-dot">.</span><span class="nm-dot">.</span></div>
+          <div class="nm-cta">Try it live <span class="nm-arrow">&rarr;</span></div>
+        </a>
+        <div class="nights-body reveal-right">
+          <p class="nights-desc">Becoming&hellip; is a focus timer I designed, built, and shipped end-to-end. Google OAuth, cloud sync, analytics, cross-device support. Real users, real infrastructure, real product.</p>
+          <div class="nights-pills" aria-label="Stack">
+            <span class="nights-pill">React</span>
+            <span class="nights-pill">Vercel</span>
+            <span class="nights-pill">Google OAuth</span>
+            <span class="nights-pill">Redis</span>
+          </div>
+          <a class="nights-link" href="https://becoming.ashmofidi.com" target="_blank" rel="noopener">Try it free at becoming.ashmofidi.com &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="earlier" aria-label="Earlier work">
+      <div class="earlier-h reveal">Earlier</div>
+      <div class="earlier-item reveal stagger-1"><strong>PathNav</strong> &mdash; AR Navigation for Retail (2018&ndash;2020)</div>
+      <div class="earlier-item reveal stagger-2"><strong>Excibo</strong> &mdash; Campus Food Delivery, Co-Founder (2015&ndash;2017)</div>
+    </section>
+
     <div class="bento edu-grid" role="complementary" aria-label="Education and credentials">
-      <div class="card card-edu-item" data-stagger="0">
+      <div class="card card-edu-item reveal stagger-1">
         <div class="edu-degree">B.S. Computer Science</div>
         <div class="edu-school">San Francisco State University</div>
       </div>
-      <div class="card card-edu-item" data-stagger="1">
+      <div class="card card-edu-item reveal stagger-2">
         <div class="edu-degree">B.S. Mechanical Engineering</div>
         <div class="edu-school">CSU Long Beach</div>
       </div>
-      <div class="card card-edu-item" data-stagger="2">
+      <div class="card card-edu-item reveal stagger-3">
         <div class="edu-degree">PM Certificate</div>
         <div class="edu-school">Cornell University</div>
-      </div>
-      <div class="card card-edu-item" data-stagger="3">
-        <div class="edu-degree">Patent Pending</div>
-        <div class="edu-school">USPTO &middot; AI/ML Brand Classification</div>
       </div>
     </div>
     </section>
@@ -461,18 +517,18 @@ footer span{font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spaci
 
 <section class="contact" id="connect">
   <div class="wrap">
-    <h2 class="ct-h" id="ctH">Say <span class="bl">hello.</span></h2>
-    <p class="ct-sub" id="ctSub">Always open to interesting conversations and new opportunities.</p>
+    <h2 class="ct-h reveal-scale" id="ctH">Say hello.</h2>
+    <p class="ct-sub reveal stagger-1" id="ctSub">Always open to interesting conversations and new opportunities.</p>
     <div class="ct-links">
-      <a href="mailto:ashkan.mofidi@gmail.com" class="ct-btn" data-stagger="0" aria-label="Email ashkan.mofidi@gmail.com">
+      <a href="mailto:ashkan.mofidi@gmail.com" class="ct-btn reveal stagger-2" aria-label="Email ashkan.mofidi@gmail.com">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         ashkan.mofidi@gmail.com
       </a>
-      <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" rel="noopener" class="ct-btn" data-stagger="1" aria-label="Connect on LinkedIn">
+      <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" rel="noopener" class="ct-btn reveal stagger-3" aria-label="Connect on LinkedIn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         LinkedIn
       </a>
-      <a href="https://github.com/ashkanmofidi" target="_blank" rel="noopener" class="ct-btn" data-stagger="2" aria-label="View GitHub profile">
+      <a href="https://github.com/ashkanmofidi" target="_blank" rel="noopener" class="ct-btn reveal stagger-4" aria-label="View GitHub profile">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         GitHub
       </a>
@@ -521,7 +577,7 @@ function scrollFrame(){
 
   /* 2. Nav dark/light */
   const heroH=document.getElementById('hero').offsetHeight;
-  document.getElementById('nav').className=sy<heroH-80?'dark':'light';
+  document.getElementById('nav').className=sy<heroH-80?'dark':'scrolled';
 
   /* 3. Scroll hint (one-way: hides, never returns) */
   if(sy>60)document.getElementById('scrollHint').classList.add('hide');
@@ -536,78 +592,46 @@ function scrollFrame(){
   if(o1)o1.style.transform=`translate(${Math.sin(sy*.001)*30}px,${sy*-0.05}px)`;
   if(o2)o2.style.transform=`translate(${Math.cos(sy*.0012)*20}px,${sy*0.03}px)`;
 
-  /* 5. Subtle parallax on major cards */
-  parallaxCard('featureCard',.02);
 
-  /* 8. DAY CYCLE - scroll-linked color temperature shift */
-  const dayP=Math.min(1,Math.max(0,sy/docH)); // 0=night, 1=dusk
-
-  // Main content background warms: cool white → warm white → golden
-  const mainEl=document.querySelector('.main');
-  if(mainEl){
-    // Scroll through content area: 0=just entered, 1=bottom
-    const mainTop=mainEl.offsetTop;
-    const mainH=mainEl.offsetHeight;
-    const mainP=Math.min(1,Math.max(0,(sy-mainTop+vh)/(mainH+vh)));
-    // Interpolate: cool (#F7F8FC) → neutral (#FAFBF8) → warm (#FDF5EB)
-    const r=Math.round(247+mainP*6);
-    const g=Math.round(248-mainP*3);
-    const b=Math.round(252-mainP*17);
-    mainEl.style.background=`rgb(${r},${g},${b})`;
-  }
-
-  // Contact section gets golden hour warmth
-  const contact=document.querySelector('.contact');
-  if(contact){
-    const ctRect=contact.getBoundingClientRect();
-    const ctP=Math.min(1,Math.max(0,(vh-ctRect.top)/(vh*.6)));
-    // Warm tint overlay
-    contact.style.background=`rgba(253,${245-Math.round(ctP*5)},${235-Math.round(ctP*10)},${ctP*.3})`;
-  }
-
-  // Footer cools slightly
-  const footer=document.querySelector('footer');
-  if(footer&&dayP>.85){
-    const coolP=(dayP-.85)/.15;
-    footer.style.borderColor=`rgba(200,195,${185+Math.round(coolP*20)},.3)`;
-  }
 }
 
-function parallaxCard(id,rate){
-  const el=document.getElementById(id);
-  if(!el)return;
-  const r=el.getBoundingClientRect();
-  const center=r.top+r.height/2;
-  const vh=window.innerHeight;
-  const offset=(center-vh/2)*rate;
-  // Only apply if card is in viewport
-  if(r.top<vh&&r.bottom>0){
-    el.style.transform=el.classList.contains('vis')?`translateY(${offset}px)`:'translateY(20px)';
-  }
-}
 
-/* ═══ REVERSIBLE CARD OBSERVER ═══
-   Cards fade in on entry, fade out on exit.
-   Re-entering re-triggers the animation. */
-
-function createReversibleObserver(threshold=0.1){
-  return new IntersectionObserver(entries=>{
-    entries.forEach(en=>{
-      const el=en.target;
-      const stagger=parseInt(el.dataset.stagger||0)*80;
-      if(en.isIntersecting){
-        setTimeout(()=>el.classList.add('vis'),stagger);
-      }else{
-        el.classList.remove('vis');
+/* ═══ BECOMING LIVE COUNTDOWN ═══ */
+(function(){
+  const root=document.getElementById('becomingTimer');
+  if(!root)return;
+  const digits=root.querySelectorAll('.nm-d');
+  const ring=document.querySelector('.nm-ring-progress');
+  const C=2*Math.PI*80;
+  const TOTAL=25*60;
+  let left=TOTAL;
+  function render(){
+    const m=Math.floor(left/60),s=left%60;
+    const txt=String(m).padStart(2,'0')+String(s).padStart(2,'0');
+    digits.forEach((d,i)=>{
+      if(d.textContent!==txt[i]){
+        d.textContent=txt[i];
+        if(d.animate){d.animate([{transform:'translateY(-10px)',opacity:0},{transform:'translateY(0)',opacity:1}],{duration:300,easing:'ease'})}
       }
     });
-  },{threshold,rootMargin:'0px 0px -30px 0px'});
-}
+    if(ring)ring.style.strokeDashoffset=(C*(1-left/TOTAL)).toFixed(2);
+  }
+  render();
+  setInterval(()=>{left=left>0?left-1:TOTAL;render()},1000);
+})();
 
-const cardObs=createReversibleObserver(0.08);
-
-// Observe all reversible cards
-document.querySelectorAll('.card').forEach(c=>cardObs.observe(c));
+/* ═══ UNIFIED SCROLL REVEAL ═══
+   Single Intersection Observer drives all .reveal* elements.
+   Fires once per element, then unobserves. */
+const revealObs=new IntersectionObserver((entries,obs)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.classList.add('active');
+      obs.unobserve(en.target);
+    }
+  });
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>revealObs.observe(el));
 
 /* ═══ METRIC COUNTERS (one-shot, reset to 0 for animation) ═══ */
 document.querySelectorAll('.card-metric .counter').forEach(el=>{el.textContent='0'});
@@ -634,39 +658,6 @@ const counterObs=new IntersectionObserver(entries=>{
   });
 },{threshold:0.2});
 counterObs.observe(document.getElementById('metricGrid'));
-
-/* ═══ DOMAIN CARDS (stagger after parent) ═══ */
-const domainObs=new IntersectionObserver(entries=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting){
-      // Stagger domain cards 100ms apart, 300ms after parent
-      document.querySelectorAll('.domain').forEach((d,i)=>{
-        setTimeout(()=>d.classList.add('vis'),300+i*100);
-      });
-    }else{
-      document.querySelectorAll('.domain').forEach(d=>d.classList.remove('vis'));
-    }
-  });
-},{threshold:0.1});
-domainObs.observe(document.getElementById('featureCard'));
-
-/* ═══ CONTACT (reversible) ═══ */
-const contactObs=new IntersectionObserver(entries=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting){
-      document.getElementById('ctH').classList.add('vis');
-      document.getElementById('ctSub').classList.add('vis');
-      document.querySelectorAll('.ct-btn').forEach((b,i)=>{
-        setTimeout(()=>{b.style.transition='all .5s cubic-bezier(.16,1,.3,1)';b.classList.add('vis')},200+i*100);
-      });
-    }else{
-      document.getElementById('ctH').classList.remove('vis');
-      document.getElementById('ctSub').classList.remove('vis');
-      document.querySelectorAll('.ct-btn').forEach(b=>b.classList.remove('vis'));
-    }
-  });
-},{threshold:0.15});
-contactObs.observe(document.querySelector('.contact'));
 
 /* ═══ UTILS ═══ */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{

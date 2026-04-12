@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PM Command Center — Interactive Architecture</title>
+<meta name="description" content="Interactive architecture diagram of the PM Command Center — a personal agent system Ash Mofidi is building with Claude Code.">
+<link rel="canonical" href="https://ashmofidi.com/pm-command-center.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/favicon.svg" color="#0B1829">
+<meta name="theme-color" content="#0B1829">
+<meta property="og:image" content="https://ashmofidi.com/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Lexend:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ───── Reset + tokens ───── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0B1829;--bg2:#111D2E;--bg3:#0E1626;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --tx:#FFFFFF;--tx2:#CBD5E1;--tx3:#8BA3B9;--mute:#6B8EA8;
+  --acc:#60A5FA;--acc2:#93C5FD;
+  --crimson:#A8243B;--white:#FFFFFF;--emerald:#1B7A42;
+  --green:#22C55E;--amber:#F59E0B;--blue:#60A5FA;
+  --display:'Syne',sans-serif;--body:'Lexend',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+html,body{background:var(--bg);color:var(--tx2);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100%}
+body{overflow-x:hidden}
+a{color:var(--acc);text-decoration:none;transition:color .2s}a:hover{color:var(--acc2)}
+button{font:inherit;color:inherit;background:transparent;border:0;cursor:pointer}
+::selection{background:rgba(96,165,250,.25);color:#fff}
+
+/* ───── Header ───── */
+header{position:sticky;top:0;z-index:40;background:rgba(11,24,41,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.head{max-width:1440px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:20px}
+.logo-badge{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-wrap{background:#0B1829;border-radius:10px;padding:5px 7px;border:1px solid var(--line)}
+.am{width:42px;height:auto;display:block}
+.am-m-red{stroke-dasharray:176;stroke-dashoffset:176;animation:drawRed 7s ease infinite}
+.am-m-green{stroke-dasharray:176;stroke-dashoffset:176;animation:drawGreen 7s ease infinite}
+.am-a{stroke-dasharray:260;stroke-dashoffset:260;animation:drawA 7s ease infinite}
+.am-crossbar{stroke-dasharray:40;stroke-dashoffset:40;animation:drawBar 7s ease infinite}
+@keyframes drawRed{0%{stroke-dashoffset:176;opacity:1}14%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:176;opacity:0}}
+@keyframes drawGreen{0%,3%{stroke-dashoffset:176;opacity:1}17%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:176;opacity:0}}
+@keyframes drawA{0%,11%{stroke-dashoffset:260;opacity:1}26%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:260;opacity:0}}
+@keyframes drawBar{0%,23%{stroke-dashoffset:40;opacity:1}31%{stroke-dashoffset:0;opacity:1}74%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:40;opacity:0}}
+.h-title{display:flex;flex-direction:column;gap:2px}
+.h-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.h-name{font-family:var(--display);font-weight:700;font-size:18px;color:#fff;letter-spacing:-.01em}
+.h-spacer{flex:1}
+.h-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tbtn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx2);transition:border-color .2s,color .2s,background .2s;white-space:nowrap}
+.tbtn:hover{border-color:var(--line2);color:#fff}
+.tbtn.on{border-color:var(--acc);color:#fff;background:rgba(96,165,250,.08)}
+.tbtn svg{width:14px;height:14px}
+.tbtn.sim{border-color:rgba(27,122,66,.4);color:#C7EBD6}
+.tbtn.sim:hover{border-color:var(--emerald);background:rgba(27,122,66,.12)}
+
+/* ───── Intro strip ───── */
+.intro{max-width:1440px;margin:0 auto;padding:28px 28px 0;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.intro h1{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:700;color:#fff;line-height:1.15;letter-spacing:-.01em;max-width:820px}
+.intro p{color:var(--tx3);margin-top:8px;max-width:780px;font-size:14px}
+.intro .cost{min-width:220px}
+
+/* Cost donut */
+.cost{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.cost svg{width:68px;height:68px;flex-shrink:0}
+.cost .ct{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
+.cost .cv{font-family:var(--display);font-size:22px;color:#fff;font-weight:700}
+.cost .cl{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--tx3);font-family:var(--mono)}
+.cost .cl i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:1px}
+
+/* ───── Canvas ───── */
+main{max-width:1440px;margin:0 auto;padding:24px 28px 40px;position:relative}
+#canvas{position:relative;min-height:920px}
+#wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+#wires path{fill:none;stroke:rgba(139,163,185,.22);stroke-width:1.4;stroke-linecap:round}
+#wires .pulse{stroke:var(--acc);stroke-width:2;stroke-dasharray:6 10;stroke-dashoffset:0;animation:flow 2.8s linear infinite;opacity:.55}
+@keyframes flow{to{stroke-dashoffset:-160}}
+#wires .hot{stroke:var(--emerald);stroke-width:2.6;opacity:1;filter:drop-shadow(0 0 6px rgba(27,122,66,.5));animation:flow 1s linear infinite}
+
+/* rows */
+.layer{position:relative;z-index:2;display:grid;gap:14px;margin-bottom:28px}
+.layer-label{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.layer-label::after{content:'';height:1px;flex:1;background:var(--line)}
+.row-sources{grid-template-columns:repeat(3,1fr);max-width:820px;margin-left:auto;margin-right:auto}
+.row-watcher{justify-content:center}
+.row-hub{grid-template-columns:1fr 1.4fr .9fr;align-items:start;gap:20px}
+.row-outputs{grid-template-columns:repeat(5,1fr)}
+.row-delivery{grid-template-columns:repeat(4,1fr);max-width:980px;margin-left:auto;margin-right:auto}
+
+/* Node card */
+.node{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;cursor:pointer;transition:border-color .25s,transform .25s,box-shadow .25s;text-align:left;width:100%;min-height:90px;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.node:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.node:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.node.lg{min-height:110px}
+.node .cat{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.node .nm{font-family:var(--display);font-size:16px;font-weight:700;color:#fff;line-height:1.2}
+.node .nm small{font-weight:500;color:var(--tx3);font-family:var(--body);font-size:12px;letter-spacing:0;margin-left:4px}
+.node .desc{font-size:12.5px;color:var(--tx3);line-height:1.45;margin-top:2px}
+.node .runtime{font-family:var(--mono);font-size:10.5px;color:var(--mute);letter-spacing:.06em;margin-top:6px}
+.node .dot{position:absolute;top:14px;right:14px;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.28)}
+.node .dot.green{background:var(--green);box-shadow:0 0 12px rgba(34,197,94,.55),0 0 0 3px rgba(0,0,0,.28)}
+.node .dot.amber{background:var(--amber);box-shadow:0 0 12px rgba(245,158,11,.55),0 0 0 3px rgba(0,0,0,.28)}
+.node .dot.blue{background:var(--blue);box-shadow:0 0 12px rgba(96,165,250,.55),0 0 0 3px rgba(0,0,0,.28)}
+.node .dot.gray{background:#64748b;box-shadow:0 0 0 3px rgba(0,0,0,.28)}
+
+/* Accent borders */
+.node.src{border-left:3px solid var(--acc)}
+.node.watcher{border:1px solid rgba(96,165,250,.35);background:linear-gradient(180deg,rgba(96,165,250,.08),rgba(96,165,250,0));min-height:108px}
+.node.db{border:1px solid rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0));padding:18px}
+.node.orch{border:1px solid rgba(27,122,66,.4);background:linear-gradient(180deg,rgba(27,122,66,.12),rgba(27,122,66,0));padding:18px;min-height:auto}
+.node.phase{background:var(--bg);border:1px solid var(--line);padding:10px 12px;min-height:0}
+.node.phase .nm{font-size:13px}
+.node.phase .ph-n{font-family:var(--mono);font-size:10px;color:var(--mute);letter-spacing:.16em;margin-bottom:2px}
+.node.strat{border:1px dashed rgba(96,165,250,.4);background:rgba(96,165,250,.04)}
+
+/* DB schema chip */
+.db-core{display:flex;align-items:center;gap:14px}
+.db-ico{width:56px;height:56px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#A8243B 0%,#FFFFFF 50%,#1B7A42 100%);padding:1.5px}
+.db-ico>div{width:100%;height:100%;background:#0B1829;border-radius:10.5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;color:#fff;letter-spacing:.05em;font-size:11px}
+.db-body{flex:1}
+.db-meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.db-chip{font-family:var(--mono);font-size:10px;color:var(--tx3);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:3px 8px;border-radius:999px;letter-spacing:.04em}
+.db-tables-btn{margin-top:10px;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);color:var(--acc);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.db-tables-btn:hover{border-color:var(--acc);background:rgba(96,165,250,.08)}
+
+/* Orchestrator inner phases */
+.orch-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
+.orch-head h3{font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
+.orch-head small{font-family:var(--mono);font-size:10.5px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* Simulate/active highlight */
+.node.active,.db-ico.active,.orch-phase.active{animation:nodePulse 1.4s ease-in-out}
+@keyframes nodePulse{0%{box-shadow:0 0 0 0 rgba(27,122,66,.5)}50%{box-shadow:0 0 0 14px rgba(27,122,66,0);transform:translateY(-3px)}100%{box-shadow:0 0 0 0 rgba(27,122,66,0);transform:translateY(0)}}
+
+/* Entrance stagger */
+.enter{opacity:0;transform:translateY(14px);animation:enter .7s cubic-bezier(.25,.46,.45,.94) forwards}
+.layer:nth-child(1) .enter{animation-delay:.05s}
+.layer:nth-child(2) .enter{animation-delay:.2s}
+.layer:nth-child(3) .enter{animation-delay:.35s}
+.layer:nth-child(4) .enter{animation-delay:.5s}
+.layer:nth-child(5) .enter{animation-delay:.65s}
+.enter:nth-child(2){animation-delay:.1s}
+.enter:nth-child(3){animation-delay:.15s}
+@keyframes enter{to{opacity:1;transform:none}}
+
+/* Legend */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0 0;font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:1px}
+
+/* ───── Side panel ───── */
+.overlay{position:fixed;inset:0;background:rgba(5,12,22,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:55}
+.overlay.on{opacity:1;pointer-events:auto}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(520px,92vw);background:var(--bg2);border-left:1px solid var(--line);transform:translateX(105%);transition:transform .45s cubic-bezier(.22,1,.36,1);z-index:60;overflow-y:auto;box-shadow:-20px 0 60px rgba(0,0,0,.45)}
+.panel.on{transform:none}
+.panel header{position:sticky;top:0;background:var(--bg2);border-bottom:1px solid var(--line);padding:18px 24px;display:flex;align-items:flex-start;gap:12px;z-index:2}
+.panel header .pc{flex:1}
+.panel header .cat{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase;margin-bottom:4px}
+.panel header h2{font-family:var(--display);font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.panel header p{font-size:13.5px;color:var(--tx3);margin-top:4px}
+.xbtn{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:var(--tx3)}
+.xbtn:hover{border-color:var(--line2);color:#fff}
+.xbtn svg{width:14px;height:14px}
+.panel .body{padding:20px 24px 48px;display:flex;flex-direction:column;gap:20px}
+.panel .row{display:grid;grid-template-columns:112px 1fr;gap:14px;font-size:13.5px;align-items:baseline}
+.panel .row .k{font-family:var(--mono);font-size:10.5px;color:var(--mute);letter-spacing:.14em;text-transform:uppercase;padding-top:2px}
+.panel .row .v{color:var(--tx2)}
+.panel .row .v code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);padding:2px 6px;border-radius:5px;color:#E0E8F4}
+.panel ul.logic{display:flex;flex-direction:column;gap:8px;list-style:none}
+.panel ul.logic li{position:relative;padding-left:18px;color:var(--tx2);font-size:13.5px;line-height:1.55}
+.panel ul.logic li::before{content:'';position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.panel .grp{border-top:1px solid var(--line);padding-top:18px}
+.panel .pills{display:flex;flex-wrap:wrap;gap:6px}
+.panel .pill{font-family:var(--mono);font-size:11px;color:var(--tx2);background:rgba(255,255,255,.04);border:1px solid var(--line);padding:4px 10px;border-radius:999px;letter-spacing:.02em}
+.panel .failure{background:rgba(168,36,59,.08);border:1px solid rgba(168,36,59,.24);border-radius:10px;padding:12px 14px;font-size:13px;color:#F4C8CF}
+.panel .cost-row{display:flex;align-items:center;justify-content:space-between;background:rgba(27,122,66,.08);border:1px solid rgba(27,122,66,.24);border-radius:10px;padding:12px 14px}
+.panel .cost-row .k{color:#C7EBD6}
+.panel .cost-row .v{font-family:var(--display);font-size:18px;font-weight:700;color:#fff}
+
+/* ───── Schema modal ───── */
+.modal{position:fixed;inset:0;z-index:70;background:rgba(5,12,22,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:24px}
+.modal.on{display:flex}
+.modal-card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;width:min(1180px,100%);max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}
+.modal-head h3{font-family:var(--display);font-size:22px;font-weight:700;color:#fff}
+.modal-head p{font-size:13px;color:var(--tx3);margin-top:3px}
+.modal-head .spacer{flex:1}
+.modal-body{padding:20px 24px 24px;overflow:auto;flex:1}
+.modal-filter{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.modal-filter label{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.fchip{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--tx3)}
+.fchip.on{border-color:var(--acc);color:#fff;background:rgba(96,165,250,.1)}
+.tbl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.tbl{background:var(--bg3);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.tbl h4{font-family:var(--display);font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.tbl h4::before{content:'▸';color:var(--acc);font-size:10px}
+.tbl .cols{display:flex;flex-direction:column;gap:4px}
+.tbl .col{display:grid;grid-template-columns:1fr auto;font-family:var(--mono);font-size:11.5px;gap:10px;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.04)}
+.tbl .col:last-child{border:0}
+.tbl .col .cn{color:var(--tx2)}
+.tbl .col .ct{color:var(--mute);font-size:10.5px}
+.tbl .col.pk .cn{color:#F4D98E}
+.tbl .col.fk .cn{color:#A8C7FA}
+.tbl .agents{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding-top:10px;border-top:1px solid var(--line)}
+.tbl .ag{font-family:var(--mono);font-size:9.5px;padding:2px 7px;border-radius:999px;letter-spacing:.04em;text-transform:uppercase}
+.tbl .ag.w{background:rgba(96,165,250,.14);color:#A8C7FA;border:1px solid rgba(96,165,250,.3)}
+.tbl .ag.r{background:rgba(27,122,66,.14);color:#8FD4A8;border:1px solid rgba(27,122,66,.35)}
+
+/* ───── Timeline view ───── */
+.timeline{display:none;padding:10px 0 20px;position:relative;z-index:2}
+.timeline.on{display:block}
+#canvas.hidden{display:none}
+.tl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;gap:20px;flex-wrap:wrap}
+.tl-head h2{font-family:var(--display);font-size:20px;font-weight:700;color:#fff}
+.tl-head p{color:var(--tx3);font-size:13px;max-width:560px}
+.tl-axis{position:relative;height:28px;margin:0 0 6px 168px;border-bottom:1px solid var(--line)}
+.tl-axis span{position:absolute;top:6px;font-family:var(--mono);font-size:10px;color:var(--mute);letter-spacing:.08em;transform:translateX(-50%)}
+.tl-axis .tk{position:absolute;bottom:0;width:1px;height:6px;background:rgba(255,255,255,.12)}
+.tl-axis .tk.maj{height:10px;background:rgba(255,255,255,.22)}
+.tl-row{display:grid;grid-template-columns:160px 1fr;gap:8px;align-items:center;height:34px;margin-bottom:2px}
+.tl-row .lbl{font-family:var(--mono);font-size:11px;color:var(--tx2);text-transform:uppercase;letter-spacing:.12em;display:flex;align-items:center;gap:8px}
+.tl-row .lbl i{width:8px;height:8px;border-radius:50%}
+.tl-track{position:relative;height:22px;background:rgba(255,255,255,.025);border-radius:6px;border:1px solid var(--line);overflow:hidden}
+.tl-track .active-band{position:absolute;top:0;bottom:0;background:rgba(96,165,250,.05);border-left:1px dashed rgba(96,165,250,.18);border-right:1px dashed rgba(96,165,250,.18)}
+.tl-track .tick{position:absolute;top:3px;bottom:3px;border-radius:3px;cursor:help}
+.tl-track .tick.small{width:3px}
+.tl-track .tick.med{width:6px}
+.tl-track .tick.wide{width:10px}
+.tl-track .tick:hover{filter:brightness(1.6)}
+.tl-legend{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--tx3);letter-spacing:.08em}
+.tl-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:1px}
+.tl-note{margin-top:16px;padding:14px 16px;border:1px dashed rgba(96,165,250,.24);border-radius:10px;background:rgba(96,165,250,.04);color:var(--tx3);font-size:13px}
+
+/* ───── Tooltip ───── */
+.tip{position:fixed;pointer-events:none;background:#0B1420;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:11px;color:#E0E8F4;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .15s;z-index:90;box-shadow:0 6px 24px rgba(0,0,0,.5);letter-spacing:.02em}
+.tip.on{opacity:1;transform:none}
+
+/* ───── Footer ───── */
+footer{max-width:1440px;margin:20px auto 0;padding:24px 28px 40px;text-align:center;border-top:1px solid var(--line);color:var(--mute);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+footer a{color:var(--tx3)}footer a:hover{color:#fff}
+
+/* ───── Responsive ───── */
+@media (max-width:1100px){
+  .row-hub{grid-template-columns:1fr}
+  .row-outputs{grid-template-columns:repeat(3,1fr)}
+  .row-sources{max-width:none}
+  .phases{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  .head{padding:12px 16px;gap:10px}
+  .intro{padding:18px 16px 0;grid-template-columns:1fr}
+  main{padding:14px 16px 32px}
+  .row-sources,.row-delivery,.row-outputs{grid-template-columns:1fr}
+  .tl-row{grid-template-columns:92px 1fr}
+  .tl-row .lbl{font-size:9.5px;letter-spacing:.06em}
+  .tl-axis{margin-left:100px}
+}
+@media (prefers-reduced-motion:reduce){
+  .enter,.am-m-red,.am-m-green,.am-a,.am-crossbar{animation:none}
+  .enter{opacity:1;transform:none}
+  #wires .pulse,#wires .hot{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ─────────── Header ─────────── -->
+<header>
+  <div class="head">
+    <a href="https://ashmofidi.com" target="_blank" rel="noopener" class="logo-badge" aria-label="Ash Mofidi">
+      <span class="logo-wrap">
+        <svg class="am" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="am-m-red" d="M20,120 L20,15 L52,78" stroke="#A8243B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path class="am-m-green" d="M88,78 L120,15 L120,120" stroke="#1B7A42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path class="am-a" d="M35,120 L70,-5 L105,120" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <line class="am-crossbar" x1="50" y1="78" x2="90" y2="78" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </span>
+    </a>
+    <div class="h-title">
+      <span class="h-eyebrow">PM Command Center · v4.0</span>
+      <span class="h-name">Interactive Architecture</span>
+    </div>
+    <div class="h-spacer"></div>
+    <div class="h-tools" role="tablist">
+      <button class="tbtn on" id="btnArch" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Architecture
+      </button>
+      <button class="tbtn" id="btnTime" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/></svg>
+        Timeline
+      </button>
+      <button class="tbtn sim" id="btnSim">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="6,4 20,12 6,20" fill="currentColor"/></svg>
+        Simulate flow
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ─────────── Intro + Cost ─────────── -->
+<section class="intro">
+  <div>
+    <h1>One agent system. Four layers. Zero guessing.</h1>
+    <p>A personal AI platform that watches Granola, Slack, and Google Calendar, processes every meeting through a four-phase orchestrator, and delivers briefs, prep notes, and weekly drafts — all on a single MacBook. Click any node to see exactly what it does.</p>
+  </div>
+  <div class="cost" aria-label="Monthly cost breakdown">
+    <svg viewBox="0 0 36 36" role="img" aria-hidden="true">
+      <circle cx="18" cy="18" r="15.915" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="4" pathLength="100"/>
+      <circle cx="18" cy="18" r="15.915" fill="none" stroke="#60A5FA" stroke-width="4" stroke-dasharray="87.72 100" stroke-dashoffset="25" pathLength="100" transform="rotate(-90 18 18)"/>
+      <circle cx="18" cy="18" r="15.915" fill="none" stroke="#1B7A42" stroke-width="4" stroke-dasharray="12.28 100" stroke-dashoffset="-62.28" pathLength="100" transform="rotate(-90 18 18)"/>
+    </svg>
+    <div>
+      <div class="ct">Total · monthly</div>
+      <div class="cv">$114</div>
+      <div class="cl">
+        <span><i style="background:#60A5FA"></i>Claude Max 5x · $100</span>
+        <span><i style="background:#1B7A42"></i>Granola Business · $14</span>
+        <span><i style="background:#64748b"></i>Google &amp; Slack · $0</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── Canvas ─────────── -->
+<main>
+<div id="canvas">
+  <svg id="wires" aria-hidden="true"></svg>
+
+  <!-- Sources -->
+  <div class="layer">
+    <div class="layer-label">Data sources</div>
+    <div class="layer row-sources">
+      <button class="node src enter" data-agent="granola"><span class="dot green"></span><span class="cat">External API</span><span class="nm">Granola</span><span class="desc">Meeting transcripts + AI summaries. Personal API.</span><span class="runtime">GET /v1/notes · Bearer auth</span></button>
+      <button class="node src enter" data-agent="slack"><span class="dot blue"></span><span class="cat">External API · Optional</span><span class="nm">Slack</span><span class="desc">DMs + channel messages. Ingest + delivery.</span><span class="runtime">conversations.history · internal app</span></button>
+      <button class="node src enter" data-agent="gcal"><span class="dot green"></span><span class="cat">External API</span><span class="nm">Google Calendar</span><span class="desc">Upcoming 24h events. Drives Prep Agent.</span><span class="runtime">events.list · OAuth 2.0</span></button>
+    </div>
+  </div>
+
+  <!-- Watcher -->
+  <div class="layer">
+    <div class="layer-label">Ingest</div>
+    <div class="layer row-watcher" style="display:flex;justify-content:center">
+      <button class="node watcher lg enter" data-agent="watcher" style="max-width:720px;width:100%"><span class="dot green"></span><span class="cat">Agent 0 · Python + LaunchAgent</span><span class="nm">The Watcher <small>every 10 min · 7am–9pm PT</small></span><span class="desc">Polls all three sources. Writes raw state to SQLite. Fires the Prep Agent 25 min before each calendar event. Circuit-breaks after three failures and pauses for 30 minutes.</span><span class="runtime">StartInterval=600 · PRAGMA journal_mode=WAL · retries 100ms/500ms/2s</span></button>
+    </div>
+  </div>
+
+  <!-- Hub: DB + Orchestrator + Strategist -->
+  <div class="layer">
+    <div class="layer-label">Central hub · AI processing</div>
+    <div class="layer row-hub">
+      <button class="node db enter" data-agent="db" aria-label="Open SQLite database details">
+        <span class="cat">Source of truth</span>
+        <div class="db-core">
+          <div class="db-ico" id="dbIco"><div>DB</div></div>
+          <div class="db-body">
+            <span class="nm">SQLite</span>
+            <div class="desc">command-center.db · WAL mode · 11 tables.</div>
+          </div>
+        </div>
+        <div class="db-meta">
+          <span class="db-chip">meetings</span><span class="db-chip">todos</span><span class="db-chip">questions</span><span class="db-chip">deadlines</span><span class="db-chip">decisions</span><span class="db-chip">relationships</span><span class="db-chip">risks</span><span class="db-chip">+4 more</span>
+        </div>
+        <span class="db-tables-btn" id="schemaBtn">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          Explore schema
+        </span>
+      </button>
+
+      <div class="node orch enter" style="cursor:default">
+        <span class="dot green"></span>
+        <div class="orch-head">
+          <h3>Orchestrator</h3>
+          <small>claude -p · every 30 min</small>
+        </div>
+        <div class="desc" style="margin-bottom:12px">Single headless Claude session sweeps unprocessed meetings through four sequential phases. Checkpoint file lets it resume if interrupted.</div>
+        <div class="phases">
+          <button class="node phase orch-phase" data-agent="analyst" id="p1"><span class="ph-n">Phase 1</span><span class="nm">Analyst</span><span class="desc" style="font-size:11.5px;margin-top:4px">Classify · summarize · extract todos/Qs/deadlines</span></button>
+          <button class="node phase orch-phase" data-agent="diplomat" id="p2"><span class="ph-n">Phase 2</span><span class="nm">Diplomat</span><span class="desc" style="font-size:11.5px;margin-top:4px">Factual relationship signals only</span></button>
+          <button class="node phase orch-phase" data-agent="decisions" id="p3"><span class="ph-n">Phase 3</span><span class="nm">Decisions</span><span class="desc" style="font-size:11.5px;margin-top:4px">Decision log with rationale + replaces</span></button>
+          <button class="node phase orch-phase" data-agent="risk" id="p4"><span class="ph-n">Phase 4</span><span class="nm">Risk Radar</span><span class="desc" style="font-size:11.5px;margin-top:4px">Cross-meeting risk patterns</span></button>
+        </div>
+        <button class="tbtn" data-agent="orchestrator" style="margin-top:12px;padding:6px 10px;font-size:11px">Orchestrator details →</button>
+      </div>
+
+      <button class="node strat enter" data-agent="strategist">
+        <span class="dot blue"></span>
+        <span class="cat">Off to the side · On-demand</span>
+        <span class="nm">The Strategist</span>
+        <span class="desc">Interactive Claude session. Reads every table. Interpretive answers live in the terminal only — nothing written to disk.</span>
+        <span class="runtime">Manual invoke · ephemeral output</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Outputs -->
+  <div class="layer">
+    <div class="layer-label">Output agents</div>
+    <div class="layer row-outputs">
+      <button class="node enter" data-agent="briefer"><span class="dot green"></span><span class="cat">Daily · 6:30am PT</span><span class="nm">Briefer</span><span class="desc">Day-ahead brief across todos, Qs, deadlines.</span><span class="runtime">claude -p via cron</span></button>
+      <button class="node enter" data-agent="prep"><span class="dot green"></span><span class="cat">T-25 min · per event</span><span class="nm">Prep</span><span class="desc">Context brief before each calendar meeting.</span><span class="runtime">Python + claude -p subprocess</span></button>
+      <button class="node enter" data-agent="reporter"><span class="dot amber"></span><span class="cat">Fri 4pm · draft only</span><span class="nm">Reporter</span><span class="desc">Weekly report for Glenn. Few-shot from past reports.</span><span class="runtime">claude -p · auto-send disabled</span></button>
+      <button class="node enter" data-agent="tracker"><span class="dot green"></span><span class="cat">Every 2h</span><span class="nm">Tracker</span><span class="desc">Upserts todos → Google Sheets "Action Items".</span><span class="runtime">Python · sheets API</span></button>
+      <button class="node enter" data-agent="sentinel"><span class="dot green"></span><span class="cat">Every 30 min</span><span class="nm">Sentinel</span><span class="desc">Deadline alerts (T-3/T-1/T-0) + stale questions.</span><span class="runtime">Python + osascript</span></button>
+    </div>
+  </div>
+
+  <!-- Delivery -->
+  <div class="layer">
+    <div class="layer-label">Delivery</div>
+    <div class="layer row-delivery">
+      <button class="node enter" data-agent="delivery_slack"><span class="dot blue"></span><span class="cat">If approved</span><span class="nm">Slack DM</span><span class="desc">chat.postMessage · outbound briefs + alerts.</span></button>
+      <button class="node enter" data-agent="delivery_macos"><span class="dot green"></span><span class="cat">Always available</span><span class="nm">macOS Alerts</span><span class="desc">osascript notifications · zero dependency.</span></button>
+      <button class="node enter" data-agent="delivery_sheets"><span class="dot green"></span><span class="cat">Continuous sync</span><span class="nm">Google Sheets</span><span class="desc">"Action Items" tab — cross-surface visibility.</span></button>
+      <button class="node enter" data-agent="delivery_files"><span class="dot green"></span><span class="cat">Canonical on-disk</span><span class="nm">Local Files</span><span class="desc">Markdown briefs, reports, summaries. FileVault-only.</span></button>
+    </div>
+  </div>
+
+  <div class="legend" aria-label="Status legend">
+    <span><i style="background:var(--green)"></i>Scheduled · automated</span>
+    <span><i style="background:var(--amber)"></i>Requires your review</span>
+    <span><i style="background:var(--blue)"></i>On-demand / optional</span>
+    <span style="color:var(--mute)">· Click any node for details · Click the DB to explore tables ·</span>
+  </div>
+</div>
+
+<!-- ─────────── Timeline ─────────── -->
+<section class="timeline" id="timeline" aria-label="24-hour agent schedule">
+  <div class="tl-head">
+    <div>
+      <h2>Daily rhythm · 24h PT</h2>
+      <p>How the system breathes over a single day. Hover any tick for what it does.</p>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--green)"></i>Automated</span>
+      <span><i style="background:var(--amber)"></i>Needs review</span>
+      <span><i style="background:var(--blue)"></i>Event-driven</span>
+    </div>
+  </div>
+  <div class="tl-axis" id="tlAxis"></div>
+  <div id="tlRows"></div>
+  <div class="tl-note">
+    <strong style="color:#fff">Reporter fires only Friday 4pm PT</strong> — shown here as a weekly marker. <strong style="color:#fff">Prep</strong> is event-driven; the shaded band covers the typical 8am–6pm meeting window, but exact firings depend on your calendar (T−25 min for each event). Everything scheduled halts automatically when <code style="font-family:var(--mono);background:rgba(255,255,255,.05);padding:1px 6px;border-radius:4px">pto_mode=true</code>, except the Watcher (so transcripts aren't lost).
+  </div>
+</section>
+
+</main>
+
+<!-- ─────────── Right panel ─────────── -->
+<div class="overlay" id="ov"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle" tabindex="-1">
+  <header>
+    <div class="pc">
+      <div class="cat" id="pCat"></div>
+      <h2 id="pTitle"></h2>
+      <p id="pPurpose"></p>
+    </div>
+    <button class="xbtn" id="pClose" aria-label="Close details">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+  </header>
+  <div class="body" id="pBody"></div>
+</aside>
+
+<!-- ─────────── Schema modal ─────────── -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">SQLite schema · 11 tables</h3>
+        <p>Every row is the single source of truth. Pill colors show which agents <span style="color:#A8C7FA">write</span> and which <span style="color:#8FD4A8">read</span>.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="xbtn" id="modalClose" aria-label="Close schema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-filter">
+        <label>Filter by agent:</label>
+        <button class="fchip on" data-fagent="all">All</button>
+      </div>
+      <div class="tbl-grid" id="tblGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<footer>
+  Built by <a href="https://ashmofidi.com" target="_blank" rel="noopener">Ash Mofidi</a> · ashmofidi.com
+</footer>
+
+<!-- ─────────── Data + behavior ─────────── -->
+<script>
+/* ─── Agent data (from spec v4.0) ─── */
+const AGENTS={
+  granola:{cat:"Data source · External API",name:"Granola",purpose:"Source of meeting transcripts and AI-generated summaries.",runtime:"External SaaS (REST API)",trigger:"Polled by The Watcher every 10 minutes",inputs:["Your recorded meetings (Granola captures them locally)"],outputs:["JSON note objects via GET /v1/notes","Full transcript via GET /v1/notes/{id}?include=transcript"],logic:["Authenticated via Bearer token (Personal API key, format grn_XXXX...)","API is ~3 weeks old — treat as unstable; all calls isolated in granola_client.py","Speaker attribution is weak for 3+ person calls (microphone/system split)","Lookback window: 24 hours per poll"],dependencies:["Granola Business plan ($14/mo)","Personal API key"],failure:"Watcher circuit-breaker: after 3 consecutive failures, polling pauses for 30 minutes and a macOS notification fires. Last successful response is cached so downstream agents continue with stale data.",cost:"$14/mo · Granola Business",status:"green"},
+  slack:{cat:"Data source · Optional",name:"Slack",purpose:"Optional input (DMs + channel messages) and outbound delivery surface.",runtime:"External SaaS (Web API) · Internal custom app",trigger:"Polled by The Watcher (only if SLACK_BOT_TOKEN is set)",inputs:["DMs to you","Messages from SLACK_CHANNELS_TO_MONITOR"],outputs:["conversations.history payloads ingested into slack_items table","Outbound chat.postMessage used by Briefer/Sentinel/Prep"],logic:["Scopes required: channels:history, groups:history, im:history, mpim:history, chat:write, users:read","Requires Radar workspace admin approval","System is designed to work WITHOUT Slack — it's additive, not load-bearing","Rate limit at volume: internal apps allow ~50 req/min"],dependencies:["Radar IT approval","Slack bot token in .env"],failure:"If bot is revoked or unavailable, Briefer/Sentinel/Prep fall back to macOS notifications + local markdown files. No data is lost.",cost:"$0",status:"blue"},
+  gcal:{cat:"Data source · External API",name:"Google Calendar",purpose:"24-hour lookahead of your schedule so the Prep Agent can fire 25 min before each meeting.",runtime:"External SaaS (Google API via google-api-python-client)",trigger:"Polled by The Watcher every 10 minutes",inputs:["Your primary calendar events"],outputs:["events.list response written to upcoming_meetings table"],logic:["Query: events.list(calendarId='primary', timeMin=now, timeMax=now+24h, singleEvents=True)","OAuth 2.0 Desktop-app credentials stored in config/google_credentials.json","Refresh token stored in config/google_token.json"],dependencies:["Google Cloud project","Calendar API enabled","OAuth consent screen + credentials.json"],failure:"Prep Agent stops firing. All failures write rows to the logs table with agent='watcher', action='poll_calendar', status='error'.",cost:"$0 · free tier",status:"green"},
+
+  watcher:{cat:"Agent 0 · Ingest · Python",name:"The Watcher",purpose:"Lightweight poller that turns external state into SQLite rows. Never talks to an LLM.",runtime:"Python 3.12 + macOS LaunchAgent",trigger:"StartInterval=600 (every 10 minutes) · RunAtLoad=true · active 7am–9pm PT",inputs:["Granola /v1/notes","Slack conversations.history (optional)","Google Calendar events.list"],outputs:["meetings table rows","Transcript files at meetings/YYYY/W{iso}-{MonDate}-{FriDate}/{date}-{Day}_{title}_transcript.md","slack_items rows","upcoming_meetings rows","logs rows","Daily backup of command-center.db (first poll after midnight PT, 14-day retention)"],logic:["Loads .env; opens SQLite with PRAGMA journal_mode=WAL","For each new Granola note id, downloads transcript + INSERTs meeting row with processed_by_analyst=0","Writes last_poll_time to metadata table","If event.start_time − 25min ≤ now AND prep_generated=0 → spawns prep.py subprocess, sets prep_generated=1","Circuit breaker: 3 consecutive failures → 30-minute cooldown + macOS notification","Runs backup.py once per day post-midnight"],dependencies:["Granola API key","Google OAuth token","SQLite DB initialized","Optional: SLACK_BOT_TOKEN"],failure:"Mac asleep? LaunchAgent replays on wake — transcripts aren't lost, but there's a gap. SQLITE_BUSY errors retry at 100ms/500ms/2000ms.",cost:"$0 · Python on-device",status:"green"},
+
+  db:{cat:"Persistence · SQLite",name:"command-center.db",purpose:"Single file. 11 tables. The only source of truth in the entire system.",runtime:"SQLite 3 with WAL journal mode",trigger:"Persistent file at ~/radar-pm-hub/data/command-center.db",inputs:["Writes: Watcher, Orchestrator (all 4 phases), Prep, Sentinel, Tracker"],outputs:["Reads: every agent, including status.py health check"],logic:["PRAGMA journal_mode=WAL → concurrent readers with serialized writer","Indexes on processed_by_analyst, todos.status, deadlines.date, logs(agent,timestamp)","Daily backup to backups/command-center-YYYY-MM-DD.db with 14-day retention","Python watcher uses short (<100ms) write transactions"],dependencies:["FileVault enabled on the Mac","Full Disk Access granted to Terminal + Python"],failure:"SQLITE_BUSY → 3-retry exponential backoff. Catastrophic corruption → restore from yesterday's backup; worst case = 24h of meetings to re-ingest (Granola still has them).",cost:"$0",status:"green"},
+
+  orchestrator:{cat:"AI core · Claude Code headless",name:"Orchestrator",purpose:"Sequential four-phase AI pipeline over every unprocessed meeting.",runtime:"Bash shell + claude -p (headless) · model pinned to claude-sonnet-4-20250514",trigger:"LaunchAgent StartInterval=1800 (every 30 minutes) · RunAtLoad=false",inputs:["meetings rows where processed_by_analyst=0","transcript files","prompts/analyst.md, diplomat.md, dedup.md","config/meeting_types.json + stakeholders.json","checkpoint.json"],outputs:["todos, questions, deadlines, relationships, decisions, risks rows","Summary files at meetings/.../{date}_{title}_summary.md","checkpoint.json (phases_completed / phases_pending)","logs rows per action"],logic:["Reads checkpoint.json — resumes from last completed phase instead of restarting","Single Claude session handles all 4 phases → reduces Max-plan session overhead from 6 to 1","Early exit if SELECT COUNT(*) FROM meetings WHERE processed_by_analyst=0 returns 0","When pto_mode=true, still processes meetings; output agents are the ones that silence","--dangerously-skip-permissions + --allowedTools Read,Write,Bash"],dependencies:["Claude Max 5x plan ($100/mo)","ANTHROPIC_API_KEY","All 4 phase prompts written to disk"],failure:"Interrupted mid-run? Next tick reads checkpoint and resumes. Rate limit? Backs off and retries next interval. Model-drift guard: version is pinned in config.",cost:"≈$60/mo · largest Claude Max consumer",status:"green"},
+
+  analyst:{cat:"Orchestrator · Phase 1",name:"The Analyst",purpose:"Classify, summarize, and extract structured items from every meeting.",runtime:"Claude Code headless (inside Orchestrator session)",trigger:"Phase 1 — runs whenever there are meetings with processed_by_analyst=0",inputs:["Transcript files","config/meeting_types.json","prompts/analyst.md + dedup.md"],outputs:["meetings.summary_path (markdown summary file)","todos rows (description, owner, project_context, priority, deadline)","questions rows (question, asked_by, directed_to)","deadlines rows (hard_or_soft, deadline_date)","meetings.processed_by_analyst=1"],logic:["Classifies meeting_type: client_call / one_on_one / planning / sync / adhoc (rule-based)","Generates structured summary tailored to meeting_type","Action-item dedup without embeddings: passes new item + last 20 existing todos to Claude with a strict prompt — return existing id or 'NEW'","Fails loudly if a transcript is empty or corrupt — logs row with status='error'"],dependencies:["Watcher has populated meetings table + transcript files"],failure:"Phase marked incomplete in checkpoint. Orchestrator retries it next run. No silent data loss.",cost:"Shared with Orchestrator (≈$60/mo)",status:"green"},
+
+  diplomat:{cat:"Orchestrator · Phase 2",name:"The Diplomat",purpose:"Extract FACTUAL behavioral signals about colleagues. No interpretations, ever.",runtime:"Claude Code headless (inside Orchestrator session)",trigger:"Phase 2 — runs on meetings with processed_by_diplomat=0",inputs:["Transcript files","config/stakeholders.json","prompts/diplomat.md","calibrations table (accumulated feedback)"],outputs:["relationships rows (observation, observation_type, confidence)","meetings.processed_by_diplomat=1"],logic:["Stores only observable facts ('Dan used 3-word responses in 4/10 sync') — never judgments","Confidence by meeting size: 2 attendees=high, 3–5=medium, 6+=low","Speaker attribution is probabilistic for 3+ person calls — cross-references Calendar attendees to narrow possibilities","Interpretations are generated on-demand by the Strategist in the terminal only",'Weekly calibration: every Friday you mark signals as Accurate / Overread / Missed — labels feed back into the prompt'],dependencies:["relationships + calibrations tables"],failure:"Wrong attribution? Calibration corrects future runs. No disk trail of interpretive judgments = reduced legal/HR exposure.",cost:"Shared with Orchestrator",status:"amber"},
+
+  decisions:{cat:"Orchestrator · Phase 3",name:"Decision Log",purpose:"Capture every decision made in meetings, with rationale and what it replaced.",runtime:"Claude Code headless (inside Orchestrator session)",trigger:"Phase 3 of Orchestrator run",inputs:["Transcript files","Prior decisions (for 'replaces' linking)"],outputs:["decisions rows (decision, decided_by, replaces, rationale, project_context)"],logic:["Extracts explicit decisions (not proposals or opinions)","Links to prior decision id when someone says 'we're changing X'","Captures the rationale even when it's implicit"],dependencies:["Analyst phase complete (summaries already written)"],failure:"Missed decisions surface in the next run. Duplicates are prevented by idempotent inserts keyed on source_meeting_id + decision text.",cost:"Shared with Orchestrator",status:"green"},
+
+  risk:{cat:"Orchestrator · Phase 4",name:"Risk Radar",purpose:"Scan across recent meetings for emerging risk patterns.",runtime:"Claude Code headless (inside Orchestrator session)",trigger:"Phase 4 of Orchestrator run",inputs:["Recent meeting summaries","Existing risks table"],outputs:["risks rows (risk_type, severity, source_meeting_ids[], mitigation, status)"],logic:["Categorizes: timeline_slip / scope_creep / dependency / client_satisfaction","Updates severity on existing risks as new evidence appears","Proposes mitigation drafts (you edit + set status=mitigated)"],dependencies:["Analyst summaries populated across a rolling window"],failure:"Idempotent — pattern detection is replayable across the window each cycle.",cost:"Shared with Orchestrator",status:"green"},
+
+  briefer:{cat:"Output · Daily",name:"Briefer",purpose:"Day-ahead brief across active todos, pending questions, and upcoming deadlines.",runtime:"Bash + claude -p headless",trigger:"cron 0 6 30 * * 1–5 (6:30am PT weekdays) · skipped when pto_mode=true",inputs:["todos (status=open)","questions (status=pending)","deadlines (upcoming / due_today)","today's upcoming_meetings"],outputs:["outputs/daily-briefs/YYYY-MM-DD.md","Optional Slack DM","macOS notification"],logic:["Builds a short brief anchored on today's calendar","Calls out overdue items and stale questions","Uses consistent voice — the prompt is tuned against real past briefs"],dependencies:["Orchestrator has populated overnight data"],failure:"If Claude is unavailable, a raw SQL-derived digest is written as fallback so the 6:30 moment is never empty.",cost:"≈$8/mo",status:"green"},
+
+  prep:{cat:"Output · Event-driven",name:"Prep Agent",purpose:"Context brief that fires 25 minutes before each calendar meeting.",runtime:"Python + claude -p subprocess",trigger:"Spawned by Watcher when upcoming_meetings.start_time − 25min ≤ now AND prep_generated=0",inputs:["upcoming_meetings row (attendees)","Recent meetings overlapping on attendees","relationships observations for attendees","Open todos + questions tagged with the attendees"],outputs:["outputs/prep-briefs/YYYY-MM-DD_HHMM_Title.md","macOS notification: 'Prep brief ready for {title}'","upcoming_meetings.prep_generated=1"],logic:["Pulls last 3 meetings with overlapping attendees (context)","Only factual Diplomat observations included — no interpretations","Suggests 2–3 questions to ask, based on open items","Idempotent — the prep_generated flag prevents double-fires"],dependencies:["Google Calendar ingestion healthy","Orchestrator output populated"],failure:"If the Mac was asleep, the brief is generated on wake but may arrive after the meeting starts. The flag still prevents duplicate runs.",cost:"≈$15/mo (per-meeting)",status:"green"},
+
+  reporter:{cat:"Output · Weekly · draft only",name:"Reporter",purpose:"Weekly report DRAFT for Glenn. You review and send manually — never auto-sends.",runtime:"Bash + claude -p headless",trigger:"cron 0 16 * * 5 (Friday 4pm PT) · skipped when pto_mode=true",inputs:["meetings + todos + decisions from the past 7 days","config/report_examples/*.md (2–3 anonymized past reports)"],outputs:["outputs/weekly-reports/YYYY-Wxx-draft.md"],logic:["Few-shot from your real past reports to match voice","Explicit 'DRAFT — review before sending' header","Skipped during PTO","Never touches Slack; the draft lives on disk until you send it"],dependencies:["A week of Orchestrator output","Populated config/report_examples/"],failure:"Draft missing? Re-run reporter.sh manually. No automation writes to Glenn without you in the loop.",cost:"≈$3/mo",status:"amber"},
+
+  tracker:{cat:"Output · Continuous sync",name:"Tracker",purpose:"Keeps todos in sync with a Google Sheet for cross-surface visibility.",runtime:"Python (sheets_client.py) · no LLM",trigger:"LaunchAgent every 2 hours (sync_interval_minutes=120)",inputs:["todos rows"],outputs:["Rows in Google Sheet 'Action Items' tab"],logic:["Upserts each todo row keyed by id","Mirrors status transitions (open → in_progress → done)","Includes owner, project_context, priority, deadline"],dependencies:["Google Sheets API enabled","GOOGLE_SHEETS_TRACKER_ID in .env"],failure:"Quota or network error? Retries next cycle — nothing is lost; SQLite remains canonical.",cost:"$0",status:"green"},
+
+  sentinel:{cat:"Output · Alerts",name:"Sentinel",purpose:"Nags you about deadlines and stale questions — so you don't have to remember.",runtime:"Python + LaunchAgent + osascript",trigger:"LaunchAgent every 30 minutes · silenced entirely when pto_mode=true",inputs:["deadlines","questions (days_pending)"],outputs:["macOS notifications","deadlines.alert_3day_sent / alert_1day_sent / alert_dueday_sent flags","questions.days_pending counter (stale >3 days)"],logic:["For each deadline: computes T-3 / T-1 / T-0 and sends exactly once per milestone (flag gate)","Bumps days_pending for every pending question each run","Completely idempotent — missed intervals catch up on the next run"],dependencies:["deadlines + questions populated"],failure:"Mac asleep through a T-1 alert? The next run fires it (better late than never). Alert flags prevent double-notifications.",cost:"$0",status:"green"},
+
+  strategist:{cat:"On-demand · Interactive",name:"The Strategist",purpose:"Deep interpretive analysis on-demand — output is ephemeral and never written.",runtime:"Interactive Claude Code session (not headless)",trigger:"Manual — you invoke it from the terminal when you need it",inputs:["Every SQLite table","prompts/strategist.md"],outputs:["Terminal output ONLY · nothing written to disk"],logic:["Generates interpretation live: 'What's the dynamic with Dan?'","Reads factual relationships observations + calibrations","Ephemeral by design — interpretive judgments of colleagues are not persisted (privacy / legal hygiene)","You can pipe the terminal output elsewhere if you choose to"],dependencies:["Full DB populated by other agents"],failure:"No persistent state to fail. Manual rerun.",cost:"≈$14/mo · allocated portion of Claude Max",status:"blue"},
+
+  delivery_slack:{cat:"Delivery · Optional",name:"Slack DM delivery",purpose:"Outbound chat.postMessage for briefs and alerts — when approved.",runtime:"Python (slack_client.py)",trigger:"Called by Briefer / Sentinel / Prep when SLACK_BOT_TOKEN is present",inputs:["Formatted brief or alert text"],outputs:["Direct message to you in Slack"],logic:["Falls back to local file + macOS notification when Slack is unavailable","Never sends to channels automatically — DMs only"],dependencies:["Radar IT approval","Slack bot token"],failure:"Token revoked → immediately falls back to local delivery paths. No brief is lost.",cost:"$0",status:"blue"},
+
+  delivery_macos:{cat:"Delivery · Always on",name:"macOS Notifications",purpose:"The fallback that always works — osascript-driven system notifications.",runtime:"Bash / osascript",trigger:"Called by Watcher (circuit breaker), Sentinel (alerts), Prep (brief ready)",inputs:["Title + body strings"],outputs:["System notification in Notification Center"],logic:["One-liner: osascript -e 'display notification ... with title ...'","Zero cloud dependency — works offline"],dependencies:["Notification permission for Terminal / the caller"],failure:"Silenced globally? Check System Settings > Notifications > Terminal.",cost:"$0",status:"green"},
+
+  delivery_sheets:{cat:"Delivery · Continuous",name:"Google Sheets",purpose:"External visibility surface for action items.",runtime:"Python (sheets_client.py)",trigger:"Invoked by Tracker every 2 hours",inputs:["todos rows"],outputs:["Rows in 'Action Items' tab, keyed by todo id"],logic:["Idempotent upsert; no duplicate rows","SQLite remains the single source of truth — the sheet is a view"],dependencies:["Sheets API enabled","Tracker sheet ID in .env"],failure:"Sync gap if API quota is hit; next Tracker run reconciles.",cost:"$0",status:"green"},
+
+  delivery_files:{cat:"Delivery · Canonical on-disk",name:"Local Markdown Files",purpose:"The durable, always-written output — even when everything else breaks.",runtime:"Python stdlib",trigger:"Every generator agent writes its artifact to disk as the final step",inputs:["Generated markdown content"],outputs:["outputs/daily-briefs/ · outputs/weekly-reports/ · outputs/prep-briefs/","meetings/YYYY/W{iso}-{range}/ summaries + transcripts"],logic:["FileVault-encrypted at rest","Directory is NOT synced to personal iCloud (compliance)","Canonical — if Slack/Sheets fail, the file still exists"],dependencies:["~/radar-pm-hub writable","FileVault on"],failure:"Disk full? Logged to logs table + macOS notification fires.",cost:"$0",status:"green"}
+};
+
+/* ─── Schema (condensed, with read/write attribution) ─── */
+const TABLES=[
+  {name:"meetings",cols:[["id","TEXT · PK","pk"],["title","TEXT"],["meeting_date","TEXT"],["day_of_week","TEXT"],["week_folder","TEXT"],["meeting_type","TEXT"],["attendees","JSON"],["transcript_path","TEXT"],["summary_path","TEXT"],["granola_summary","TEXT"],["processed_by_analyst","INT"],["processed_by_diplomat","INT"],["created_at","TEXT"],["updated_at","TEXT"]],writers:["watcher","analyst","diplomat"],readers:["analyst","diplomat","decisions","risk","briefer","prep","reporter","strategist"]},
+  {name:"todos",cols:[["id","INT · PK","pk"],["description","TEXT"],["owner","TEXT"],["source_meeting_id","FK → meetings","fk"],["source_type","TEXT"],["project_context","TEXT"],["priority","TEXT"],["deadline","TEXT"],["status","TEXT"],["duplicate_of","FK → todos","fk"],["completed_at","TEXT"]],writers:["analyst"],readers:["briefer","tracker","reporter","strategist","sentinel"]},
+  {name:"questions",cols:[["id","INT · PK","pk"],["question","TEXT"],["asked_by","TEXT"],["directed_to","TEXT"],["source_meeting_id","FK → meetings","fk"],["project_context","TEXT"],["status","TEXT"],["answer","TEXT"],["answered_in_meeting_id","FK → meetings","fk"],["days_pending","INT"]],writers:["analyst","sentinel"],readers:["briefer","sentinel","strategist"]},
+  {name:"deadlines",cols:[["id","INT · PK","pk"],["description","TEXT"],["owner","TEXT"],["deadline_date","TEXT"],["source_meeting_id","FK → meetings","fk"],["project_context","TEXT"],["hard_or_soft","TEXT"],["status","TEXT"],["alert_3day_sent","INT"],["alert_1day_sent","INT"],["alert_dueday_sent","INT"]],writers:["analyst","sentinel"],readers:["sentinel","briefer","reporter","strategist"]},
+  {name:"decisions",cols:[["id","INT · PK","pk"],["decision","TEXT"],["decided_by","TEXT"],["source_meeting_id","FK → meetings","fk"],["project_context","TEXT"],["replaces","TEXT"],["rationale","TEXT"]],writers:["decisions"],readers:["reporter","strategist"]},
+  {name:"relationships",cols:[["id","INT · PK","pk"],["person_name","TEXT"],["observation","TEXT"],["observation_type","TEXT"],["source_meeting_id","FK → meetings","fk"],["confidence","TEXT"]],writers:["diplomat"],readers:["prep","strategist","diplomat"]},
+  {name:"calibrations",cols:[["id","INT · PK","pk"],["relationship_observation_id","FK → relationships","fk"],["your_assessment","TEXT"],["your_notes","TEXT"]],writers:["strategist"],readers:["diplomat"]},
+  {name:"risks",cols:[["id","INT · PK","pk"],["risk_description","TEXT"],["risk_type","TEXT"],["severity","TEXT"],["source_meeting_ids","JSON"],["project_context","TEXT"],["status","TEXT"],["mitigation","TEXT"]],writers:["risk"],readers:["briefer","reporter","strategist"]},
+  {name:"upcoming_meetings",cols:[["id","TEXT · PK","pk"],["title","TEXT"],["start_time","TEXT"],["end_time","TEXT"],["attendees","JSON"],["prep_generated","INT"]],writers:["watcher","prep"],readers:["prep","briefer"]},
+  {name:"slack_items",cols:[["id","TEXT · PK","pk"],["channel_id","TEXT"],["channel_name","TEXT"],["sender","TEXT"],["message_text","TEXT"],["timestamp","TEXT"],["processed","INT"]],writers:["watcher","analyst"],readers:["analyst","briefer"]},
+  {name:"logs",cols:[["id","INT · PK","pk"],["timestamp","TEXT"],["agent_name","TEXT"],["action","TEXT"],["status","TEXT"],["details","JSON"]],writers:["watcher","orchestrator","analyst","diplomat","decisions","risk","briefer","prep","reporter","tracker","sentinel"],readers:["strategist"]}
+];
+
+/* ─── Panel rendering ─── */
+const panel=document.getElementById("panel"),ov=document.getElementById("ov");
+function openPanel(key){
+  const a=AGENTS[key];if(!a)return;
+  document.getElementById("pCat").textContent=a.cat;
+  document.getElementById("pTitle").textContent=a.name;
+  document.getElementById("pPurpose").textContent=a.purpose;
+  const body=document.getElementById("pBody");
+  const pills=arr=>arr.map(x=>`<span class="pill">${x}</span>`).join("");
+  const list=arr=>`<ul class="logic">${arr.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  body.innerHTML=`
+    <div class="row"><span class="k">Runtime</span><span class="v">${a.runtime}</span></div>
+    <div class="row"><span class="k">Trigger</span><span class="v">${a.trigger}</span></div>
+    <div class="grp">
+      <div class="row"><span class="k">Inputs</span><span class="v"><div class="pills">${pills(a.inputs)}</div></span></div>
+      <div class="row" style="margin-top:10px"><span class="k">Outputs</span><span class="v"><div class="pills">${pills(a.outputs)}</div></span></div>
+    </div>
+    <div class="grp">
+      <div class="row"><span class="k">Key logic</span><span class="v">${list(a.logic)}</span></div>
+    </div>
+    <div class="grp">
+      <div class="row"><span class="k">Depends on</span><span class="v"><div class="pills">${pills(a.dependencies)}</div></span></div>
+    </div>
+    <div class="grp">
+      <div class="row"><span class="k">Failure mode</span><span class="v"><div class="failure">${a.failure}</div></span></div>
+    </div>
+    <div class="cost-row"><span class="k">Cost contribution</span><span class="v">${a.cost}</span></div>
+  `;
+  panel.classList.add("on");ov.classList.add("on");
+  panel.focus();
+  document.addEventListener("keydown",escClose);
+}
+function closePanel(){panel.classList.remove("on");ov.classList.remove("on");document.removeEventListener("keydown",escClose)}
+function escClose(e){if(e.key==="Escape"){closePanel();closeModal()}}
+document.getElementById("pClose").addEventListener("click",closePanel);
+ov.addEventListener("click",()=>{closePanel();closeModal()});
+
+document.querySelectorAll("[data-agent]").forEach(btn=>{
+  btn.addEventListener("click",e=>{
+    // Schema btn intercepts the DB node's panel
+    if(e.target.closest("#schemaBtn")){openModal();return}
+    openPanel(btn.dataset.agent);
+  });
+});
+
+/* ─── Schema modal ─── */
+const modal=document.getElementById("modal"),tblGrid=document.getElementById("tblGrid"),filterRow=document.querySelector(".modal-filter");
+function renderTables(filter){
+  tblGrid.innerHTML=TABLES.map(t=>{
+    if(filter!=="all"&&!t.writers.includes(filter)&&!t.readers.includes(filter))return "";
+    const cols=t.cols.map(c=>`<div class="col ${c[2]||""}"><span class="cn">${c[0]}</span><span class="ct">${c[1]}</span></div>`).join("");
+    const writers=t.writers.map(w=>`<span class="ag w" title="writes">${w}</span>`).join("");
+    const readers=t.readers.filter(r=>!t.writers.includes(r)).map(r=>`<span class="ag r" title="reads">${r}</span>`).join("");
+    return `<article class="tbl"><h4>${t.name}</h4><div class="cols">${cols}</div><div class="agents">${writers}${readers}</div></article>`;
+  }).join("");
+}
+function buildFilters(){
+  const all=new Set();TABLES.forEach(t=>{t.writers.forEach(x=>all.add(x));t.readers.forEach(x=>all.add(x))});
+  [...all].sort().forEach(a=>{
+    const b=document.createElement("button");
+    b.className="fchip";b.dataset.fagent=a;b.textContent=a;
+    filterRow.appendChild(b);
+  });
+}
+buildFilters();renderTables("all");
+filterRow.addEventListener("click",e=>{
+  const b=e.target.closest(".fchip");if(!b)return;
+  filterRow.querySelectorAll(".fchip").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");renderTables(b.dataset.fagent);
+});
+function openModal(){modal.classList.add("on");document.addEventListener("keydown",escClose)}
+function closeModal(){modal.classList.remove("on")}
+document.getElementById("schemaBtn").addEventListener("click",e=>{e.stopPropagation();openModal()});
+document.getElementById("modalClose").addEventListener("click",closeModal);
+modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
+
+/* ─── Wires (SVG connection paths) ─── */
+const wires=document.getElementById("wires");
+const nodes={granola:null,slack:null,gcal:null,watcher:null,db:null,p1:null,p2:null,p3:null,p4:null,orch:null,strat:null,briefer:null,prep:null,reporter:null,tracker:null,sentinel:null,delivery_slack:null,delivery_macos:null,delivery_sheets:null,delivery_files:null};
+function center(el,canvas){const r=el.getBoundingClientRect(),c=canvas.getBoundingClientRect();return {x:r.left-c.left+r.width/2,y:r.top-c.top+r.height/2,top:r.top-c.top,bottom:r.bottom-c.top,left:r.left-c.left,right:r.right-c.left}}
+function drawWires(){
+  const canvas=document.getElementById("canvas");
+  if(!canvas)return;
+  wires.setAttribute("width",canvas.offsetWidth);wires.setAttribute("height",canvas.offsetHeight);
+  wires.innerHTML="";
+  const get=key=>{
+    const map={granola:'[data-agent="granola"]',slack:'[data-agent="slack"]',gcal:'[data-agent="gcal"]',watcher:'[data-agent="watcher"]',db:'[data-agent="db"]',orch:'.node.orch',strat:'[data-agent="strategist"]',briefer:'[data-agent="briefer"]',prep:'[data-agent="prep"]',reporter:'[data-agent="reporter"]',tracker:'[data-agent="tracker"]',sentinel:'[data-agent="sentinel"]',delivery_slack:'[data-agent="delivery_slack"]',delivery_macos:'[data-agent="delivery_macos"]',delivery_sheets:'[data-agent="delivery_sheets"]',delivery_files:'[data-agent="delivery_files"]',p1:'#p1',p2:'#p2',p3:'#p3',p4:'#p4'};
+    return document.querySelector(map[key])
+  };
+  const pts={};for(const k of Object.keys(nodes)){const el=get(k);if(el)pts[k]=center(el,canvas)}
+  if(!pts.watcher||!pts.db||!pts.orch)return;
+  const path=(x1,y1,x2,y2,cls,id)=>{
+    const cy=(y1+y2)/2;
+    const d=`M ${x1},${y1} C ${x1},${cy} ${x2},${cy} ${x2},${y2}`;
+    wires.insertAdjacentHTML("beforeend",`<path d="${d}" class="${cls}" ${id?`id="${id}"`:""}/>`);
+  };
+  // Sources → Watcher
+  ["granola","slack","gcal"].forEach(k=>{if(pts[k]){path(pts[k].x,pts[k].bottom,pts.watcher.x+(k==="granola"?-180:k==="gcal"?180:0),pts.watcher.top,"base","");path(pts[k].x,pts[k].bottom,pts.watcher.x+(k==="granola"?-180:k==="gcal"?180:0),pts.watcher.top,"pulse",`w-${k}`)}});
+  // Watcher → DB & Watcher → Orch
+  path(pts.watcher.x,pts.watcher.bottom,pts.db.x,pts.db.top,"base","");
+  path(pts.watcher.x,pts.watcher.bottom,pts.db.x,pts.db.top,"pulse","w-db");
+  // DB ↔ Orch (bidirectional)
+  path(pts.db.right,pts.db.y,pts.orch.left,pts.orch.y,"base","");
+  path(pts.db.right,pts.db.y,pts.orch.left,pts.orch.y,"pulse","db-orch");
+  // Orch → Strat (dashed dependency)
+  if(pts.strat){path(pts.orch.right,pts.orch.y,pts.strat.left,pts.strat.y,"base","")}
+  // Orch → each output
+  ["briefer","prep","reporter","tracker","sentinel"].forEach(k=>{if(pts[k]){path(pts.orch.x,pts.orch.bottom,pts[k].x,pts[k].top,"base","");path(pts.orch.x,pts.orch.bottom,pts[k].x,pts[k].top,"pulse",`o-${k}`)}});
+  // Outputs → Delivery (briefer→slack/macos/files, sentinel→macos, tracker→sheets, prep→macos/files, reporter→files)
+  const outToDel={briefer:["delivery_slack","delivery_macos","delivery_files"],prep:["delivery_macos","delivery_files"],reporter:["delivery_files"],tracker:["delivery_sheets"],sentinel:["delivery_macos"]};
+  Object.entries(outToDel).forEach(([o,ds])=>{ds.forEach(d=>{if(pts[o]&&pts[d])path(pts[o].x,pts[o].bottom,pts[d].x,pts[d].top,"base","")})});
+}
+window.addEventListener("load",drawWires);
+window.addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(drawWires,120)});
+
+/* ─── Simulation ─── */
+const simBtn=document.getElementById("btnSim");
+function pause(ms){return new Promise(r=>setTimeout(r,ms))}
+async function highlight(sel,ms=900){
+  const el=document.querySelector(sel);if(!el)return;
+  el.classList.add("active");await pause(ms);el.classList.remove("active");
+}
+async function hotWire(ids){
+  ids.forEach(id=>{const p=document.getElementById(id);if(p)p.classList.add("hot")});
+  await pause(1400);
+  ids.forEach(id=>{const p=document.getElementById(id);if(p)p.classList.remove("hot")});
+}
+async function runSim(){
+  if(simBtn.disabled)return;simBtn.disabled=true;
+  if(archView!=="arch")toggleView("arch");
+  await pause(150);
+  await highlight('[data-agent="granola"]',800);
+  await hotWire(["w-granola"]);
+  await highlight('[data-agent="watcher"]',900);
+  await hotWire(["w-db"]);
+  await highlight('[data-agent="db"]',700);
+  await hotWire(["db-orch"]);
+  await highlight('.node.orch',500);
+  for(const p of ["p1","p2","p3","p4"]){await highlight("#"+p,650)}
+  await Promise.all(["o-briefer","o-prep","o-reporter","o-tracker","o-sentinel"].map(id=>hotWire([id])));
+  await Promise.all(["briefer","prep","reporter","tracker","sentinel"].map(k=>highlight(`[data-agent="${k}"]`,600)));
+  await Promise.all(["delivery_slack","delivery_macos","delivery_sheets","delivery_files"].map(k=>highlight(`[data-agent="${k}"]`,500)));
+  simBtn.disabled=false;
+}
+simBtn.addEventListener("click",runSim);
+
+/* ─── View toggle ─── */
+let archView="arch";
+const canvas=document.getElementById("canvas"),timeline=document.getElementById("timeline"),btnArch=document.getElementById("btnArch"),btnTime=document.getElementById("btnTime");
+function toggleView(v){
+  archView=v;
+  if(v==="arch"){canvas.classList.remove("hidden");timeline.classList.remove("on");btnArch.classList.add("on");btnTime.classList.remove("on");btnArch.setAttribute("aria-selected","true");btnTime.setAttribute("aria-selected","false");drawWires()}
+  else{canvas.classList.add("hidden");timeline.classList.add("on");btnTime.classList.add("on");btnArch.classList.remove("on");btnArch.setAttribute("aria-selected","false");btnTime.setAttribute("aria-selected","true")}
+}
+btnArch.addEventListener("click",()=>toggleView("arch"));
+btnTime.addEventListener("click",()=>toggleView("timeline"));
+
+/* ─── Timeline render ─── */
+function pct(h,m=0){return ((h*60+m)/1440*100)}
+const axis=document.getElementById("tlAxis");
+for(let h=0;h<=24;h+=2){const left=pct(h);axis.insertAdjacentHTML("beforeend",`<span style="left:${left}%">${h===0||h===24?"12a":h===12?"12p":h<12?h+"a":(h-12)+"p"}</span><div class="tk maj" style="left:${left}%"></div>`)}
+for(let h=0;h<24;h++){if(h%2===1)axis.insertAdjacentHTML("beforeend",`<div class="tk" style="left:${pct(h)}%"></div>`)}
+
+const tlRows=document.getElementById("tlRows");
+function tlRow(label,color,ticks,band){
+  const ticksHtml=ticks.map(t=>`<div class="tick ${t.size||'small'}" style="left:${pct(t.h,t.m||0)}%;background:${color};" data-tip="${t.tip}"></div>`).join("");
+  const bandHtml=band?`<div class="active-band" style="left:${pct(band[0])}%;width:${pct(band[1])-pct(band[0])}%"></div>`:"";
+  tlRows.insertAdjacentHTML("beforeend",`<div class="tl-row"><div class="lbl"><i style="background:${color}"></i>${label}</div><div class="tl-track">${bandHtml}${ticksHtml}</div></div>`);
+}
+// Watcher: every 10 min 7am–9pm
+const watcherTicks=[];for(let h=7;h<21;h++){for(let m=0;m<60;m+=10)watcherTicks.push({h,m,tip:`Watcher · polls Granola/Slack/Calendar · ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`})}
+tlRow("Watcher","#60A5FA",watcherTicks,[7,21]);
+// Orchestrator every 30 min all day
+const orchTicks=[];for(let h=0;h<24;h++){for(const m of [0,30])orchTicks.push({h,m,size:"med",tip:`Orchestrator · 4-phase pipeline · ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`})}
+tlRow("Orchestrator","#1B7A42",orchTicks);
+// Briefer 6:30am weekdays
+tlRow("Briefer","#22C55E",[{h:6,m:30,size:"wide",tip:"Briefer · 6:30am PT weekdays · daily brief"}]);
+// Prep: event-driven band
+tlRow("Prep (event-driven)","#60A5FA",[],[8,18]);
+// Sentinel every 30 min all day
+const sentTicks=[];for(let h=0;h<24;h++){for(const m of [15,45])sentTicks.push({h,m,tip:`Sentinel · deadline + stale-question check · ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`})}
+tlRow("Sentinel","#F59E0B",sentTicks);
+// Tracker every 2h
+const trTicks=[];for(let h=0;h<24;h+=2)trTicks.push({h,size:"med",tip:`Tracker · sync todos → Google Sheets · ${String(h).padStart(2,"0")}:00`});
+tlRow("Tracker","#93C5FD",trTicks);
+// Reporter Friday 4pm (weekly marker)
+tlRow("Reporter (Fri only)","#F59E0B",[{h:16,size:"wide",tip:"Reporter · Friday 4pm PT · DRAFT weekly report for Glenn"}]);
+// Backup 12:05am
+tlRow("Backup","#64748b",[{h:0,m:5,size:"med",tip:"Backup · daily SQLite snapshot (14-day retention)"}]);
+
+/* ─── Tooltip on timeline ticks ─── */
+const tip=document.getElementById("tip");
+document.addEventListener("mousemove",e=>{
+  const t=e.target.closest(".tick");
+  if(t){tip.textContent=t.dataset.tip||"";tip.style.left=(e.clientX+12)+"px";tip.style.top=(e.clientY+12)+"px";tip.classList.add("on")}
+  else tip.classList.remove("on");
+});
+
+/* ─── Keyboard: open schema with 's', simulate with space if focused ─── */
+document.addEventListener("keydown",e=>{
+  if(e.target.matches("input,textarea"))return;
+  if(e.key==="s"&&!modal.classList.contains("on")&&!panel.classList.contains("on")){openModal()}
+  if(e.key==="t"){toggleView(archView==="arch"?"timeline":"arch")}
+});
+</script>
+</body>
+</html>

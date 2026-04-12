@@ -277,6 +277,21 @@ nav.dark{background:transparent;border-bottom:1px solid transparent}
 .patent-banner{margin:32px 0;padding:24px 32px;text-align:center;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);font-family:var(--display);font-size:clamp(15px,1.6vw,18px);font-weight:600;color:#FFFFFF;letter-spacing:.01em}
 .patent-banner em{font-style:normal;color:#8BA3B9;font-weight:400;margin:0 10px}
 
+/* Lab card — compact pointer to the PM Command Center diagram */
+.lab-card{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;margin:28px 0 36px;padding:22px 26px;background:linear-gradient(135deg,rgba(27,122,66,.07),rgba(96,165,250,.05));border:1px solid rgba(255,255,255,.08);border-radius:16px;text-decoration:none;color:inherit;transition:border-color .3s ease,transform .3s ease,box-shadow .3s ease}
+.lab-card:hover{border-color:rgba(96,165,250,.35);transform:translateY(-3px);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+.lab-badge{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#CBD5E1;background:#0B1829;border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.lab-badge svg{width:24px;height:24px}
+.lab-card:hover .lab-badge{color:#fff;border-color:rgba(96,165,250,.35)}
+.lab-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lab-tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8BA3B9}
+.lab-title{font-family:var(--display);font-size:20px;font-weight:700;color:#FFFFFF;letter-spacing:-.01em;line-height:1.2}
+.lab-desc{font-size:14px;color:#CBD5E1;line-height:1.6;max-width:620px}
+.lab-cta{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#60A5FA;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.lab-card:hover .lab-cta{color:#93C5FD}
+.lab-arrow{display:inline-block;transition:transform .3s ease}
+.lab-card:hover .lab-arrow{transform:translateX(4px)}
+
 /* Earlier list — footnote-style row */
 .earlier{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;padding:24px 4px}
 .earlier-h{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8BA3B9;margin-bottom:6px}
@@ -360,6 +375,8 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
   .hero-btns{flex-direction:column;align-items:flex-start;gap:10px}
   .nights-grid{grid-template-columns:1fr;gap:28px;justify-items:center}
   .nights-mock{width:100%;max-width:320px}
+  .lab-card{grid-template-columns:auto 1fr;gap:16px;padding:18px 20px}
+  .lab-cta{grid-column:1/-1;justify-content:flex-start}
   .edu-grid{grid-template-columns:1fr}
 }
 </style>
@@ -490,6 +507,18 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
         </div>
       </div>
     </section>
+
+    <a class="lab-card reveal-scale" href="/pm-command-center.html" target="_blank" rel="noopener" aria-label="Open the PM Command Center interactive architecture diagram">
+      <div class="lab-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/><line x1="10" y1="6.5" x2="14" y2="6.5"/><line x1="6.5" y1="10" x2="6.5" y2="14"/><line x1="17.5" y1="10" x2="17.5" y2="14"/><line x1="10" y1="17.5" x2="14" y2="17.5"/></svg>
+      </div>
+      <div class="lab-body">
+        <div class="lab-tag">Currently building &middot; Interactive artifact</div>
+        <h3 class="lab-title">PM Command Center</h3>
+        <p class="lab-desc">A personal agent system I&rsquo;m shipping with Claude Code to automate my work as Lead PM at Radar. Explore the full architecture: 4-layer pipeline, 11-table schema, 24-hour rhythm, and an end-to-end simulation.</p>
+      </div>
+      <div class="lab-cta">Open diagram <span class="lab-arrow">&rarr;</span></div>
+    </a>
 
     <section class="earlier" aria-label="Earlier work">
       <div class="earlier-h reveal">Earlier</div>

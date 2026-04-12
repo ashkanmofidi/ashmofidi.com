@@ -1,1 +1,8 @@
-{"version":2,"buildCommand":"","outputDirectory":"public"}
+{
+  "version": 2,
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/favicon.ico", "destination": "/favicon.svg" }
+  ]
+}

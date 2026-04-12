@@ -1,0 +1,14 @@
+{
+  "name": "Ash Mofidi",
+  "short_name": "Ash Mofidi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1829",
+  "theme_color": "#0B1829",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

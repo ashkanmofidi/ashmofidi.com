@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 148">
-  <rect width="140" height="148" rx="20" fill="#0B1829"/>
-  <polyline points="20,120 20,45 50,80 70,45" stroke="#C41E3A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <polyline points="70,45 90,80 120,45 120,120" stroke="#1A6B3C" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <polyline points="45,120 70,28 95,120" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <line x1="55" y1="85" x2="85" y2="85" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140">
+  <rect width="140" height="140" rx="20" fill="#0B1829"/>
+  <path d="M20,120 L20,15 L52,78" stroke="#A8243B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M88,78 L120,15 L120,120" stroke="#1B7A42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M35,120 L70,-5 L105,120" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <line x1="50" y1="78" x2="90" y2="78" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>

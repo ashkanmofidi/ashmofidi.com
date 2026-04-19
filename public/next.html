@@ -27,17 +27,18 @@
     --paper: #f1ecdd;
     --paper-deep: #e3ddcd;
     --paper-soft: #f6f1e3;
-    --ink: #0c1530;
-    --ink-2: #1e2a48;
-    --ink-3: #51607a;
-    --ink-4: #95a0b5;
-    --red: #1b3ba8;
-    --red-deep: #0f2580;
-    --red-soft: rgba(27,59,168,0.12);
+    /* Sophie Kianni palette: pure deep black + saturated cobalt */
+    --ink: #0e0e0e;
+    --ink-2: #272727;
+    --ink-3: #525252;
+    --ink-4: #969696;
+    --red: #001dd9;
+    --red-deep: #00149e;
+    --red-soft: rgba(0,29,217,0.12);
     --green: #1b7a42;
     --gold: #b88a3a;
-    --line: rgba(12,21,48,0.1);
-    --line-strong: rgba(12,21,48,0.22);
+    --line: rgba(14,14,14,0.1);
+    --line-strong: rgba(14,14,14,0.22);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -70,13 +71,13 @@
      ========================================================= */
   .cursor-lamp {
     position: fixed; top: 0; left: 0; pointer-events: none; z-index: 3;
-    width: 520px; height: 520px; border-radius: 50%;
+    width: 360px; height: 360px; border-radius: 50%;
     transform: translate(-50%, -50%);
     background: radial-gradient(circle,
-      rgba(27,59,168,0.45) 0%,
-      rgba(27,59,168,0.22) 22%,
-      rgba(27,59,168,0.07) 48%,
-      transparent 72%);
+      rgba(0,29,217,0.5) 0%,
+      rgba(0,29,217,0.24) 24%,
+      rgba(0,29,217,0.07) 52%,
+      transparent 75%);
     mix-blend-mode: multiply;
     opacity: 0;
     transition: opacity 0.5s, background 0.4s, mix-blend-mode 0s 0.2s;
@@ -113,7 +114,7 @@
   .progress-bar {
     height: 100%; background: var(--red);
     width: 0%; transition: width 80ms linear;
-    box-shadow: 0 0 10px rgba(27,59,168,0.42);
+    box-shadow: 0 0 10px rgba(0,29,217,0.42);
   }
 
   /* NAV */
@@ -122,8 +123,8 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 22px 40px; z-index: 50;
     mix-blend-mode: multiply;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--ink-3);
   }
   nav.topnav .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); }
@@ -139,7 +140,7 @@
     content: ""; position: absolute; left: -14px; top: 50%;
     transform: translateY(-50%); width: 6px; height: 6px;
     border-radius: 50%; background: var(--red);
-    box-shadow: 0 0 8px rgba(27,59,168,0.6);
+    box-shadow: 0 0 8px rgba(0,29,217,0.6);
     animation: navDot 2.4s ease-in-out infinite;
   }
   @keyframes navDot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
@@ -155,7 +156,7 @@
 
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--ink-3); margin-bottom: 20px;
     display: inline-flex; align-items: center; gap: 10px;
   }
@@ -185,11 +186,12 @@
   }
   .hero-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--ink-3);
     opacity: 0; transform: translateY(-6px);
     animation: fadeDown 1.4s cubic-bezier(.2,.8,.2,1) 200ms forwards;
     margin-bottom: 48px;
+    font-weight: 500;
   }
   @keyframes fadeDown { to { opacity: 1; transform: none; } }
 
@@ -213,19 +215,25 @@
   .hero-name {
     display: block;
     line-height: 0.92;
+    /* Hidden until JS splits letters AND pre-translates them below
+       the mask. Prevents FOUC where raw text would peek above before
+       the cascade starts. .ready class is added only after JS runs. */
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
   }
+  .hero-name.ready { opacity: 1; }
   .hero-name .word {
     display: inline-block;
     overflow: hidden;
-    /* Right padding + bottom padding gives italic descenders and
-       slant (the d and i in "Mofidi") room before the overflow clips. */
-    padding: 0.12em 0.18em 0.36em 0.02em;
+    /* Generous padding above + below the line-box so the translated
+       letter is fully clipped on both axes (top and bottom). */
+    padding: 0.22em 0.2em 0.42em 0.04em;
     vertical-align: baseline;
   }
   .hero-name .word + .word { margin-left: 0.08em; }
   .hero-name .ltr {
     display: inline-block;
-    transform: translateY(120%);
+    transform: translateY(140%);
     transition: transform 1.2s cubic-bezier(.16,.72,.12,1);
     will-change: transform;
   }
@@ -277,8 +285,8 @@
     bottom: 40px; left: 40px; right: 40px;
     display: flex; justify-content: space-between;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-4);
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-3);
     opacity: 0;
     animation: fadeDown 1.2s cubic-bezier(.2,.8,.2,1) 2000ms forwards;
   }
@@ -286,7 +294,7 @@
     position: absolute; bottom: 80px; left: 50%;
     transform: translateX(-50%);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--ink-3);
     opacity: 0;
     animation: fadeDown 1.2s cubic-bezier(.2,.8,.2,1) 2500ms forwards;
@@ -325,8 +333,8 @@
     background: var(--paper-deep);
     box-shadow:
       inset 0 0 0 1px var(--line-strong),
-      0 30px 60px -24px rgba(12,21,48,0.25),
-      0 10px 30px -18px rgba(12,21,48,0.15);
+      0 30px 60px -24px rgba(14,14,14,0.25),
+      0 10px 30px -18px rgba(14,14,14,0.15);
     /* Almost-imperceptible breathing: 14s oscillation, adds life */
     animation: portraitBreath 14s ease-in-out infinite alternate;
   }
@@ -375,7 +383,7 @@
     content: ""; position: absolute; inset: 0; pointer-events: none;
     background:
       radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,250,235,0.15), transparent 60%),
-      radial-gradient(ellipse 130% 120% at 50% 50%, transparent 48%, rgba(12,21,48,0.28) 100%);
+      radial-gradient(ellipse 130% 120% at 50% 50%, transparent 48%, rgba(14,14,14,0.28) 100%);
     z-index: 3;
   }
   /* Film-crop corner ticks: draw in (scaleX/Y) like darkroom markers */
@@ -488,8 +496,8 @@
   }
   .chapter-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--red); margin-bottom: 28px;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 28px; font-weight: 500;
   }
   .chapter-title {
     font-family: 'Fraunces', serif;
@@ -507,8 +515,8 @@
   .chapter-title em { font-style: italic; color: var(--red); }
   .chapter-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--ink-3); margin-bottom: 40px;
+    font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-2); margin-bottom: 40px; font-weight: 400;
   }
   .chapter-stats {
     display: flex; flex-direction: column; gap: 6px;
@@ -543,8 +551,8 @@
   .chapter-stat-num em { font-style: italic; color: var(--red); }
   .chapter-stat-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink-3); text-align: right; max-width: 160px;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-2); text-align: right; max-width: 180px;
   }
 
   .chapter-right {
@@ -627,23 +635,32 @@
     gap: 40px;
     max-width: 1100px; margin: 0 auto;
   }
-  /* Study cards: subtle 3D tilt toward cursor (perspective set on parent) */
+  /* Study cards: whole card is a clickable anchor + subtle 3D tilt toward cursor */
   .studies-grid { perspective: 1400px; }
   .study {
+    display: block;
     border-top: 1px solid var(--ink);
-    padding: 32px 0 0;
+    padding: 32px 0 8px;
     position: relative;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
     transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
     will-change: transform;
   }
   .study:hover { transform: translateZ(4px); }
+  .study:hover .study-link {
+    color: var(--red);
+    opacity: 1;
+  }
   .study::after {
     content: ""; position: absolute; top: -1px; left: 0;
     width: 0; height: 1px; background: var(--red);
     transition: width 0.9s cubic-bezier(.2,.85,.2,1);
   }
   .study.in::after { width: 100%; }
+  .study:hover::after { height: 2px; }
   .study-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
@@ -699,31 +716,50 @@
   }
   .beyond-text b { font-style: normal; color: var(--red); font-weight: 400; }
 
-  /* ==================== SCENE 8.5: REAL LINKEDIN RECS CAROUSEL ==================== */
+  /* ==================== SCENE 8.5: LINKEDIN RECS (Sophie-black plate) ==================== */
   .scene-voices {
-    padding: 140px 40px;
-    max-width: 1080px; margin: 0 auto;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 120px 40px;
+    margin: 0;
+    max-width: none;
+    position: relative;
+    overflow: hidden;
   }
-  .voices-wrap { max-width: 840px; margin: 0 auto; text-align: left; }
+  .scene-voices::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 40% at 20% 0%, rgba(0,29,217,0.25), transparent 60%),
+      radial-gradient(ellipse 60% 60% at 100% 100%, rgba(0,29,217,0.18), transparent 65%);
+  }
+  .voices-wrap { max-width: 920px; margin: 0 auto; text-align: left; position: relative; z-index: 2; }
   .voices-head {
     display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+    margin-bottom: 40px; flex-wrap: wrap; gap: 16px;
   }
+  .voices-head .eyebrow {
+    color: var(--paper);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+  .voices-head .eyebrow::before { background: var(--paper); width: 32px; }
   .voices-link {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--red);
-    border-bottom: 1px solid currentColor;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(241,236,221,0.6);
     padding-bottom: 3px;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, border-color 0.2s;
+    font-weight: 500;
   }
-  .voices-link:hover { opacity: 0.75; }
+  .voices-link:hover { opacity: 1; border-color: var(--paper); }
   .voices-link .arrow { margin-left: 4px; font-family: 'Inter', sans-serif; font-size: 12px; }
 
   /* Stage: quotes stack on top of each other, only active is visible */
   .voices-stage {
     position: relative;
-    min-height: 340px;
+    min-height: 380px;
   }
   .voice {
     position: absolute; inset: 0;
@@ -743,11 +779,11 @@
   .voice-text {
     font-family: 'Fraunces', serif;
     font-weight: 300; font-style: italic;
-    font-size: clamp(20px, 2.4vw, 28px);
-    line-height: 1.4;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.42;
     letter-spacing: -0.02em;
-    color: var(--ink);
-    margin: 0 0 28px;
+    color: var(--paper);
+    margin: 0 0 36px;
   }
   .voice-text em {
     font-style: normal;
@@ -757,49 +793,52 @@
     line-height: 0;
     vertical-align: -0.2em;
     margin: 0 2px;
+    opacity: 0.9;
   }
   .voice-by {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink-2);
+    font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(241,236,221,0.8);
     display: flex; gap: 0; align-items: baseline; flex-wrap: wrap;
-    line-height: 1.5;
+    line-height: 1.55;
+    font-weight: 500;
   }
   .voice-name {
-    color: var(--ink); font-weight: 600;
-    font-size: 14px;
+    color: var(--paper); font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.05em;
   }
   .voice-by .voice-ctx {
     margin-left: 14px;
-    color: var(--ink-2);
+    color: rgba(241,236,221,0.8);
   }
   .voice-by .voice-ctx::before {
-    content: "·"; margin-right: 12px; color: var(--ink-3); display: inline-block;
+    content: "·"; margin-right: 12px; color: rgba(241,236,221,0.4); display: inline-block;
   }
   .voice-date {
-    color: var(--ink-3) !important;
+    color: rgba(241,236,221,0.55) !important;
     font-weight: 400;
   }
 
   /* Nav dots */
   .voices-nav {
-    display: flex; gap: 10px; margin-top: 24px;
+    display: flex; gap: 10px; margin-top: 32px;
     padding-left: 32px;
   }
   .voice-dot {
-    width: 30px; height: 2px;
-    background: var(--line-strong);
+    width: 36px; height: 2px;
+    background: rgba(241,236,221,0.22);
     border: none; padding: 0; cursor: pointer;
     transition: background 0.3s, transform 0.3s;
     position: relative;
   }
-  .voice-dot:hover { background: var(--ink-3); }
+  .voice-dot:hover { background: rgba(241,236,221,0.5); }
   .voice-dot.active { background: var(--red); }
   .voice-dot.active::after {
     content: ""; position: absolute;
     left: 0; top: 0; height: 100%; width: 0%;
-    background: rgba(27,59,168,0.4);
-    animation: voiceDotProgress 3s linear forwards;
+    background: rgba(255,255,255,0.4);
+    animation: voiceDotProgress 5s linear forwards;
   }
   @keyframes voiceDotProgress {
     to { width: 100%; }
@@ -942,11 +981,12 @@
 
   /* ==================== FOOTER ==================== */
   footer {
-    background: var(--red-deep); color: rgba(241,236,221,0.6);
+    background: var(--red-deep); color: rgba(241,236,221,0.75);
     padding: 28px 40px; font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
     display: flex; justify-content: space-between; align-items: center;
     border-top: 1px solid rgba(241,236,221,0.1);
+    font-weight: 500;
   }
   footer a:hover { color: var(--paper); }
 
@@ -986,8 +1026,8 @@
       <svg viewBox="0 0 140 140" fill="none">
         <path d="M20,120 L20,15 L52,78" stroke="#A8243B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         <path d="M88,78 L120,15 L120,120" stroke="#1B7A42" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M35,120 L70,5 L105,120" stroke="#141210" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <line x1="50" y1="78" x2="90" y2="78" stroke="#141210" stroke-width="9" stroke-linecap="round"/>
+        <path d="M35,120 L70,5 L105,120" stroke="#0e0e0e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="50" y1="78" x2="90" y2="78" stroke="#0e0e0e" stroke-width="9" stroke-linecap="round"/>
       </svg>
     </div>
     <span>Ash Mofidi</span>
@@ -1162,7 +1202,7 @@
     <p>Side projects is the wrong word. These are what I make to stay sharp.</p>
   </div>
   <div class="studies-grid">
-    <div class="study reveal">
+    <a class="study reveal" href="https://becoming.ashmofidi.com" target="_blank" rel="noopener" aria-label="Becoming · visit becoming.ashmofidi.com">
       <div class="study-num">Study N° 01</div>
       <h3 class="study-title">Becoming<em>…</em></h3>
       <p>A focus timer for people who'd rather become something than get something done. Designed, built, shipped end-to-end. React, Vercel, Google OAuth, Redis, cross-device sync.</p>
@@ -1172,9 +1212,9 @@
         <span>Real users</span>
         <span>Real infrastructure</span>
       </div>
-      <a class="study-link" href="https://becoming.ashmofidi.com" target="_blank" rel="noopener">becoming.ashmofidi.com →</a>
-    </div>
-    <div class="study reveal">
+      <span class="study-link">becoming.ashmofidi.com →</span>
+    </a>
+    <a class="study reveal" href="/pm-command-center.html" target="_blank" rel="noopener" aria-label="PM Command Center · view the architecture">
       <div class="study-num">Study N° 02</div>
       <h3 class="study-title">PM Command <em>Center</em></h3>
       <p>A personal agent system I'm building with Claude Code to automate my own PM workflow at Radar. Four-layer pipeline, 11-table SQLite schema, 24-hour rhythm.</p>
@@ -1183,8 +1223,8 @@
         <span>Daily driver</span>
         <span>Claude Code</span>
       </div>
-      <a class="study-link" href="/pm-command-center.html" target="_blank" rel="noopener">See the architecture →</a>
-    </div>
+      <span class="study-link">See the architecture →</span>
+    </a>
   </div>
 </section>
 
@@ -1330,8 +1370,11 @@
       delay += PAUSE_BETWEEN_WORDS;
     });
 
-    // Trigger cascade after DOM paint
+    // First reveal the hero (letters are pre-translated below the mask),
+    // then on the next frame trigger the cascade. This prevents the
+    // raw text from flashing above the mask on initial page paint.
     requestAnimationFrame(() => {
+      hero.classList.add('ready');
       requestAnimationFrame(() => hero.classList.add('in'));
     });
   })();
@@ -1393,7 +1436,7 @@
 
     function start() {
       stop();
-      timer = setInterval(advance, 3000);
+      timer = setInterval(advance, 5000);
     }
     function stop() {
       if (timer) { clearInterval(timer); timer = null; }

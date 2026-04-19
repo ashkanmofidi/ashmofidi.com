@@ -19,17 +19,17 @@
     --bg: #f1ecdd;
     --bg-soft: #e8e2d0;
     --bg-card: #f6f1e3;
-    --ink: #0c1530;
-    --ink-dim: #51607a;
-    --ink-faint: #95a0b5;
-    --persimmon: #1b3ba8;
-    --persimmon-soft: #2450c8;
+    --ink: #0e0e0e;
+    --ink-dim: #525252;
+    --ink-faint: #969696;
+    --persimmon: #001dd9;
+    --persimmon-soft: #1c3fe8;
     --sage: #1b7a42;
     --green: #1b7a42;
     --amber: #b88a3a;
     --red: #a8243b;
-    --line: rgba(12,21,48,0.1);
-    --line-strong: rgba(12,21,48,0.2);
+    --line: rgba(14,14,14,0.1);
+    --line-strong: rgba(14,14,14,0.2);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -44,7 +44,7 @@
   ::selection { background: var(--persimmon); color: var(--bg); }
 
   .ambient { position: fixed; inset:0; pointer-events:none; z-index:0;
-    background: radial-gradient(ellipse 60% 40% at 50% -10%, rgba(27,59,168,0.05), transparent 55%); }
+    background: radial-gradient(ellipse 60% 40% at 50% -10%, rgba(0,29,217,0.05), transparent 55%); }
   .grain { position: fixed; inset:0; pointer-events:none; z-index:1; opacity:0.04; mix-blend-mode:overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
@@ -60,8 +60,10 @@
   }
   .mark { display:flex; align-items:center; gap:12px;
     font-family:'Fraunces',serif; font-weight:500; font-size:17px; color:var(--ink); letter-spacing:-0.02em; }
+  .mark-logo { width:28px; height:28px; display:block; flex-shrink:0; }
+  .mark-logo svg { width:100%; height:100%; display:block; }
   .mark-dot { width:8px; height:8px; border-radius:50%; background:var(--persimmon);
-    box-shadow:0 0 10px rgba(27,59,168,0.7); animation: pulse 2s ease-in-out infinite; }
+    box-shadow:0 0 10px rgba(0,29,217,0.7); animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.25)} }
   .mark small { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:400;
     letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-dim); margin-left:12px; }
@@ -165,7 +167,7 @@
   }
   td { padding:12px 10px; border-bottom:1px solid var(--line); color:var(--ink); vertical-align:top; }
   tr:last-child td { border-bottom:none; }
-  tr:hover td { background: rgba(27,59,168,0.03); }
+  tr:hover td { background: rgba(0,29,217,0.03); }
   td.ts, td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); }
   td.q { max-width: 420px; line-height:1.45; }
   td.badge { }
@@ -194,7 +196,7 @@
     padding:8px 14px; border-radius:8px; font-family:inherit; font-size:12px;
     cursor:pointer; transition: all 0.2s;
   }
-  .export-btn:hover { background: rgba(27,59,168,0.1); }
+  .export-btn:hover { background: rgba(0,29,217,0.1); }
 
   /* login screen */
   .login-wrap {
@@ -397,7 +399,7 @@
     for (let i = 0; i <= 4; i++) {
       const y = pad.t + ih - (ih * i / 4);
       const val = Math.round(maxQ * i / 4);
-      html += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="rgba(12,21,48,0.08)" />`;
+      html += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="rgba(14,14,14,0.08)" />`;
       html += `<text class="chart-axis-label" x="${pad.l - 6}" y="${y + 3}" text-anchor="end">${val}</text>`;
     }
 
@@ -423,7 +425,7 @@
     html += `<path class="chart-line-v" d="${pathV}" />`;
     html += `<path class="chart-line-q" d="${pathQ}" />`;
     html += dotsHtml;
-    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 12}" text-anchor="end" fill="rgba(27,59,168,0.7)">● questions</text>`;
+    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 12}" text-anchor="end" fill="rgba(0,29,217,0.7)">● questions</text>`;
     html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 24}" text-anchor="end" fill="rgba(184,201,168,0.7)">● visitors</text>`;
     svg.innerHTML = html;
   }
@@ -448,7 +450,14 @@
     document.getElementById('app').innerHTML = `
       <header>
         <div class="mark">
-          <span class="mark-dot"></span>
+          <span class="mark-logo" aria-hidden="true">
+            <svg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20,120 L20,15 L52,78" stroke="#A8243B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M88,78 L120,15 L120,120" stroke="#1B7A42" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M35,120 L70,5 L105,120" stroke="#0e0e0e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="50" y1="78" x2="90" y2="78" stroke="#0e0e0e" stroke-width="9" stroke-linecap="round"/>
+            </svg>
+          </span>
           Ash Mofidi
           <small>Command Center</small>
         </div>

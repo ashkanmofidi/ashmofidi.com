@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Ash Mofidi · Command Center</title>
+<meta name="theme-color" content="#100e0b" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root {
+    --bg: #100e0b;
+    --bg-soft: #1a1613;
+    --bg-card: #15120f;
+    --ink: #f5f0e6;
+    --ink-dim: #948b7c;
+    --ink-faint: #4a4238;
+    --persimmon: #ff6a3d;
+    --persimmon-soft: #ff8862;
+    --sage: #b8c9a8;
+    --green: #3fae6a;
+    --amber: #f5b942;
+    --red: #e55843;
+    --line: rgba(245,240,230,0.08);
+    --line-strong: rgba(245,240,230,0.16);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin:0; padding:0; background: var(--bg); color: var(--ink); }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--persimmon); color: var(--bg); }
+
+  .ambient { position: fixed; inset:0; pointer-events:none; z-index:0;
+    background: radial-gradient(ellipse 60% 40% at 50% -10%, rgba(255,106,61,0.05), transparent 55%); }
+  .grain { position: fixed; inset:0; pointer-events:none; z-index:1; opacity:0.04; mix-blend-mode:overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  header {
+    position: relative; z-index: 5;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-dim);
+    background: rgba(16,14,11,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky; top: 0;
+  }
+  .mark { display:flex; align-items:center; gap:12px;
+    font-family:'Fraunces',serif; font-weight:500; font-size:17px; color:var(--ink); letter-spacing:-0.02em; }
+  .mark-dot { width:8px; height:8px; border-radius:50%; background:var(--persimmon);
+    box-shadow:0 0 10px rgba(255,106,61,0.7); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.25)} }
+  .mark small { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:400;
+    letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-dim); margin-left:12px; }
+  .header-right { display:flex; align-items:center; gap:16px; }
+  .live {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim);
+  }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green);
+    box-shadow:0 0 10px rgba(63,174,106,0.6); animation: breathe 2.4s ease-in-out infinite; }
+  @keyframes breathe { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .logout-btn {
+    background:transparent; color:var(--ink-dim); border:1px solid var(--line);
+    padding:6px 12px; border-radius:8px; font-family:inherit; font-size:12px;
+    cursor:pointer; transition: all 0.2s;
+  }
+  .logout-btn:hover { color:var(--persimmon); border-color:var(--persimmon); }
+
+  .wrap { max-width:1280px; margin:0 auto; padding:40px; position:relative; z-index:3; }
+
+  h1 {
+    font-family:'Fraunces',serif; font-weight:300;
+    font-size: clamp(36px, 5vw, 54px); line-height:1; letter-spacing:-0.035em;
+    margin:0 0 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style:italic; color:var(--persimmon); }
+  .page-sub { color:var(--ink-dim); font-size:15px; margin-bottom:40px; }
+  .page-sub b { color:var(--ink); font-weight:400; }
+
+  /* metric cards */
+  .metrics {
+    display:grid; grid-template-columns:repeat(5, 1fr);
+    gap:1px; background:var(--line);
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    margin-bottom:40px;
+  }
+  .metric { background:var(--bg-card); padding:28px 24px; transition:background .3s; }
+  .metric:hover { background:var(--bg-soft); }
+  .metric-label {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-dim); margin-bottom:12px;
+  }
+  .metric-value {
+    font-family:'Fraunces',serif; font-weight:400;
+    font-size: clamp(30px, 3.2vw, 44px); line-height:1;
+    letter-spacing:-0.03em; color:var(--ink);
+    font-variation-settings:"opsz" 144;
+  }
+  .metric-delta { font-family:'JetBrains Mono',monospace; font-size:11px; margin-top:10px; color:var(--ink-faint); }
+  .metric-delta.up { color:var(--green); }
+  .metric-delta.down { color:var(--red); }
+
+  /* panels */
+  .grid {
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:24px; margin-bottom:24px; }
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px; }
+  .panel-title {
+    font-family:'Fraunces',serif; font-weight:500; font-size:18px; letter-spacing:-0.015em;
+  }
+  .panel-meta { font-family:'JetBrains Mono',monospace; font-size:10px;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint); }
+
+  /* chart */
+  .chart-wrap { height: 220px; position:relative; }
+  svg.chart { width:100%; height:100%; display:block; overflow:visible; }
+  .chart-grid line { stroke: var(--line); stroke-width:1; }
+  .chart-axis-label {
+    font-family:'JetBrains Mono',monospace; font-size:9px;
+    fill: var(--ink-faint); letter-spacing:0.08em;
+  }
+  .chart-bar { fill: var(--persimmon); opacity:0.85; transition:opacity .2s; }
+  .chart-bar:hover { opacity:1; }
+  .chart-line-q { fill:none; stroke:var(--persimmon); stroke-width:2; }
+  .chart-line-v { fill:none; stroke:var(--sage); stroke-width:1.5; stroke-dasharray:3 3; }
+  .chart-dot { fill:var(--persimmon); }
+
+  /* table */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--ink-dim); text-align:left; font-weight:400;
+    padding: 8px 10px; border-bottom:1px solid var(--line);
+  }
+  td { padding:12px 10px; border-bottom:1px solid var(--line); color:var(--ink); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background: rgba(255,106,61,0.03); }
+  td.ts, td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); }
+  td.q { max-width: 420px; line-height:1.45; }
+  td.badge { }
+  .badge {
+    display:inline-flex; align-items:center;
+    padding:2px 8px; border-radius:999px;
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .badge.ok { background:rgba(63,174,106,0.12); color:var(--green); }
+  .badge.refused { background:rgba(229,88,67,0.12); color:var(--red); }
+  .badge.chip { background:rgba(245,185,66,0.12); color:var(--amber); }
+
+  /* top-topics bars */
+  .top-list { display:flex; flex-direction:column; gap:10px; }
+  .top-item { display:flex; align-items:center; gap:12px; }
+  .top-name { flex: 0 0 120px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink); text-transform:uppercase; letter-spacing:0.05em; }
+  .top-bar-track { flex:1; height:8px; background:var(--bg-soft); border-radius:4px; overflow:hidden; }
+  .top-bar-fill { height:100%; background: linear-gradient(90deg, var(--persimmon), var(--persimmon-soft)); border-radius:4px; transition: width 0.6s cubic-bezier(.2,.8,.2,1); }
+  .top-num { font-family:'Fraunces',serif; font-size:16px; color:var(--persimmon); min-width:36px; text-align:right; }
+
+  .empty { text-align:center; padding: 40px 20px; color:var(--ink-faint); font-size:14px; font-family:'JetBrains Mono',monospace; }
+
+  .export-btn {
+    background: transparent; color: var(--persimmon); border:1px solid var(--persimmon);
+    padding:8px 14px; border-radius:8px; font-family:inherit; font-size:12px;
+    cursor:pointer; transition: all 0.2s;
+  }
+  .export-btn:hover { background: rgba(255,106,61,0.1); }
+
+  /* login screen */
+  .login-wrap {
+    min-height: 100vh; display:flex; align-items:center; justify-content:center;
+    padding: 40px; position:relative; z-index:3;
+  }
+  .login-card {
+    max-width: 440px; width:100%;
+    background: var(--bg-card); border:1px solid var(--line-strong); border-radius:20px;
+    padding: 44px 40px; text-align:center;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,0.6);
+  }
+  .login-card h1 { font-size: 32px; margin:0 0 8px; }
+  .login-card p { color: var(--ink-dim); font-size:14px; margin: 0 0 32px; line-height:1.5; }
+  .login-google-holder { display:flex; justify-content:center; margin-bottom:16px; }
+  .login-note { font-size:11px; color:var(--ink-faint); font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.08em; margin-top:20px; line-height:1.6; }
+  .login-note code { background: var(--bg-soft); padding: 1px 6px; border-radius:4px; color:var(--persimmon); }
+  .login-error {
+    background: rgba(229,88,67,0.08); border: 1px solid rgba(229,88,67,0.3); color: var(--red);
+    padding: 12px 16px; border-radius:10px; font-size:13px; margin-bottom:24px;
+  }
+
+  .kv-warn {
+    background: rgba(245,185,66,0.08); border:1px solid rgba(245,185,66,0.25);
+    border-radius:12px; padding: 18px 22px; margin-bottom:32px;
+    font-size:13px; line-height:1.55; color:var(--ink);
+  }
+  .kv-warn b { color:var(--amber); }
+  .kv-warn code { background: var(--bg-soft); padding: 1px 6px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:12px; }
+
+  footer { padding: 40px; text-align:center; color:var(--ink-faint); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; }
+
+  @media (max-width: 960px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .grid, .grid-3 { grid-template-columns: 1fr; }
+    header, .wrap { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grain"></div>
+
+<div id="app"></div>
+
+<script>
+  const GSI_CLIENT_ID_FETCH = () => fetch('/api/auth?action=config').then(r=>r.json()).catch(()=>({}));
+
+  async function getSession() {
+    try { const r = await fetch('/api/auth?action=me'); return await r.json(); } catch { return { admin: false }; }
+  }
+
+  async function loginWithCredential(credential) {
+    const r = await fetch('/api/auth?action=login', {
+      method: 'POST',
+      headers: {'content-type':'application/json'},
+      body: JSON.stringify({ credential })
+    });
+    return r.json().then(j => ({ status: r.status, body: j }));
+  }
+
+  async function logout() {
+    await fetch('/api/auth?action=logout', { method: 'POST' });
+    location.reload();
+  }
+
+  function renderLogin(err) {
+    const clientId = window.__GOOGLE_CLIENT_ID || '';
+    document.getElementById('app').innerHTML = `
+      <div class="login-wrap">
+        <div class="login-card">
+          <h1>Command <em>Center</em></h1>
+          <p>Restricted. Sign in with your Google account to view engagement analytics.</p>
+          ${err ? `<div class="login-error">${err}</div>` : ''}
+          <div class="login-google-holder" id="gbtn"></div>
+          ${!clientId ? `<div class="login-note">Set <code>GOOGLE_CLIENT_ID</code> and <code>JWT_SECRET</code> in Vercel env vars to enable login.</div>` : ''}
+        </div>
+      </div>`;
+
+    if (!clientId) return;
+    function mount() {
+      if (!window.google || !google.accounts) { setTimeout(mount, 100); return; }
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: async (resp) => {
+          const r = await loginWithCredential(resp.credential);
+          if (r.status === 200) location.reload();
+          else renderLogin(r.body && r.body.error === 'not_admin' ? 'This Google account is not authorized.' : 'Sign-in failed.');
+        }
+      });
+      google.accounts.id.renderButton(document.getElementById('gbtn'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
+    }
+    mount();
+  }
+
+  function fmtNum(n) { n = Number(n) || 0; if (n >= 1e6) return (n/1e6).toFixed(1)+'M'; if (n >= 1e3) return (n/1e3).toFixed(1)+'k'; return String(n); }
+  function fmtTs(ts) {
+    const d = new Date(ts);
+    const now = Date.now();
+    const diff = Math.floor((now - ts) / 1000);
+    if (diff < 60) return diff + 's ago';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return d.toISOString().slice(0, 16).replace('T', ' ');
+  }
+  function esc(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function drawChart(svg, series) {
+    const w = svg.clientWidth, h = svg.clientHeight;
+    const pad = { t: 10, r: 10, b: 26, l: 34 };
+    const iw = w - pad.l - pad.r, ih = h - pad.t - pad.b;
+    svg.innerHTML = '';
+    if (!series || !series.length) return;
+    const maxQ = Math.max(1, ...series.map(d => d.questions), ...series.map(d => d.visitors || 0));
+    const step = iw / Math.max(1, series.length - 1);
+
+    const g = (k) => `<g>`;
+    let html = '';
+
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + ih - (ih * i / 4);
+      const val = Math.round(maxQ * i / 4);
+      html += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="rgba(245,240,230,0.05)" />`;
+      html += `<text class="chart-axis-label" x="${pad.l - 6}" y="${y + 3}" text-anchor="end">${val}</text>`;
+    }
+
+    let pathQ = '';
+    let dotsHtml = '';
+    series.forEach((d, i) => {
+      const x = pad.l + i * step;
+      const yQ = pad.t + ih - (ih * (d.questions / maxQ));
+      pathQ += (i === 0 ? 'M' : 'L') + x + ',' + yQ + ' ';
+      dotsHtml += `<circle class="chart-dot" cx="${x}" cy="${yQ}" r="2.5"><title>${d.date}: ${d.questions} questions, ${d.visitors} visitors</title></circle>`;
+      if (i === 0 || i === series.length - 1 || i % 7 === 0) {
+        html += `<text class="chart-axis-label" x="${x}" y="${h - 10}" text-anchor="middle">${d.date.slice(5)}</text>`;
+      }
+    });
+
+    let pathV = '';
+    series.forEach((d, i) => {
+      const x = pad.l + i * step;
+      const yV = pad.t + ih - (ih * ((d.visitors || 0) / maxQ));
+      pathV += (i === 0 ? 'M' : 'L') + x + ',' + yV + ' ';
+    });
+
+    html += `<path class="chart-line-v" d="${pathV}" />`;
+    html += `<path class="chart-line-q" d="${pathQ}" />`;
+    html += dotsHtml;
+    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 12}" text-anchor="end" fill="rgba(255,106,61,0.7)">● questions</text>`;
+    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 24}" text-anchor="end" fill="rgba(184,201,168,0.7)">● visitors</text>`;
+    svg.innerHTML = html;
+  }
+
+  function renderDashboard(data) {
+    const series = Array.isArray(data.series) ? data.series : [];
+    const questions = Array.isArray(data.questions) ? data.questions : [];
+    const events = Array.isArray(data.events) ? data.events : [];
+    const today = data.today || {};
+
+    const totalAllTime = data.totalsAllTime || {};
+    const totalQ = Number(totalAllTime.ask_answered || 0) + Number(totalAllTime.ask_refused || 0);
+    const totalRefused = Number(totalAllTime.ask_refused || 0);
+    const refuseRate = totalQ ? Math.round((totalRefused / totalQ) * 100) : 0;
+    const totalVisitors = series.reduce((a, d) => a + (d.visitors || 0), 0);
+
+    const chipData = Object.entries(data.chipClicks || {}).sort((a,b)=>Number(b[1])-Number(a[1]));
+    const deepData = Object.entries(data.deepLinks || {}).sort((a,b)=>Number(b[1])-Number(a[1]));
+
+    const maxChip = Math.max(1, ...chipData.map(x => Number(x[1])));
+
+    document.getElementById('app').innerHTML = `
+      <header>
+        <div class="mark">
+          <span class="mark-dot"></span>
+          Ash Mofidi
+          <small>Command Center</small>
+        </div>
+        <div class="header-right">
+          <span class="live"><span class="live-dot"></span>Live</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim)">${esc(data.admin && data.admin.email || '')}</span>
+          <button class="logout-btn" onclick="logout()">Sign out</button>
+        </div>
+      </header>
+      <div class="wrap">
+        <h1>How people are <em>engaging</em>.</h1>
+        <div class="page-sub">Your site's brain, live. <b>${fmtNum(totalQ)}</b> questions asked. <b>${fmtNum(totalVisitors)}</b> visitors in the last 30 days. Refusal rate <b>${refuseRate}%</b>.</div>
+
+        ${!data.kvAvailable ? `
+          <div class="kv-warn">
+            <b>Analytics storage not connected.</b> Install <code>Upstash Redis</code> from the Vercel Marketplace for this project, and metrics will start flowing in real time. Setup is one click. Vercel auto-provisions <code>KV_REST_API_URL</code> and <code>KV_REST_API_TOKEN</code>.
+          </div>` : ''}
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-label">Questions today</div>
+            <div class="metric-value">${fmtNum(today.questions || 0)}</div>
+            <div class="metric-delta">${(today.refusals || 0)} refused</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Visitors today</div>
+            <div class="metric-value">${fmtNum(series.length ? series[series.length-1].visitors : 0)}</div>
+            <div class="metric-delta">${fmtNum(today.pageviews || 0)} pageviews</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Chip clicks</div>
+            <div class="metric-value">${fmtNum(today.chipClicks || 0)}</div>
+            <div class="metric-delta">today</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Deep links</div>
+            <div class="metric-value">${fmtNum(today.deepLinks || 0)}</div>
+            <div class="metric-delta">?q= hits today</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">All time</div>
+            <div class="metric-value">${fmtNum(totalQ)}</div>
+            <div class="metric-delta">questions handled</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Engagement, last 30 days</div>
+              <div class="panel-meta">per day</div>
+            </div>
+            <div class="chart-wrap"><svg class="chart" id="chart"></svg></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Top starter prompts</div>
+              <div class="panel-meta">chip clicks</div>
+            </div>
+            ${chipData.length ? `<div class="top-list">
+              ${chipData.map(([k, v]) => `
+                <div class="top-item">
+                  <div class="top-name">${esc(k)}</div>
+                  <div class="top-bar-track"><div class="top-bar-fill" style="width:${(Number(v)/maxChip*100)}%"></div></div>
+                  <div class="top-num">${fmtNum(v)}</div>
+                </div>`).join('')}
+            </div>` : `<div class="empty">No chip clicks yet.</div>`}
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Deep-link hits</div>
+              <div class="panel-meta">?q= param</div>
+            </div>
+            ${deepData.length ? `<div class="top-list">
+              ${deepData.map(([k, v]) => `
+                <div class="top-item">
+                  <div class="top-name">${esc(k)}</div>
+                  <div class="top-bar-track"><div class="top-bar-fill" style="width:${(Number(v)/Math.max(1,deepData[0][1])*100)}%"></div></div>
+                  <div class="top-num">${fmtNum(v)}</div>
+                </div>`).join('')}
+            </div>` : `<div class="empty">No deep-links fired yet. Share a <code style="color:var(--persimmon)">?q=patent</code> URL on LinkedIn.</div>`}
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Security signals</div>
+              <div class="panel-meta">last 30 days</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)">
+                <span style="font-size:13px;color:var(--ink-dim)">Total refusals</span>
+                <span style="font-family:'Fraunces',serif;font-size:24px;color:${totalRefused ? 'var(--red)' : 'var(--green)'}">${fmtNum(totalRefused)}</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)">
+                <span style="font-size:13px;color:var(--ink-dim)">Refusal rate</span>
+                <span style="font-family:'Fraunces',serif;font-size:24px;color:var(--persimmon)">${refuseRate}%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0">
+                <span style="font-size:13px;color:var(--ink-dim)">Answered</span>
+                <span style="font-family:'Fraunces',serif;font-size:24px;color:var(--green)">${fmtNum(Number(totalAllTime.ask_answered || 0))}</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Share this page</div>
+              <div class="panel-meta">deep links</div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:var(--ink-dim)">
+              <div><a style="color:var(--persimmon)" target="_blank" href="/?q=biggest">/?q=biggest</a></div>
+              <div><a style="color:var(--persimmon)" target="_blank" href="/?q=patent">/?q=patent</a></div>
+              <div><a style="color:var(--persimmon)" target="_blank" href="/?q=fintech">/?q=fintech</a></div>
+              <div><a style="color:var(--persimmon)" target="_blank" href="/?q=nights">/?q=nights</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Recent questions</div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div class="panel-meta">${questions.length} shown</div>
+              <button class="export-btn" onclick="exportCsv()">Export CSV</button>
+            </div>
+          </div>
+          ${questions.length ? `
+          <table>
+            <thead>
+              <tr><th>Time</th><th>Question</th><th>Latency</th><th>Status</th><th>Visitor</th></tr>
+            </thead>
+            <tbody>
+              ${questions.map(q => `
+                <tr>
+                  <td class="ts">${fmtTs(q.ts)}</td>
+                  <td class="q">${esc((q.question || '').slice(0, 240))}</td>
+                  <td class="mono">${q.latencyMs ? q.latencyMs + 'ms' : '-'}</td>
+                  <td><span class="badge ${q.refused ? 'refused' : 'ok'}">${q.refused ? 'refused' : 'answered'}</span></td>
+                  <td class="mono">${esc((q.ipHash || '').slice(0, 8))}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          ` : `<div class="empty">No questions yet. Share the site. When someone asks, it shows up here live.</div>`}
+        </div>
+
+        <div style="height: 24px"></div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">Recent pageviews</div>
+            <div class="panel-meta">${events.length} shown</div>
+          </div>
+          ${events.length ? `
+          <table>
+            <thead>
+              <tr><th>Time</th><th>Path</th><th>Referrer</th><th>Visitor</th></tr>
+            </thead>
+            <tbody>
+              ${events.map(ev => `
+                <tr>
+                  <td class="ts">${fmtTs(ev.ts)}</td>
+                  <td class="mono">${esc(ev.path || '/')}</td>
+                  <td class="mono">${esc((ev.ref || 'direct').slice(0, 60)) || 'direct'}</td>
+                  <td class="mono">${esc((ev.ip || '').slice(0, 8))}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          ` : `<div class="empty">No pageviews tracked yet.</div>`}
+        </div>
+      </div>
+      <footer>Refreshes every 10 seconds · Data retained 30 days</footer>
+    `;
+
+    const svg = document.getElementById('chart');
+    if (svg) drawChart(svg, series);
+    window.__lastQuestions = questions;
+  }
+
+  window.exportCsv = function() {
+    const qs = window.__lastQuestions || [];
+    const rows = [['timestamp','question','latency_ms','refused','visitor_hash']];
+    qs.forEach(q => rows.push([new Date(q.ts).toISOString(), q.question || '', q.latencyMs || '', q.refused ? '1' : '0', q.ipHash || '']));
+    const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'ashmofidi-questions-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  };
+
+  window.logout = logout;
+
+  async function loadStats() {
+    try {
+      const r = await fetch('/api/stats');
+      if (r.status === 401) { renderLogin(); return false; }
+      const data = await r.json();
+      renderDashboard(data);
+      return true;
+    } catch (e) {
+      console.error(e); return false;
+    }
+  }
+
+  async function init() {
+    const cfg = await GSI_CLIENT_ID_FETCH();
+    window.__GOOGLE_CLIENT_ID = cfg.googleClientId || '';
+    const ok = await loadStats();
+    if (ok) setInterval(loadStats, 10000);
+  }
+  init();
+</script>
+</body>
+</html>

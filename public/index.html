@@ -385,6 +385,54 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
   .lab-cta{grid-column:1/-1;justify-content:flex-start}
   .edu-grid{grid-template-columns:1fr}
 }
+
+/* Ask Ash */
+.ask-ash{padding:100px 0 80px;position:relative;background:linear-gradient(180deg,transparent,rgba(96,165,250,.025),transparent)}
+.ask-ash::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:60px;background:linear-gradient(180deg,transparent,var(--bl));opacity:.5}
+.aa-head{text-align:center;max-width:760px;margin:0 auto 44px;padding:0 24px}
+.aa-eye{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bl);margin-bottom:18px;display:inline-flex;align-items:center;gap:10px}
+.aa-eye::before{content:"";width:24px;height:1px;background:var(--bl);opacity:.6}
+.aa-title{font-family:var(--display);font-size:clamp(30px,4.5vw,52px);font-weight:600;line-height:1.06;letter-spacing:-.02em;color:var(--tx);margin-bottom:18px}
+.aa-title em{font-style:italic;color:var(--bl);font-weight:500}
+.aa-sub{color:var(--tx3);font-size:16px;max-width:520px;margin:0 auto;line-height:1.6}
+.aa-sub b{color:var(--tx2);font-weight:500}
+.aa-form{max-width:780px;margin:0 auto;display:flex;align-items:center;background:var(--light2);border:1px solid var(--bd2);border-radius:14px;padding:5px 5px 5px 20px;transition:all .3s}
+.aa-form:focus-within{border-color:var(--bl);box-shadow:0 0 0 4px var(--bl-s),0 20px 60px -20px rgba(96,165,250,.3)}
+.aa-pre{color:var(--bl);font-family:var(--mono);font-size:13px;margin-right:12px;user-select:none}
+#aa-input{flex:1;background:none;border:none;outline:none;color:var(--tx);font-family:var(--body);font-weight:400;font-size:16px;padding:16px 0;min-width:0}
+#aa-input::placeholder{color:var(--tx3);opacity:.7}
+.aa-btn{background:var(--bl);color:var(--dark);border:none;border-radius:10px;padding:12px 18px;font-family:var(--body);font-weight:500;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;white-space:nowrap;position:relative;overflow:hidden}
+.aa-btn::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.25),transparent);transform:translateX(-100%);transition:transform .6s}
+.aa-btn:hover{background:var(--bl2)}
+.aa-btn:hover::before{transform:translateX(100%)}
+.aa-btn:active{transform:scale(.97)}
+.aa-btn:disabled{opacity:.4;cursor:not-allowed}
+.aa-btn kbd{background:rgba(0,0,0,.22);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:10px}
+.aa-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px;align-items:center;max-width:780px;margin-left:auto;margin-right:auto}
+.aa-chips-label{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-right:4px}
+.aa-chip{background:transparent;border:1px solid var(--bd);color:var(--tx2);padding:8px 14px;border-radius:999px;font-family:var(--body);font-weight:400;font-size:13px;cursor:pointer;transition:all .25s}
+.aa-chip:hover{border-color:var(--bl);color:var(--tx);background:var(--bl-s);transform:translateY(-1px)}
+.aa-answer{max-width:780px;margin:36px auto 0;padding:28px 0 0;font-size:17px;line-height:1.72;color:var(--tx);min-height:0;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;border-top:1px solid var(--bd)}
+.aa-answer.show{opacity:1;transform:translateY(0)}
+.aa-q{font-family:var(--mono);font-size:11px;color:var(--tx3);margin-bottom:18px;letter-spacing:.04em;text-transform:uppercase}
+.aa-q::before{content:"▸ ";color:var(--bl)}
+.aa-answer b{color:var(--tx);font-weight:500}
+.aa-answer i{color:var(--tx)}
+.aa-cite{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:5px;background:var(--bl-s);color:var(--bl);font-family:var(--mono);font-size:11px;font-weight:500;cursor:pointer;vertical-align:super;margin:0 2px;transition:all .2s;border:1px solid transparent}
+.aa-cite:hover{background:var(--bl);color:var(--dark);transform:translateY(-2px);box-shadow:0 6px 14px -4px rgba(96,165,250,.4)}
+.aa-cursor{display:inline-block;width:8px;height:1.1em;background:var(--bl);vertical-align:text-bottom;animation:aa-blink .9s steps(2) infinite;margin-left:3px}
+@keyframes aa-blink{50%{opacity:0}}
+.aa-footer{text-align:center;margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);opacity:.5}
+.aa-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;margin-right:6px;vertical-align:middle;box-shadow:0 0 8px rgba(74,222,128,.6);animation:aa-breathe 2.4s ease-in-out infinite}
+@keyframes aa-breathe{0%,100%{opacity:1}50%{opacity:.4}}
+@media(max-width:640px){
+  .ask-ash{padding:72px 0 56px}
+  .aa-form{margin-left:20px;margin-right:20px;padding:4px 4px 4px 16px}
+  #aa-input{font-size:15px;padding:14px 0}
+  .aa-btn span.aa-label{display:none}
+  .aa-chips{padding:0 20px}
+  .aa-answer{margin-left:20px;margin-right:20px}
+}
 </style>
 </head>
 <body>
@@ -451,6 +499,36 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
   </div>
 </section>
 
+<section class="ask-ash" id="ask" aria-label="Ask Ash anything about the work">
+  <div class="wrap">
+    <div class="aa-head">
+      <span class="aa-eye">Interactive portfolio</span>
+      <h2 class="aa-title">Ask me anything about <em>what I've built</em>.</h2>
+      <p class="aa-sub">The site <b>talks back</b>. Answers stream live. Citations link back to the work below.</p>
+    </div>
+
+    <form class="aa-form" id="aa-form" autocomplete="off" role="search" aria-label="Ask Ash">
+      <span class="aa-pre" aria-hidden="true">ash@</span>
+      <input id="aa-input" aria-label="Ask a question" placeholder="e.g. What's the biggest platform you've shipped?" maxlength="500" />
+      <button class="aa-btn" type="submit" id="aa-btn" aria-label="Submit question">
+        <span class="aa-label">Ask</span> <kbd aria-hidden="true">↵</kbd>
+      </button>
+    </form>
+
+    <div class="aa-chips">
+      <span class="aa-chips-label">Try</span>
+      <button class="aa-chip" data-q="biggest">What's the biggest platform you've shipped?</button>
+      <button class="aa-chip" data-q="patent">Tell me about the patent.</button>
+      <button class="aa-chip" data-q="fintech">Why should a fintech hire you?</button>
+      <button class="aa-chip" data-q="nights">Nights &amp; weekends?</button>
+    </div>
+
+    <div class="aa-answer" id="aa-answer" aria-live="polite"></div>
+
+    <div class="aa-footer"><span class="aa-live-dot"></span>Powered by Claude, grounded in verified facts</div>
+  </div>
+</section>
+
 <div class="transition"></div>
 
 <div class="main" id="work">
@@ -480,7 +558,7 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
     </div>
 
     <div class="patent-banner reveal-scale" id="patentBanner" role="note">
-      Patent Pending, USPTO <em>&mdash;</em> AI/ML Brand Classification System
+      Patent Pending, USPTO <em>·</em> AI/ML Brand Classification System
     </div>
 
     <section class="nights" aria-label="Nights and weekends side project">
@@ -528,8 +606,8 @@ footer span{font-family:var(--mono);font-size:11px;color:#8BA3B9;letter-spacing:
 
     <section class="earlier" aria-label="Earlier work">
       <div class="earlier-h reveal">Earlier</div>
-      <div class="earlier-item reveal stagger-1"><strong>PathNav</strong> &mdash; AR Navigation for Retail (2018&ndash;2020)</div>
-      <div class="earlier-item reveal stagger-2"><strong>Excibo</strong> &mdash; Campus Food Delivery, Co-Founder (2015&ndash;2017)</div>
+      <div class="earlier-item reveal stagger-1"><strong>PathNav</strong>: AR Navigation for Retail (2018&ndash;2020)</div>
+      <div class="earlier-item reveal stagger-2"><strong>Excibo</strong>: Campus Food Delivery, Co-Founder (2015&ndash;2017)</div>
     </section>
 
     <div class="bento edu-grid" role="complementary" aria-label="Education and credentials">
@@ -701,6 +779,161 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 
 
 requestAnimationFrame(scrollFrame);
+</script>
+
+<script>
+/* Ask Ash client */
+(function(){
+  const fallbackAnswers = {
+    biggest: {
+      q: "What's the biggest platform you've shipped?",
+      text: "PriceX, the global pricing platform at Walmart. [1] Zero-to-one. Cloud pricing across 7 countries, manual work cut by 75%, latency from 24 hours to under 1 minute. I wrote the first doc, aligned legal, operations, and 200+ engineers, and negotiated the ML roadmap with data science. It set the pattern two sister teams copied. The thing I'm proudest of isn't the numbers. It's that the platform outlived the reorg."
+    },
+    patent: {
+      q: "Tell me about the patent.",
+      text: "Filed on the brand classification work. [2] The old pipeline was rules held together with regex and hope. New version pairs embedding retrieval with an LLM judge that sees the top-k candidates plus a structured rationale, not just the title string. It resolved <b>$10B in discrepancies across 600K+ brands</b>, cut counterfeits by 40%, drove <b>$50M+ incremental GMV</b>. Co-inventor with two engineers. Status: pending at USPTO."
+    },
+    fintech: {
+      q: "Why should a fintech hire you?",
+      text: "Three reasons. <b>1.</b> I've shipped cross-border commerce. [3] $5M GMV in 90 days, seller base scaled 30X. I've lived inside KYC, sanctions screening, FX, settlement timing, and dispute flow. <b>2.</b> I've run global pricing. [1] Fintech is pricing: interchange, spreads, fees, risk-adjusted margin. I know what it costs to be wrong by 10 bps at scale. <b>3.</b> I build AI products that survive compliance review. [2] That's the single rarest skill in this market right now. Stripe, Ramp, Brex, Mercury, if you're staring at an AI roadmap wondering who can actually ship it, let's talk."
+    },
+    nights: {
+      q: "Nights & weekends?",
+      text: "Two things, both live. <b>Becoming</b> [4] is a focus timer I designed, built, and shipped end-to-end. React, Vercel, Google OAuth, Redis, cross-device sync. Real users, real infrastructure. Live at becoming.ashmofidi.com. <b>PM Command Center</b> [5] is a personal agent system I'm shipping with Claude Code to automate my work as Lead PM at Radar. 4-layer pipeline, 11-table schema, 24-hour rhythm. The point isn't that either will be a company. It's that staff PMs who still ship code on Sundays are a small club, and the work shows."
+    },
+    default: {
+      q: null,
+      text: "That's not something I can speak to here. Reach me at <a href=\"mailto:ashkan.mofidi@gmail.com\" style=\"color:var(--bl)\">ashkan.mofidi@gmail.com</a>."
+    }
+  };
+
+  const citeTargets = {
+    "1": "#work",
+    "2": "#work",
+    "3": "#work",
+    "4": "#work",
+    "5": "#work"
+  };
+
+  const form = document.getElementById('aa-form');
+  const input = document.getElementById('aa-input');
+  const btn = document.getElementById('aa-btn');
+  const answer = document.getElementById('aa-answer');
+  const chips = document.querySelectorAll('.aa-chip');
+  let streaming = false;
+
+  function classify(t){
+    const s=t.toLowerCase();
+    if(/(biggest|largest|pricex|pricing|ship|platform|walmart)/.test(s))return 'biggest';
+    if(/(patent|brand|classif|ip|invent|uspto)/.test(s))return 'patent';
+    if(/(fintech|stripe|ramp|brex|mercury|bank|payment|why.*hire|should.*hire)/.test(s))return 'fintech';
+    if(/(night|weekend|side|becoming|command|focus|timer)/.test(s))return 'nights';
+    return 'default';
+  }
+
+  function renderQ(q){
+    answer.innerHTML = '<div class="aa-q">'+escapeHtml(q)+'</div><div id="aa-stream"></div>';
+    answer.classList.add('show');
+  }
+
+  function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  function renderCites(html){
+    return html.replace(/\[(\d+)\]/g,(_,n)=>`<span class="aa-cite" data-cite="${n}">${n}</span>`);
+  }
+
+  function wireCites(root){
+    root.querySelectorAll('.aa-cite').forEach(c=>{
+      c.addEventListener('click',()=>{
+        const tgt = citeTargets[c.dataset.cite] || '#work';
+        const el = document.querySelector(tgt);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+  }
+
+  async function streamText(text){
+    const stream = document.getElementById('aa-stream');
+    const words = text.split(/(\s+)/);
+    let out = '';
+    for(let i=0;i<words.length;i++){
+      out += words[i];
+      stream.innerHTML = renderCites(out) + '<span class="aa-cursor"></span>';
+      if(words[i].trim()) await new Promise(r=>setTimeout(r, 22 + Math.random()*40));
+    }
+    stream.innerHTML = renderCites(out);
+    wireCites(stream);
+  }
+
+  async function tryLiveAPI(question){
+    try{
+      const r = await fetch('/api/ask',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({question})});
+      if(!r.ok) return null;
+      const data = await r.json();
+      return (data && typeof data.answer === 'string' && data.answer.length > 0) ? data.answer : null;
+    }catch(e){ return null; }
+  }
+
+  async function run(key, question){
+    if(streaming) return;
+    streaming = true;
+    btn.disabled = true;
+    renderQ(question);
+
+    const live = await tryLiveAPI(question);
+    let text;
+    if(live){
+      text = live;
+    } else {
+      text = (fallbackAnswers[key] || fallbackAnswers.default).text;
+    }
+    await streamText(text);
+
+    btn.disabled = false;
+    streaming = false;
+  }
+
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const v = input.value.trim();
+    if(!v) return;
+    run(classify(v), v);
+    input.value = '';
+  });
+
+  chips.forEach(c=>{
+    c.addEventListener('click',()=>{
+      const key = c.dataset.q;
+      const q = fallbackAnswers[key].q;
+      input.value = '';
+      run(key, q);
+      document.getElementById('ask').scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  // keyboard shortcut
+  window.addEventListener('keydown', e=>{
+    const k = e.key.toLowerCase();
+    if(((e.metaKey||e.ctrlKey) && k==='k') || (k==='/' && document.activeElement!==input && !e.metaKey && !e.ctrlKey)){
+      e.preventDefault();
+      input.focus();
+      input.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    if(e.key==='Escape' && document.activeElement===input) input.blur();
+  });
+
+  // URL deep-link: ?q=biggest|patent|fintech|nights
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const p = new URLSearchParams(window.location.search);
+    const q = p.get('q');
+    if(q && fallbackAnswers[q]){
+      setTimeout(()=>{
+        document.getElementById('ask').scrollIntoView({behavior:'smooth',block:'start'});
+        run(q, fallbackAnswers[q].q);
+      }, 800);
+    }
+  });
+})();
 </script>
 </body>
 </html>

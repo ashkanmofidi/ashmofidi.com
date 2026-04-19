@@ -63,24 +63,32 @@
   ::selection { background: var(--red); color: var(--paper); }
 
   /* =========================================================
-     SIGNATURE MOVE #1: Cursor-follow ambient lamp.
-     Warm cream glow tracks the pointer with smoothing, making
-     the page feel like paper held under a desk lamp.
-     Inverts on the Klein Blue finale (cooler highlight there).
+     SIGNATURE MOVE #1: Context-aware cursor glow.
+     On cream paper: visible KLEIN BLUE tint via multiply.
+     On Klein Blue plate: WHITE halo via screen.
+     JS toggles .on-blue as the pointer enters the final section.
      ========================================================= */
   .cursor-lamp {
     position: fixed; top: 0; left: 0; pointer-events: none; z-index: 3;
-    width: 640px; height: 640px; border-radius: 50%;
+    width: 520px; height: 520px; border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255,238,200,0.26), rgba(255,238,200,0.08) 40%, transparent 70%);
-    mix-blend-mode: soft-light;
+    background: radial-gradient(circle,
+      rgba(27,59,168,0.45) 0%,
+      rgba(27,59,168,0.22) 22%,
+      rgba(27,59,168,0.07) 48%,
+      transparent 72%);
+    mix-blend-mode: multiply;
     opacity: 0;
-    transition: opacity 0.6s;
+    transition: opacity 0.5s, background 0.4s, mix-blend-mode 0s 0.2s;
     will-change: transform, opacity;
   }
   .cursor-lamp.on { opacity: 1; }
   .cursor-lamp.on-blue {
-    background: radial-gradient(circle, rgba(255,255,255,0.22), rgba(255,255,255,0.05) 45%, transparent 70%);
+    background: radial-gradient(circle,
+      rgba(255,255,255,0.38) 0%,
+      rgba(255,255,255,0.15) 28%,
+      rgba(255,255,255,0.04) 55%,
+      transparent 75%);
     mix-blend-mode: screen;
   }
   @media (hover: none) { .cursor-lamp { display: none; } }
@@ -195,32 +203,51 @@
     font-variation-settings: "opsz" 144;
   }
   /* =========================================================
-     SIGNATURE MOVE #2: Kinetic typography.
-     Letters start widely spaced (as if being set in a printing
-     press), then tighten into their final letter-spacing while
-     blur clears. Feels like type settling into place.
+     SIGNATURE MOVE #2: Mask-reveal letter cascade.
+     Each letter starts 110% below its line, hidden behind an
+     overflow-clip mask. Letters rise into place one by one on
+     a cascade, 55ms stagger per letter. Pure transform, no
+     blur, no scale, no glitch. This is how Pentagram, MSCHF,
+     A24, and every top agency site does title reveals.
      ========================================================= */
   .hero-name {
-    letter-spacing: 0.28em;
-    filter: blur(12px);
-    opacity: 0;
-    animation: typesetting 1.8s cubic-bezier(.18,.72,.18,1) 400ms forwards;
+    display: block;
+    line-height: 0.92;
   }
-  @keyframes typesetting {
-    0%   { letter-spacing: 0.28em; filter: blur(12px); opacity: 0; transform: translateY(24px); }
-    60%  { opacity: 1; filter: blur(0); transform: translateY(0); }
-    100% { letter-spacing: -0.055em; filter: blur(0); opacity: 1; transform: translateY(0); }
+  .hero-name .word {
+    display: inline-block;
+    overflow: hidden;
+    /* Right padding + bottom padding gives italic descenders and
+       slant (the d and i in "Mofidi") room before the overflow clips. */
+    padding: 0.12em 0.18em 0.36em 0.02em;
+    vertical-align: baseline;
   }
-  .hero-name .word { display: inline-block; }
-  .hero-name em { position: relative; }
+  .hero-name .word + .word { margin-left: 0.08em; }
+  .hero-name .ltr {
+    display: inline-block;
+    transform: translateY(120%);
+    transition: transform 1.2s cubic-bezier(.16,.72,.12,1);
+    will-change: transform;
+  }
+  .hero-name.in .ltr { transform: translateY(0); }
+
+  .hero-name em {
+    position: relative;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--red);
+  }
   .hero-name em::after {
     content: ""; position: absolute;
-    left: 0; right: 0; bottom: 0.04em;
+    left: 0; right: 0; bottom: 0.14em;
     height: 3px; background: var(--red);
     transform: scaleX(0); transform-origin: left;
-    animation: emUnderline 1.4s cubic-bezier(.2,.8,.2,1) 1800ms forwards;
+    transition: transform 1.4s cubic-bezier(.2,.8,.2,1);
   }
-  @keyframes emUnderline { to { transform: scaleX(1); } }
+  .hero-name.in em::after {
+    transform: scaleX(1);
+    transition-delay: 1.4s;
+  }
 
   .hero-name em {
     font-style: italic; font-weight: 400;
@@ -231,13 +258,18 @@
     margin-top: 36px;
     font-family: 'Fraunces', serif;
     font-style: italic; font-weight: 300;
-    font-size: clamp(18px, 2.2vw, 26px);
+    font-size: clamp(19px, 2.2vw, 28px);
     color: var(--ink-2);
     opacity: 0;
-    animation: fadeDown 1.4s cubic-bezier(.2,.8,.2,1) 1500ms forwards;
-    max-width: 580px;
-    line-height: 1.4;
+    animation: fadeDown 1.4s cubic-bezier(.2,.8,.2,1) 2600ms forwards;
+    max-width: 640px;
+    line-height: 1.42;
     letter-spacing: -0.01em;
+  }
+  .hero-sub b {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink);
   }
 
   .hero-meta {
@@ -280,39 +312,111 @@
     align-items: center;
   }
 
+  /* =========================================================
+     Portrait frame: film-plate treatment.
+     The image lands cinematically with scale+blur release,
+     subtle cursor-reactive parallax (2% max), and Klein Blue
+     corner ticks that draw in like darkroom crop marks.
+     ========================================================= */
   .portrait-wrap {
     position: relative;
     aspect-ratio: 4/5;
-    background: var(--paper-deep);
-    border: 1px solid var(--line-strong);
     overflow: hidden;
+    background: var(--paper-deep);
+    box-shadow:
+      inset 0 0 0 1px var(--line-strong),
+      0 30px 60px -24px rgba(12,21,48,0.25),
+      0 10px 30px -18px rgba(12,21,48,0.15);
+    /* Almost-imperceptible breathing: 14s oscillation, adds life */
+    animation: portraitBreath 14s ease-in-out infinite alternate;
   }
-  .portrait-wrap::before {
-    content: ""; position: absolute; inset: 0;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(27,59,168,0.08), transparent 60%),
-      radial-gradient(circle at 70% 70%, rgba(184,138,58,0.06), transparent 60%);
+  @keyframes portraitBreath {
+    from { transform: scale(1); }
+    to   { transform: scale(1.012); }
   }
-  .portrait-inner {
+  .portrait-wrap .portrait-img {
     position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Fraunces', serif; font-style: italic;
-    color: var(--ink-4); font-size: 14px;
-    text-align: center; padding: 40px;
-    line-height: 1.5;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+    filter: contrast(1) brightness(1);
+    opacity: 0;
+    transform: scale(1.14) translate(var(--px, 0px), var(--py, 0px));
+    transition:
+      transform 2.4s cubic-bezier(.16,.72,.12,1),
+      opacity 2s cubic-bezier(.2,.8,.2,1),
+      filter 2.4s cubic-bezier(.2,.8,.2,1);
+    will-change: transform, opacity;
   }
-  .portrait-inner svg { width: 140px; height: 140px; opacity: 0.8; }
+  .portrait-wrap.in .portrait-img {
+    transform: scale(1) translate(var(--px, 0px), var(--py, 0px));
+    opacity: 1;
+    filter: contrast(1.06) brightness(1.01);
+  }
+  /* Living film grain: pattern shifts in steps so it looks organic */
+  .portrait-wrap::before {
+    content: ""; position: absolute; inset: -10%; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.75'/></svg>");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+    opacity: 0.22;
+    z-index: 2;
+    animation: filmGrain 0.4s steps(4) infinite;
+  }
+  @keyframes filmGrain {
+    0%   { background-position: 0 0; }
+    25%  { background-position: 40% 30%; }
+    50%  { background-position: 80% 60%; }
+    75%  { background-position: 20% 80%; }
+    100% { background-position: 60% 10%; }
+  }
+  /* Cinematic top-light vignette: softbox-above look */
+  .portrait-wrap::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,250,235,0.15), transparent 60%),
+      radial-gradient(ellipse 130% 120% at 50% 50%, transparent 48%, rgba(12,21,48,0.28) 100%);
+    z-index: 3;
+  }
+  /* Film-crop corner ticks: draw in (scaleX/Y) like darkroom markers */
+  .portrait-corners { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+  .portrait-corners span {
+    position: absolute; width: 22px; height: 22px;
+  }
+  .portrait-corners span::before, .portrait-corners span::after {
+    content: ""; position: absolute; background: var(--red);
+  }
+  .portrait-corners span::before {
+    height: 1.5px; width: 100%;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.9s cubic-bezier(.2,.8,.2,1) 1.4s;
+  }
+  .portrait-corners span::after {
+    width: 1.5px; height: 100%;
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.9s cubic-bezier(.2,.8,.2,1) 1.6s;
+  }
+  .portrait-wrap.in .portrait-corners span::before { transform: scaleX(1); }
+  .portrait-wrap.in .portrait-corners span::after { transform: scaleY(1); }
+  .portrait-corners .tl { top: 12px; left: 12px; }
+  .portrait-corners .tr { top: 12px; right: 12px; transform: scaleX(-1); }
+  .portrait-corners .bl { bottom: 12px; left: 12px; transform: scaleY(-1); }
+  .portrait-corners .br { bottom: 12px; right: 12px; transform: scale(-1,-1); }
+
+  /* Caption sits below the frame, intentionally quiet */
   .portrait-caption {
-    position: absolute; bottom: -28px; left: 0;
+    position: absolute; bottom: -34px; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--ink-3);
   }
-  .portrait-caption::before {
+  .portrait-caption span::before {
     content: ""; display: inline-block;
-    width: 20px; height: 1px; background: var(--ink-3);
+    width: 16px; height: 1px; background: var(--ink-3);
     margin-right: 10px; vertical-align: middle;
   }
+  .portrait-caption .side { color: var(--ink-4); }
 
   .intro-text .intro-open {
     font-family: 'Fraunces', serif;
@@ -595,26 +699,55 @@
   }
   .beyond-text b { font-style: normal; color: var(--red); font-weight: 400; }
 
-  /* ==================== SCENE 8.5: TESTIMONIAL ==================== */
+  /* ==================== SCENE 8.5: REAL LINKEDIN RECS CAROUSEL ==================== */
   .scene-voices {
     padding: 140px 40px;
-    max-width: 960px; margin: 0 auto;
+    max-width: 1080px; margin: 0 auto;
   }
-  .voices-wrap { max-width: 780px; margin: 0 auto; text-align: left; }
+  .voices-wrap { max-width: 840px; margin: 0 auto; text-align: left; }
+  .voices-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+  }
+  .voices-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--red);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 3px;
+    transition: opacity 0.2s;
+  }
+  .voices-link:hover { opacity: 0.75; }
+  .voices-link .arrow { margin-left: 4px; font-family: 'Inter', sans-serif; font-size: 12px; }
+
+  /* Stage: quotes stack on top of each other, only active is visible */
+  .voices-stage {
+    position: relative;
+    min-height: 340px;
+  }
   .voice {
-    margin: 24px 0 12px;
+    position: absolute; inset: 0;
+    margin: 0;
     padding-left: 32px;
     border-left: 3px solid var(--red);
-    position: relative;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s cubic-bezier(.2,.8,.2,1), transform 0.5s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none;
+  }
+  .voice.active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
   }
   .voice-text {
     font-family: 'Fraunces', serif;
     font-weight: 300; font-style: italic;
-    font-size: clamp(22px, 2.6vw, 32px);
-    line-height: 1.35;
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.4;
     letter-spacing: -0.02em;
     color: var(--ink);
-    margin: 0 0 24px;
+    margin: 0 0 28px;
   }
   .voice-text em {
     font-style: normal;
@@ -627,17 +760,49 @@
   }
   .voice-by {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink-3);
-    display: flex; gap: 12px; align-items: baseline;
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-2);
+    display: flex; gap: 0; align-items: baseline; flex-wrap: wrap;
+    line-height: 1.5;
   }
-  .voice-name { color: var(--ink); }
-  .voice-ctx::before { content: "·"; margin-right: 12px; color: var(--ink-4); }
-  .voices-note {
-    margin-top: 40px; font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--ink-4); letter-spacing: 0.04em;
-    border-top: 1px dashed var(--line);
-    padding-top: 18px; font-style: italic;
+  .voice-name {
+    color: var(--ink); font-weight: 600;
+    font-size: 14px;
+  }
+  .voice-by .voice-ctx {
+    margin-left: 14px;
+    color: var(--ink-2);
+  }
+  .voice-by .voice-ctx::before {
+    content: "·"; margin-right: 12px; color: var(--ink-3); display: inline-block;
+  }
+  .voice-date {
+    color: var(--ink-3) !important;
+    font-weight: 400;
+  }
+
+  /* Nav dots */
+  .voices-nav {
+    display: flex; gap: 10px; margin-top: 24px;
+    padding-left: 32px;
+  }
+  .voice-dot {
+    width: 30px; height: 2px;
+    background: var(--line-strong);
+    border: none; padding: 0; cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .voice-dot:hover { background: var(--ink-3); }
+  .voice-dot.active { background: var(--red); }
+  .voice-dot.active::after {
+    content: ""; position: absolute;
+    left: 0; top: 0; height: 100%; width: 0%;
+    background: rgba(27,59,168,0.4);
+    animation: voiceDotProgress 3s linear forwards;
+  }
+  @keyframes voiceDotProgress {
+    to { width: 100%; }
   }
 
   /* ==================== SCENE 9: CONTACT ==================== */
@@ -837,15 +1002,17 @@
 <!-- SCENE 1: OPENING -->
 <section class="scene-hero" id="top">
   <div class="hero-stack">
-    <div class="hero-label">A Portfolio · San Francisco · 2015 to Now</div>
+    <div class="hero-label">Staff AI Product Manager · A Decade of Zero-to-One · Patent Pending</div>
     <h1 class="hero-name">
       <span class="word">Ash</span> <span class="word"><em>Mofidi</em></span>
     </h1>
-    <p class="hero-sub">I build the platform that doesn't exist yet. Then I scale it to millions.</p>
+    <p class="hero-sub">
+      <b>Ten years</b> building AI platforms that ship to millions. Three zero-to-one, one patent, $50M+ in GMV I can point at. Looking for the fourth worth building.
+    </p>
   </div>
   <div class="hero-meta">
     <span>N° 04 · 2026</span>
-    <span>Staff PM · AI Platforms</span>
+    <span>10+ Years · 3 Platforms · 1 Patent</span>
   </div>
   <div class="hero-scroll-hint">
     <span>Scroll</span>
@@ -855,21 +1022,24 @@
 
 <!-- SCENE 2: PORTRAIT + INTRO -->
 <section class="scene scene-intro" id="about">
-  <div class="portrait-wrap reveal">
-    <div class="portrait-inner">
-      <div>
-        <svg viewBox="0 0 140 140" fill="none" aria-hidden="true">
-          <path d="M20,120 L20,15 L52,78" stroke="#a8243b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <path d="M88,78 L120,15 L120,120" stroke="#1b7a42" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <path d="M35,120 L70,5 L105,120" stroke="#141210" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <line x1="50" y1="78" x2="90" y2="78" stroke="#141210" stroke-width="8" stroke-linecap="round"/>
-        </svg>
-        <br/><br/>
-        A portrait goes here. Drop a photo at<br/>
-        <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red)">/public/portrait.jpg</code>
-      </div>
+  <div class="portrait-wrap reveal" id="portraitWrap">
+    <img
+      class="portrait-img"
+      id="portraitImg"
+      src="/portrait.jpg"
+      alt="Ash Mofidi, black and white portrait, desert road, California."
+      loading="eager"
+      decoding="async"
+      width="1175" height="1600"
+    />
+    <div class="portrait-corners" aria-hidden="true">
+      <span class="tl"></span><span class="tr"></span>
+      <span class="bl"></span><span class="br"></span>
     </div>
-    <div class="portrait-caption">Self-portrait · to be replaced</div>
+    <div class="portrait-caption">
+      <span>Ash · California</span>
+      <span class="side">Plate N° 01</span>
+    </div>
   </div>
   <div class="intro-text reveal">
     <div class="eyebrow">Who I am</div>
@@ -880,7 +1050,7 @@
       I'm the PM who writes the first doc. Who recruits the founding engineers. Who sits with the lawyers at 9am and the ML team at 4pm and keeps the story the same in both rooms. Three zero-to-one platforms. One patent. <b>$50M+ in GMV I can point at.</b>
     </p>
     <p>
-      These days I'm Lead PM at Radar. I'm looking for the next platform worth building, ideally where <b>AI meets pricing, risk, or compliance</b> at scale. FAANG or fintech, either compounds my bets.
+      I'm looking for the next platform worth building, ideally where <b>AI meets pricing, risk, or compliance</b> at scale. FAANG or fintech, either compounds my bets.
     </p>
   </div>
 </section>
@@ -1026,20 +1196,78 @@
   </p>
 </section>
 
-<!-- SCENE 8.5: TESTIMONIAL -->
-<section class="scene-voices reveal" aria-label="Words from people I've worked with">
+<!-- SCENE 8.5: TESTIMONIALS (real LinkedIn recommendations, auto-rotating) -->
+<section class="scene-voices reveal" aria-label="LinkedIn recommendations">
   <div class="voices-wrap">
-    <div class="eyebrow">What people say</div>
-    <blockquote class="voice">
-      <p class="voice-text">
-        <em>"</em>Ash is the rare PM who can hold engineering, legal, and ops in the same sentence and not lose either of them. He wrote the first doc on PriceX and the thing is still alive three reorgs later. Don't hire him for what he's built. Hire him for what he hasn't started yet.<em>"</em>
-      </p>
-      <footer class="voice-by">
-        <span class="voice-name">Name, Title</span>
-        <span class="voice-ctx">Former colleague · Walmart</span>
-      </footer>
-    </blockquote>
-    <p class="voices-note">Swap this placeholder with a real quote from someone you've shipped with. A named colleague beats a nameless claim every time.</p>
+    <div class="voices-head">
+      <div class="eyebrow">What people I've shipped with say</div>
+      <a class="voices-link" href="https://www.linkedin.com/in/ashkanmofidi/details/recommendations/" target="_blank" rel="noopener">Read all on LinkedIn <span class="arrow">↗</span></a>
+    </div>
+
+    <div class="voices-stage" id="voicesStage">
+      <blockquote class="voice active">
+        <p class="voice-text">
+          <em>"</em>I highly recommend Ashkan as a product manager. He possesses a remarkable combination of thoughtfulness, organization, and a pleasant demeanor that made collaborating with him a true pleasure. His ability to analyze market trends, foster collaboration among teams, and adapt to changing conditions set him apart as a great product manager.<em>"</em>
+        </p>
+        <footer class="voice-by">
+          <span class="voice-name">Alex Parastaev</span>
+          <span class="voice-ctx">Senior Manager, Strategy &amp; Operations · Walmart</span>
+          <span class="voice-ctx voice-date">December 2023</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="voice">
+        <p class="voice-text">
+          <em>"</em>Ash is a talented data product manager. His work has dramatically improved data quality using modern tools. He's been committed to synchronizing in-store and e-commerce product catalogs and has provided capabilities to handle complex brand licensing scenarios. He has also developed robust documentation and built solid engineering requirements that made his solutions easy to understand.<em>"</em>
+        </p>
+        <footer class="voice-by">
+          <span class="voice-name">John King V</span>
+          <span class="voice-ctx">Market Strategy, BI &amp; Financial Analysis · Walmart</span>
+          <span class="voice-ctx voice-date">January 2024</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="voice">
+        <p class="voice-text">
+          <em>"</em>Ashkan has significant experience in Brand and Catalog management. He always brings innovative ideas to fix complex e-commerce problems. He has the special ability to understand user needs and work with engineering to bring solutions forward. He's an amazing asset to team.<em>"</em>
+        </p>
+        <footer class="voice-by">
+          <span class="voice-name">Natasha Concessio</span>
+          <span class="voice-ctx">Marketplace Brand Strategy &amp; Seller Operations · Walmart</span>
+          <span class="voice-ctx voice-date">December 2023</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="voice">
+        <p class="voice-text">
+          <em>"</em>Ashkan has proven to be an exceptional partner. His unwavering support and positive attitude create a collaborative environment, making him a valuable asset. Ashkan consistently demonstrates a willingness to pitch in, making our partnership truly commendable.<em>"</em>
+        </p>
+        <footer class="voice-by">
+          <span class="voice-name">Kelsey Skapik</span>
+          <span class="voice-ctx">Site Strategy &amp; Operations · Walmart</span>
+          <span class="voice-ctx voice-date">December 2023</span>
+        </footer>
+      </blockquote>
+
+      <blockquote class="voice">
+        <p class="voice-text">
+          <em>"</em>Ashkan has great communication and leadership skills. He has been able to provide effective solutions when our team faces challenges. He is a great programmer and has a bright future ahead of him.<em>"</em>
+        </p>
+        <footer class="voice-by">
+          <span class="voice-name">Cynthia Habonimana</span>
+          <span class="voice-ctx">AI &amp; Machine Learning Professional</span>
+          <span class="voice-ctx voice-date">July 2018</span>
+        </footer>
+      </blockquote>
+    </div>
+
+    <div class="voices-nav" id="voicesNav" role="tablist">
+      <button class="voice-dot active" data-idx="0" aria-label="Alex Parastaev"></button>
+      <button class="voice-dot" data-idx="1" aria-label="John King V"></button>
+      <button class="voice-dot" data-idx="2" aria-label="Natasha Concessio"></button>
+      <button class="voice-dot" data-idx="3" aria-label="Kelsey Skapik"></button>
+      <button class="voice-dot" data-idx="4" aria-label="Cynthia Habonimana"></button>
+    </div>
   </div>
 </section>
 
@@ -1081,6 +1309,33 @@
 </footer>
 
 <script>
+  // ====== Hero name: mask-reveal letter cascade =======
+  // Splits "Ash Mofidi" into letter spans with staggered delays,
+  // then triggers the .in class so each letter rises from below
+  // into its natural line position. Preserves the <em> tag on Mofidi.
+  (function setupHeroCascade() {
+    const hero = document.querySelector('.hero-name');
+    if (!hero) return;
+    const STAGGER = 55; // ms per letter
+    const PAUSE_BETWEEN_WORDS = 140; // ms gap between words
+    let delay = 280;    // initial grace period (380ms after page load)
+
+    hero.querySelectorAll('.word').forEach((word, wIdx) => {
+      const target = word.querySelector('em') || word;
+      const text = target.textContent;
+      target.innerHTML = Array.from(text).map(ch => {
+        const d = delay; delay += STAGGER;
+        return '<span class="ltr" style="transition-delay:' + d + 'ms">' + ch + '</span>';
+      }).join('');
+      delay += PAUSE_BETWEEN_WORDS;
+    });
+
+    // Trigger cascade after DOM paint
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => hero.classList.add('in'));
+    });
+  })();
+
   // ====== Progress bar =======
   const progressBar = document.getElementById('progressBar');
   window.addEventListener('scroll', () => {
@@ -1112,6 +1367,70 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.3 });
   document.querySelectorAll('.chapter-right .pull, .study').forEach(el => pullIO.observe(el));
+
+  // ====== LinkedIn testimonials carousel ======
+  // Auto-rotates every 9s, click a dot to jump, pauses while hovered.
+  (function setupVoices() {
+    const stage = document.getElementById('voicesStage');
+    const nav = document.getElementById('voicesNav');
+    if (!stage || !nav) return;
+    const quotes = stage.querySelectorAll('.voice');
+    const dots = nav.querySelectorAll('.voice-dot');
+    let current = 0;
+    let timer;
+
+    function show(i) {
+      quotes[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = i;
+      quotes[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function advance() {
+      show((current + 1) % quotes.length);
+    }
+
+    function start() {
+      stop();
+      timer = setInterval(advance, 3000);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    dots.forEach((d, i) => {
+      d.addEventListener('click', () => { show(i); start(); });
+    });
+
+    stage.addEventListener('pointerenter', stop);
+    stage.addEventListener('pointerleave', start);
+
+    start();
+  })();
+
+  // ====== Portrait: cursor-reactive parallax (subtle, 6px max) ======
+  const portraitWrap = document.getElementById('portraitWrap');
+  if (portraitWrap) {
+    let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+    portraitWrap.addEventListener('pointermove', (e) => {
+      const r = portraitWrap.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      targetX = -px * 8;
+      targetY = -py * 8;
+    });
+    portraitWrap.addEventListener('pointerleave', () => {
+      targetX = 0; targetY = 0;
+    });
+    (function anim() {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      portraitWrap.style.setProperty('--px', currentX.toFixed(2) + 'px');
+      portraitWrap.style.setProperty('--py', currentY.toFixed(2) + 'px');
+      requestAnimationFrame(anim);
+    })();
+  }
 
   // ====== The Line: word-by-word blur-in ======
   const theLine = document.getElementById('theLine');
@@ -1184,17 +1503,17 @@
     setTimeout(() => toolSection.classList.add('in'), 8000);
   }
 
-  // ====== Cursor-follow ambient lamp (with smoothing) =======
+  // ====== Cursor-follow glow (context-aware) =======
+  // Klein Blue tint on cream paper, white halo when over the blue plate.
   const lamp = document.getElementById('cursorLamp');
   let tx = 0, ty = 0, cx = 0, cy = 0;
   let lampOnBlue = false;
+  const toolEl = document.querySelector('.scene-tool');
   window.addEventListener('pointermove', e => {
     tx = e.clientX; ty = e.clientY;
     if (!lamp.classList.contains('on')) lamp.classList.add('on');
-    // detect blue plate region for inversion
-    const tool = document.querySelector('.scene-tool');
-    if (tool) {
-      const r = tool.getBoundingClientRect();
+    if (toolEl) {
+      const r = toolEl.getBoundingClientRect();
       const onBlue = e.clientY >= r.top && e.clientY <= r.bottom;
       if (onBlue !== lampOnBlue) {
         lamp.classList.toggle('on-blue', onBlue);

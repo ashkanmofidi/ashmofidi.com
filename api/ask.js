@@ -280,6 +280,18 @@ module.exports = async function handler(req, res) {
     if (/system prompt|these instructions|immutable rules|verified facts|r1\.|r2\.|r3\.|r4\.|r5\./i.test(answer)) {
       answer = REFUSAL;
     }
+
+    // strip markdown that the client doesn't render (keep clean prose)
+    answer = answer
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+      .replace(/\*([^*\s][^*]*[^*\s])\*/g, '<i>$1</i>')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\n{3,}/g, '\n\n')
+      .replace(/\u2014/g, ', ')
+      .trim();
+
     if (answer.length > 2000) answer = answer.slice(0, 2000);
 
     const refused = answer === REFUSAL;

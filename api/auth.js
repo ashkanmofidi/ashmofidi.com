@@ -24,6 +24,7 @@ module.exports = async function handler(req, res) {
   if (action === 'config' && req.method === 'GET') {
     return res.status(200).json({
       googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+      passwordAvailable: Boolean(process.env.ADMIN_PASSWORD && process.env.JWT_SECRET),
     });
   }
 
@@ -38,6 +39,39 @@ module.exports = async function handler(req, res) {
 
   if (action === 'logout' && req.method === 'POST') {
     clearSessionCookie(res);
+    return res.status(200).json({ ok: true });
+  }
+
+  if (action === 'password' && req.method === 'POST') {
+    const secret = process.env.JWT_SECRET;
+    const expected = process.env.ADMIN_PASSWORD;
+    if (!secret || !expected) {
+      return res.status(503).json({ error: 'auth_not_configured' });
+    }
+    let body = req.body;
+    if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
+    body = body || {};
+    const pw = typeof body.password === 'string' ? body.password : '';
+    if (!pw) return res.status(400).json({ error: 'missing_password' });
+
+    const a = Buffer.from(pw);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length) {
+      await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
+      return res.status(401).json({ error: 'invalid_password' });
+    }
+    const { timingSafeEqual } = require('crypto');
+    if (!timingSafeEqual(a, b)) {
+      await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
+      return res.status(401).json({ error: 'invalid_password' });
+    }
+    const adminEmail = [...adminEmails()][0] || 'admin@ashmofidi.com';
+    const now = Math.floor(Date.now() / 1000);
+    const jwt = signJwt({
+      sub: adminEmail, email: adminEmail, name: 'Ash', via: 'password',
+      iat: now, exp: now + COOKIE_MAX_AGE,
+    }, secret);
+    setSessionCookie(res, jwt);
     return res.status(200).json({ ok: true });
   }
 

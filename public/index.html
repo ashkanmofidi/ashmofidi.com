@@ -244,8 +244,11 @@
   }
 
   .chips {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 24px; align-items: center;
+    display: flex; gap: 10px;
+    margin-top: 24px; align-items: center; flex-wrap: wrap;
+  }
+  .chip-row {
+    display: flex; flex-wrap: wrap; gap: 8px; flex: 1;
   }
   .chip {
     background: transparent;
@@ -256,7 +259,10 @@
     font-family: inherit; font-weight: 300; font-size: 13px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(.2,.8,.2,1);
+    opacity: 0; transform: translateY(4px);
+    animation: chipIn 0.5s cubic-bezier(.2,.8,.2,1) forwards;
   }
+  @keyframes chipIn { to { opacity: 1; transform: none; } }
   .chip:hover {
     border-color: var(--persimmon);
     color: var(--ink);
@@ -265,9 +271,24 @@
   }
   .chip-label {
     font-size: 11px; color: var(--ink-faint);
-    margin-right: 8px; font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.12em; text-transform: uppercase;
   }
+  .chip-shuffle {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    width: 32px; height: 32px; border-radius: 50%;
+    font-size: 14px; cursor: pointer;
+    transition: all 0.25s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chip-shuffle:hover { border-color: var(--persimmon); color: var(--persimmon); transform: rotate(180deg); }
+  .chip-hint {
+    margin-top: 14px; font-size: 13px; color: var(--ink-dim);
+    font-family: inherit; font-weight: 300;
+  }
+  .chip-hint b { color: var(--ink); font-weight: 400; }
 
   .answer-wrap {
     max-width: 960px; margin: 0 auto;
@@ -510,6 +531,114 @@
   }
   footer a:hover { color: var(--persimmon); }
 
+  /* Omen card */
+  .omen {
+    position: fixed; right: 24px; bottom: 24px; z-index: 200;
+    width: 380px; max-width: calc(100vw - 32px);
+    background: linear-gradient(180deg, rgba(26,22,19,0.96), rgba(16,14,11,0.98));
+    border: 1px solid rgba(255,106,61,0.35);
+    border-radius: 18px;
+    padding: 24px 22px 18px;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,240,230,0.03) inset, 0 0 40px -10px rgba(255,106,61,0.25);
+    opacity: 0; transform: translateY(24px) scale(0.96);
+    transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1);
+    backdrop-filter: blur(16px);
+    pointer-events: none;
+  }
+  .omen.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .omen.dismissing { opacity: 0; transform: translateY(12px) scale(0.98); }
+
+  .omen::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit;
+    background: conic-gradient(from 120deg, transparent 0deg, rgba(255,106,61,0.5) 60deg, transparent 180deg, transparent 360deg);
+    mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+    mask-composite: exclude; -webkit-mask-composite: xor;
+    padding: 1px; pointer-events: none; opacity: 0.6;
+    animation: omenShimmer 8s linear infinite;
+  }
+  @keyframes omenShimmer { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  .omen-sparkle {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; overflow: hidden; border-radius: inherit;
+  }
+  .omen-sparkle span {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--persimmon); opacity: 0;
+    box-shadow: 0 0 8px var(--persimmon);
+  }
+  @keyframes omenSpark {
+    0% { opacity: 0; transform: scale(0); }
+    30% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.4) translateY(-20px); }
+  }
+
+  .omen-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--persimmon); margin-bottom: 14px;
+  }
+  .omen-label { display: inline-flex; align-items: center; gap: 8px; }
+  .omen-label::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--persimmon);
+    box-shadow: 0 0 8px var(--persimmon);
+    animation: breathe 2s ease-in-out infinite;
+  }
+  .omen-dismiss {
+    background: none; border: none; color: var(--ink-faint);
+    font-size: 18px; cursor: pointer; padding: 4px 8px;
+    border-radius: 6px; transition: all 0.2s;
+    line-height: 1;
+  }
+  .omen-dismiss:hover { color: var(--ink); background: rgba(245,240,230,0.06); }
+
+  .omen-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300; font-style: italic;
+    font-size: 19px; line-height: 1.42;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 6px 0 20px;
+    min-height: 80px;
+    font-variation-settings: "opsz" 144;
+  }
+  .omen-text .word {
+    display: inline-block; opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s cubic-bezier(.2,.8,.2,1), transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .omen-text .word.in { opacity: 1; transform: none; }
+
+  .omen-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .omen-meta .keep {
+    background: none; border: 1px solid var(--line-strong); color: var(--ink-dim);
+    padding: 6px 12px; border-radius: 999px;
+    font-family: inherit; font-size: 10px; letter-spacing: 0.14em;
+    cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+  }
+  .omen-meta .keep:hover { border-color: var(--persimmon); color: var(--persimmon); }
+  .omen-meta .keep.kept { color: var(--persimmon); border-color: var(--persimmon); background: rgba(255,106,61,0.05); }
+
+  .omen-ornament {
+    position: absolute; top: -12px; left: 22px;
+    font-family: 'Fraunces', serif; font-size: 28px;
+    color: var(--persimmon); background: var(--bg);
+    padding: 0 10px; line-height: 1;
+    text-shadow: 0 0 20px rgba(255,106,61,0.5);
+  }
+
+  @media (max-width: 520px) {
+    .omen { left: 16px; right: 16px; bottom: 16px; width: auto; padding: 20px 18px 14px; }
+    .omen-text { font-size: 17px; }
+  }
+
   @media (max-width: 720px) {
     header { padding: 20px 20px; }
     .hero { padding: 56px 20px 24px; }
@@ -563,11 +692,10 @@
 
   <div class="chips" id="chips">
     <span class="chip-label">Try</span>
-    <button class="chip" data-q="biggest">What's the biggest platform you've shipped?</button>
-    <button class="chip" data-q="patent">Tell me about the patent.</button>
-    <button class="chip" data-q="fintech">Why should a fintech hire you?</button>
-    <button class="chip" data-q="nights">Nights &amp; weekends?</button>
+    <div class="chip-row" id="chip-row"></div>
+    <button class="chip-shuffle" id="chip-shuffle" aria-label="Shuffle suggestions" title="Shuffle suggestions">↻</button>
   </div>
+  <div class="chip-hint">Or <b>type anything</b>. The chat knows my full resume, my work, my story. Ask the hard stuff.</div>
 </section>
 
 <section class="answer-wrap">
@@ -576,10 +704,10 @@
 
 <section class="stats" aria-label="Key metrics">
   <div class="stats-grid">
-    <div class="stat"><div class="stat-num">$50M<em>+</em></div><div class="stat-label">GMV impact shipped</div></div>
-    <div class="stat"><div class="stat-num">30<em>&times;</em></div><div class="stat-label">Seller growth, cross-border</div></div>
-    <div class="stat"><div class="stat-num">1</div><div class="stat-label">Patent pending at USPTO</div></div>
-    <div class="stat"><div class="stat-num">10<em>+</em></div><div class="stat-label">Years building platforms</div></div>
+    <div class="stat"><div class="stat-num" data-target="50">$<span class="num-value">0</span>M<em>+</em></div><div class="stat-label">GMV impact shipped</div></div>
+    <div class="stat"><div class="stat-num" data-target="30"><span class="num-value">0</span><em>×</em></div><div class="stat-label">Seller growth, cross-border</div></div>
+    <div class="stat"><div class="stat-num" data-target="1"><span class="num-value">0</span></div><div class="stat-label">Patent pending at USPTO</div></div>
+    <div class="stat"><div class="stat-num" data-target="10"><span class="num-value">0</span><em>+</em></div><div class="stat-label">Years building platforms</div></div>
   </div>
 </section>
 
@@ -646,6 +774,20 @@
   </div>
 </section>
 
+<div class="omen" id="omen" role="dialog" aria-live="polite" aria-label="A daily omen from Ash">
+  <span class="omen-ornament" aria-hidden="true">✦</span>
+  <div class="omen-sparkle" aria-hidden="true"></div>
+  <div class="omen-head">
+    <span class="omen-label"><span id="omen-day-label">An omen for you</span></span>
+    <button class="omen-dismiss" id="omen-dismiss" aria-label="Dismiss">×</button>
+  </div>
+  <div class="omen-text" id="omen-text"></div>
+  <div class="omen-meta">
+    <span id="omen-cycle"></span>
+    <button class="keep" id="omen-keep" aria-label="Copy this omen">Keep it</button>
+  </div>
+</div>
+
 <footer id="contact">
   <div><a href="mailto:ashkan.mofidi@gmail.com">ashkan.mofidi@gmail.com</a></div>
   <div>&copy; Ash Mofidi</div>
@@ -669,13 +811,99 @@
       q: "Nights & weekends?",
       text: "Two things, both live. <b>Becoming</b> [4] is a focus timer I designed, built, and shipped end-to-end. React, Vercel, Google OAuth, Redis, cross-device sync. Real users. Live at becoming.ashmofidi.com. <b>PM Command Center</b> [5] is a personal agent system I'm shipping with Claude Code to automate my work as Lead PM at Radar. 4-layer pipeline, 11-table SQLite schema, 24-hour rhythm. The point isn't that either will be a company. It's that staff PMs who still ship code on Sundays are a small club, and the work shows."
     },
+    management: {
+      q: "What's your management style?",
+      text: "I lead from clarity, not authority. On the cross-border platform [3] I had 20 engineers, designers, and analysts across four time zones. My playbook: a crisp written spec everyone can disagree with on paper before anyone argues in a meeting, weekly decisions-made log so momentum is visible, and a bias for letting the person closest to the code make the call. I protect focus ruthlessly. I give credit loudly."
+    },
+    failure: {
+      q: "A time you failed?",
+      text: "Early PriceX [1] I pushed to ship before the ML confidence intervals were tuned. Prices moved wrong on a long-tail category for 47 minutes. Rolled back, ran a root cause, wrote the postmortem. The fix became a permanent guardrail. I still think shipping fast was right. I just didn't give the safety rails the same urgency as the feature. Lesson: the confidence layer IS the feature."
+    },
+    priorities: {
+      q: "How do you prioritize?",
+      text: "Three-filter stack. <b>1.</b> What does the data demand today? (often the smallest problem with the biggest compounding cost). <b>2.</b> What unlocks two or more other teams this quarter? (leverage beats effort). <b>3.</b> What do I regret not shipping six months ago? (gut check for courage). If a task doesn't pass two of three, it's parked, not killed. On PriceX [1] this is how we got from 24-hour latency to under 1 minute in the first quarter instead of the second."
+    },
+    leaving: {
+      q: "Why are you looking?",
+      text: "I'm hunting for the next zero-to-one where AI product meets pricing, risk, or compliance at scale. I've had 10+ years shipping platforms people bet their businesses on. Walmart taught me rigor. I'm ready for the velocity of FAANG or the stakes of fintech. If you're hiring a Staff or Lead PM for that, let's talk."
+    },
+    ai_compliance: {
+      q: "AI + compliance?",
+      text: "The brand classification patent [2] survived legal review because I designed for it from day one. Three principles. <b>1.</b> Every model decision produces a structured rationale the auditor can read. <b>2.</b> The LLM judge never sees private identifiers, only normalized features. <b>3.</b> We ship a deterministic fallback path for every AI decision, so if the model goes dark, the business doesn't stop. That's the whole play."
+    },
+    crossfn: {
+      q: "A cross-functional project you led?",
+      text: "Cross-border expansion to Mexico and Canada. [3] I had engineering, legal, tax, ops, and international go-to-market on one Gantt. I did weekly 30-minute async decision syncs instead of meetings, wrote a single source-of-truth doc with a decision log, and blocked nothing on consensus. We hit $5M GMV in 90 days and unlocked a $6B market opportunity. The hard part wasn't the code. It was keeping legal and engineering using the same vocabulary for 'risk.'"
+    },
+    zeroone: {
+      q: "Your zero-to-one playbook?",
+      text: "Six moves. <b>1.</b> Write the press release before the code. <b>2.</b> Find the one customer whose pain is burning enough to rent their problem for a quarter. <b>3.</b> Ship a spike in two weeks that embarrasses the roadmap. <b>4.</b> Let the metric you'll be fired over be the one you show the team every Monday. <b>5.</b> Build the narrative before the dashboard. <b>6.</b> Decide in advance what failure would look like so you can tell when you've avoided it. This is how I shipped all three Walmart platforms. [1][2][3]"
+    },
+    different: {
+      q: "How are you different?",
+      text: "Three specific intersections. <b>1.</b> AI product at patent depth [2] plus global commerce at scale [1][3]. That combination is rare. <b>2.</b> I still ship code on Sundays. [4][5] Most staff PMs stopped a decade ago. <b>3.</b> I've survived compliance, legal, ML, and ops in the same roadmap without losing velocity. The polite phrase is 'stakeholder management.' The honest one is 'I will get in a room and talk anyone out of their 'no'.'"
+    },
+    interesting: {
+      q: "Most interesting thing you've worked on?",
+      text: "The PM Command Center [5]. It's my personal agent system, built with Claude Code, that automates my PM workflow as Lead PM at Radar. A 4-layer pipeline, 11-table SQLite schema, 24-hour rhythm. It writes my meeting prep, drafts my stakeholder updates, and flags decisions I've been ducking. It's the most honest artifact of how I actually think about product."
+    },
+    stack: {
+      q: "What's in your stack?",
+      text: "Tactical: Python, SQL, Tableau, TensorFlow for the ML work [2], JIRA and Confluence for the team. Strategic: Claude Code and prompt-driven agents [5], Figma for quick mocks, Notion for docs, and a personal SQLite that holds every decision I've ever recorded. I read widely. I write every day. The best tool I use is still the 30-minute walk."
+    },
+    strengths: {
+      q: "What are your strengths?",
+      text: "Cross-functional alignment at scale (200+ engineers on PriceX [1], 20-person team on cross-border [3]), AI product depth that survives legal review [2], and a founder's bias for shipping. I can sit in a legal meeting, an ML roadmap review, and a category leadership call in the same afternoon and keep the same story."
+    },
+    weaknesses: {
+      q: "Your weaknesses?",
+      text: "I underestimate the time stakeholder alignment takes compared to the time the ML roadmap takes. When I'm excited about a technical problem, I can miss the political one. I've gotten better with a rule: double every alignment estimate and still start the conversation a week earlier. It's still the thing I watch."
+    },
+    walmart: {
+      q: "What did you do at Walmart?",
+      text: "Five-plus years, three zero-to-one platforms. First pricing [1]: PriceX, seven countries, 75% manual work cut, 24h to under 1 min latency. Then brand classification [2]: patent pending, $10B in discrepancies resolved, counterfeits cut 40%, $50M+ incremental GMV. Then cross-border commerce [3]: $6B market opportunity unlocked, $5M GMV in 90 days, seller onboarding 30X. I kept getting promoted because I kept finding the next platform that didn't exist yet."
+    },
+    radar: {
+      q: "What do you do at Radar?",
+      text: "Lead PM. I can't go into product specifics here, but the role is where my Walmart experience compounds: AI-product depth meeting a real business. My side project PM Command Center [5] is partly me automating my own Radar workflow so I can think about product instead of paperwork."
+    },
+    education: {
+      q: "Your education?",
+      text: "B.S. Computer Science (San Francisco State), B.S. Mechanical Engineering (CSU Long Beach), PM Certificate (Cornell). The ME degree is the one people don't expect. It's also the one that taught me systems thinking, which is 80% of how I do product. I also held the President's Leadership Fellowship at SF State and was President of the Persian Student Association at Long Beach."
+    },
+    remote: {
+      q: "Are you open to remote or relocation?",
+      text: "Based in the Bay Area. Open to strong teams anywhere, hybrid or remote-friendly. For the right role I'm relocatable. Not optimizing for location, optimizing for leverage: the role where my AI product and global commerce chops compound the fastest."
+    },
+    sarcasm: {
+      q: null,
+      text: "Ha, I hear the tone. Fair. The live chat (which can actually banter back) needs my Anthropic API key plugged in. Until then, try one of the suggested prompts or email me: <a href=\"mailto:ashkan.mofidi@gmail.com\" style=\"color:var(--persimmon)\">ashkan.mofidi@gmail.com</a>."
+    },
     default: {
       q: null,
-      text: "That's not something I can speak to here. Reach me at <a href=\"mailto:ashkan.mofidi@gmail.com\" style=\"color:var(--persimmon)\">ashkan.mofidi@gmail.com</a>."
+      text: "The live chat isn't connected yet (needs an API key). Good news: you can ask about the <b>biggest platform</b>, the <b>patent</b>, <b>cross-border</b>, <b>management style</b>, <b>failures</b>, <b>priorities</b>, <b>why I'm looking</b>, <b>AI + compliance</b>, <b>my stack</b>, <b>strengths</b>, <b>weaknesses</b>, <b>Walmart</b>, or <b>Radar</b>. Or email me directly: <a href=\"mailto:ashkan.mofidi@gmail.com\" style=\"color:var(--persimmon)\">ashkan.mofidi@gmail.com</a>."
     }
   };
 
   const citeToCase = { "1": "pricing", "2": "brand", "3": "xborder", "4": "becoming", "5": "cmd" };
+
+  const CHIP_POOL = [
+    { key: 'biggest', label: "Biggest platform you've shipped?" },
+    { key: 'patent', label: "Tell me about the patent." },
+    { key: 'fintech', label: "Why should a fintech hire you?" },
+    { key: 'nights', label: "Nights & weekends?" },
+    { key: 'management', label: "What's your management style?", q: "What's your management style and how do you lead teams?" },
+    { key: 'failure', label: "A time you failed?", q: "Tell me about a time you failed or made the wrong call." },
+    { key: 'priorities', label: "How do you prioritize?", q: "How do you prioritize when everything's on fire?" },
+    { key: 'leaving', label: "Why are you leaving?", q: "Why are you looking for a new role?" },
+    { key: 'ai', label: "AI + compliance?", q: "How do you ship AI products that survive compliance review?" },
+    { key: 'crossfn', label: "Cross-functional win", q: "Tell me about a cross-functional project you led." },
+    { key: 'zeroone', label: "Zero-to-one playbook", q: "What's your playbook for zero-to-one platforms?" },
+    { key: 'different', label: "How are you different?", q: "How are you different from other Staff PMs?" },
+    { key: 'interesting', label: "Most interesting thing?", q: "What's the most interesting thing you've ever worked on?" },
+    { key: 'stack', label: "What's in your stack?", q: "What tools and tech do you actually use day to day?" },
+  ];
+  const CHIPS_VISIBLE = 5;
 
   const askForm = document.getElementById('ask-form');
   const askInput = document.getElementById('ask-input');
@@ -683,10 +911,27 @@
   const answerEl = document.getElementById('answer');
   const hero = document.getElementById('hero');
   const monogram = document.getElementById('monogram');
-  const chips = document.querySelectorAll('.chip');
   const cases = document.querySelectorAll('.case');
   const spotlight = document.getElementById('spotlight');
+  const chipRow = document.getElementById('chip-row');
+  const chipShuffle = document.getElementById('chip-shuffle');
+  let chips = [];
   let streaming = false;
+
+  function renderChips() {
+    const shuffled = [...CHIP_POOL].sort(() => Math.random() - 0.5).slice(0, CHIPS_VISIBLE);
+    chipRow.innerHTML = shuffled.map((c, i) => `<button class="chip" data-q="${c.key}" data-fullq="${(c.q || c.label).replace(/"/g,'&quot;')}" style="animation-delay:${i * 60}ms">${c.label}</button>`).join('');
+    chips = chipRow.querySelectorAll('.chip');
+    chips.forEach(c => c.addEventListener('click', () => {
+      const key = c.dataset.q;
+      const q = c.dataset.fullq;
+      track('chip_click', { key });
+      askInput.value = '';
+      streamAnswer(key, q);
+    }));
+  }
+  if (chipRow) renderChips();
+  if (chipShuffle) chipShuffle.addEventListener('click', renderChips);
 
   window.addEventListener('pointermove', e => {
     spotlight.style.setProperty('--mx', e.clientX + 'px');
@@ -711,10 +956,30 @@
 
   function classify(text) {
     const t = text.toLowerCase();
-    if (/(biggest|largest|pricex|pricing|ship|platform|walmart)/.test(t)) return 'biggest';
-    if (/(patent|brand|classif|ip|invent|uspto)/.test(t)) return 'patent';
+    if (/prove it|sounds (fake|made|suspicious)|impressive \/s|ok boomer|gate\s?keep/.test(t)) return 'sarcasm';
+    if (/\b(cap|sus|bs|bullshit|lol|lmao|yeah right|oh really)\b/.test(t)) return 'sarcasm';
+    if (/\b(another (ai )?pm|all that|think you'?re|sarcas)\b/.test(t)) return 'sarcasm';
+    if (/(weakness|flaw|bad at|not good at)/.test(t)) return 'weaknesses';
+    if (/(strength|strong at|good at|best at|superpower)/.test(t)) return 'strengths';
+    if (/(manage|leadership|lead(ing)?\b|team|mentor|coach)/.test(t)) return 'management';
+    if (/(fail|wrong|mistake|regret|hardest)/.test(t)) return 'failure';
+    if (/(priorit|backlog|on fire|too much|overload|juggle)/.test(t)) return 'priorities';
+    if (/(leaving|looking|next role|searching|hunt|why (a|the) new|why move)/.test(t)) return 'leaving';
+    if (/(ai.*complian|complian.*ai|legal review|risk|audit|governance)/.test(t)) return 'ai_compliance';
+    if (/(cross.?function|stakeholder|alignment|coordinat|collaborat)/.test(t)) return 'crossfn';
+    if (/(zero.?to.?one|0.?to.?1|greenfield|new platform|from scratch)/.test(t)) return 'zeroone';
+    if (/(different|unique|stand out|separate you|why you)/.test(t)) return 'different';
+    if (/(interesting|favorite|most fun|coolest|proud(est)?)/.test(t)) return 'interesting';
+    if (/(stack|tools|tech|languages|skills|use)/.test(t)) return 'stack';
+    if (/(walmart|wmt)/.test(t)) return 'walmart';
+    if (/(radar|current role|current job|right now)/.test(t)) return 'radar';
+    if (/(education|school|degree|college|university|cornell|sfsu|csulb|long beach)/.test(t)) return 'education';
+    if (/(remote|relocat|location|based|where.*live|bay area)/.test(t)) return 'remote';
+    if (/(biggest|largest|pricex|pricing|ship|platform)/.test(t)) return 'biggest';
+    if (/(patent|brand|classif|ip\b|invent|uspto|brandhub)/.test(t)) return 'patent';
     if (/(fintech|stripe|ramp|brex|mercury|bank|payment|why.*hire|should.*hire)/.test(t)) return 'fintech';
-    if (/(night|weekend|side|becoming|command|focus|timer)/.test(t)) return 'nights';
+    if (/(night|weekend|side project|becoming|command center|focus timer)/.test(t)) return 'nights';
+    if (/(cross.?border|mexico|canada|kyc|sanction|fx\b|settlement)/.test(t)) return 'crossfn';
     return 'default';
   }
 
@@ -805,14 +1070,7 @@
     askInput.value = '';
   });
 
-  chips.forEach(c => {
-    c.addEventListener('click', () => {
-      const key = c.dataset.q;
-      const qText = fallbackAnswers[key].q;
-      askInput.value = '';
-      streamAnswer(key, qText);
-    });
-  });
+  // chip clicks wired in renderChips()
 
   window.addEventListener('keydown', e => {
     const isShortcut = (e.key === '/' && !e.metaKey && !e.ctrlKey && document.activeElement !== askInput)
@@ -831,14 +1089,37 @@
     return false;
   }
 
+  function animateCount(el) {
+    const numEl = el.querySelector('.num-value');
+    if (!numEl) return;
+    const target = parseInt(el.querySelector('.stat-num').dataset.target, 10);
+    if (!target) { numEl.textContent = '0'; return; }
+    const duration = 1400;
+    const start = performance.now();
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    function tick(now) {
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / duration);
+      const eased = easeOut(t);
+      const val = Math.round(target * eased);
+      numEl.textContent = String(val);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.style.opacity = 1;
         e.target.style.transform = 'translateY(0)';
+        if (e.target.classList.contains('stat') && !e.target.dataset.counted) {
+          e.target.dataset.counted = '1';
+          animateCount(e.target);
+        }
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.25 });
   document.querySelectorAll('.stat, .case, .quote, .earlier, .edu').forEach(el => {
     el.style.opacity = 0;
     el.style.transform = 'translateY(16px)';
@@ -857,14 +1138,91 @@
     } catch(e) {}
   }
 
-  chips.forEach(c => c.addEventListener('click', () => track('chip_click', { key: c.dataset.q })));
   askForm.addEventListener('submit', () => track('ask_submit', {}));
+
+  // --- Daily Omen ---
+  async function fetchOmen() {
+    try {
+      const r = await fetch('/api/omen', { credentials: 'omit' });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch { return null; }
+  }
+
+  function splitWords(text) {
+    return text.split(/(\s+)/).map(t => t.trim() ? `<span class="word">${t.replace(/[<>]/g,'')}</span>` : t).join('');
+  }
+
+  function spawnSparkles(container, n) {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('span');
+      const left = 10 + Math.random() * 80;
+      const top = 20 + Math.random() * 60;
+      const delay = Math.random() * 0.8;
+      s.style.left = left + '%';
+      s.style.top = top + '%';
+      s.style.animation = `omenSpark 1.6s ${delay}s ease-out forwards`;
+      frag.appendChild(s);
+    }
+    container.appendChild(frag);
+    setTimeout(() => container.innerHTML = '', 3000);
+  }
+
+  async function renderOmen() {
+    const data = await fetchOmen();
+    if (!data || !data.text) return;
+    const dismissedKey = 'omen-dismissed-' + data.day + '-' + (data.cycle || 1);
+    if (sessionStorage.getItem(dismissedKey)) return;
+
+    const omenEl = document.getElementById('omen');
+    const dayLabel = document.getElementById('omen-day-label');
+    const cycleEl = document.getElementById('omen-cycle');
+    const textEl = document.getElementById('omen-text');
+    const keepBtn = document.getElementById('omen-keep');
+    const dismissBtn = document.getElementById('omen-dismiss');
+    const sparkles = omenEl.querySelector('.omen-sparkle');
+
+    const greeting = data.returning
+      ? (data.sameDay ? 'Your omen today' : 'What came next · Day ' + data.day)
+      : 'An omen for you · Day 1';
+    dayLabel.textContent = greeting;
+    cycleEl.textContent = (data.cycle > 1 ? 'cycle ' + data.cycle + ' · ' : '') + 'ash mofidi';
+    textEl.innerHTML = splitWords(data.text);
+
+    setTimeout(() => {
+      omenEl.classList.add('show');
+      spawnSparkles(sparkles, 14);
+      const words = textEl.querySelectorAll('.word');
+      words.forEach((w, i) => setTimeout(() => w.classList.add('in'), 260 + i * 45));
+    }, 1400);
+
+    keepBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(data.text + '  · via ashmofidi.com');
+        keepBtn.textContent = 'Copied';
+        keepBtn.classList.add('kept');
+        setTimeout(() => { keepBtn.textContent = 'Keep it'; keepBtn.classList.remove('kept'); }, 2000);
+      } catch {
+        keepBtn.textContent = 'Copy failed';
+      }
+    });
+
+    const dismiss = () => {
+      sessionStorage.setItem(dismissedKey, '1');
+      omenEl.classList.remove('show');
+      omenEl.classList.add('dismissing');
+      setTimeout(() => omenEl.style.display = 'none', 700);
+    };
+    dismissBtn.addEventListener('click', dismiss);
+  }
 
   window.addEventListener('load', () => {
     track('pageview', { ref: document.referrer || '', path: location.pathname });
     const q = new URLSearchParams(location.search).get('q');
     if (q) track('deep_link', { q });
     if (!runDeepLink()) setTimeout(() => askInput.focus(), 500);
+    renderOmen();
   });
 </script>
 </body>

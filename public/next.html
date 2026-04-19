@@ -14,6 +14,13 @@
 <meta property="og:description" content="Product Manager. Three zero-to-one platforms. One patent. Looking for the next worth building." />
 <meta property="og:image" content="https://ashmofidi.com/og-image.png" />
 
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Ash Mofidi","alternateName":["Ashkan Mofidi","Ashkon Mofidi","Ashkun Mofidi"],"url":"https://ashmofidi.com","image":"https://ashmofidi.com/og-image.png","jobTitle":"Staff AI Product Manager","description":"Staff AI Product Manager with 10+ years building zero-to-one AI/ML platforms. Patent pending in AI/ML brand classification. $50M+ GMV impact shipped.","knowsAbout":["AI/ML Product Strategy","Zero-to-One Platform Building","Global Commerce","Cross-Border Trade","Pricing Intelligence","Data Platform Architecture","Enterprise Product Management","Brand Classification","Compliance-safe AI"],"hasCredential":[{"@type":"EducationalOccupationalCredential","credentialCategory":"degree","name":"B.S. Computer Science","recognizedBy":{"@type":"Organization","name":"San Francisco State University"}},{"@type":"EducationalOccupationalCredential","credentialCategory":"degree","name":"B.S. Mechanical Engineering","recognizedBy":{"@type":"Organization","name":"California State University, Long Beach"}},{"@type":"EducationalOccupationalCredential","credentialCategory":"certificate","name":"Product Management Certificate","recognizedBy":{"@type":"Organization","name":"Cornell University"}}],"alumniOf":[{"@type":"Organization","name":"San Francisco State University"},{"@type":"Organization","name":"California State University, Long Beach"},{"@type":"Organization","name":"Cornell University"}],"sameAs":["https://www.linkedin.com/in/ashkanmofidi/","https://github.com/ashkanmofidi","https://becoming.ashmofidi.com"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Ash Mofidi","url":"https://ashmofidi.com","description":"Portfolio of Ash Mofidi, Staff AI Product Manager. A decade of zero-to-one platforms."}
+</script>
+
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=ash3" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=ash3" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=ash3" />
@@ -448,6 +455,74 @@
   }
   .intro-text p b { color: var(--ink); font-weight: 500; }
 
+  /* ==================== SCENE 2.5: LOCATION DATELINE ==================== */
+  /* Minimalist location signal. Not a map. A typographic dateline with a
+     tiny abstracted SF Bay schematic, a pulsing cobalt dot on the peninsula,
+     coordinates, and a live PT clock. Cream-on-cream, zero visual pollution. */
+  .dateline {
+    max-width: 1100px;
+    margin: -60px auto -40px;
+    padding: 40px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px; flex-wrap: wrap;
+    position: relative;
+  }
+  .dateline::before, .dateline::after {
+    content: ""; flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, var(--line-strong), transparent);
+    min-width: 60px; max-width: 180px;
+  }
+  .dateline-geo {
+    color: var(--ink-2);
+    width: 120px; height: 72px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .dateline-geo svg { width: 100%; height: 100%; display: block; }
+  .dateline-dot {
+    fill: var(--red);
+  }
+  .dateline-pulse {
+    fill: none; stroke: var(--red); stroke-width: 1;
+    transform-origin: center;
+    animation: datelinePulse 3s ease-out infinite;
+  }
+  @keyframes datelinePulse {
+    0% { r: 3.5; opacity: 0.8; }
+    100% { r: 20; opacity: 0; }
+  }
+  .dateline-text {
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px; letter-spacing: 0.1em;
+    color: var(--ink-2); text-transform: uppercase;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .dateline-coord { color: var(--ink); font-weight: 500; }
+  .dateline-sep { color: var(--ink-4); }
+  .dateline-place { color: var(--red); font-weight: 500; }
+  .dateline-time {
+    color: var(--ink);
+    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .dateline-time::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: #3fae6a; box-shadow: 0 0 10px rgba(63,174,106,0.7);
+    animation: datelineLive 2.4s ease-in-out infinite;
+  }
+  @keyframes datelineLive {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @media (max-width: 640px) {
+    .dateline { padding: 32px 20px 20px; gap: 16px; }
+    .dateline::before, .dateline::after { display: none; }
+    .dateline-text { font-size: 13px; gap: 12px; justify-content: center; letter-spacing: 0.08em; }
+    .dateline-geo { width: 96px; height: 58px; }
+  }
+
   /* ==================== SCENE 3: THE LINE ==================== */
   .scene-line {
     padding: 180px 40px;
@@ -716,6 +791,67 @@
   }
   .beyond-text b { font-style: normal; color: var(--red); font-weight: 400; }
 
+  /* ==================== SCENE 8.2: NOW ====================
+     Derek-Sivers-style "now" page: what I'm thinking / reading /
+     building this month. Signals he's alive and paying attention.
+     Quiet layout, cream paper, single Fraunces italic accent.
+  */
+  .scene-now {
+    max-width: 920px;
+    padding: 120px 40px 100px;
+  }
+  .now-wrap { max-width: 760px; }
+  .now-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 32px;
+  }
+  .now-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--red);
+    margin-right: 10px; vertical-align: -1px;
+    box-shadow: 0 0 10px rgba(0,29,217,0.5);
+    animation: nowDotPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes nowDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
+  }
+  .now-head .eyebrow::before { display: none; }
+  .now-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 500;
+  }
+  .now-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(34px, 4.5vw, 56px);
+    line-height: 1.03; letter-spacing: -0.035em;
+    margin: 0 0 36px;
+    font-variation-settings: "opsz" 144;
+  }
+  .now-title em { font-style: italic; color: var(--red); }
+  .now-body p {
+    font-size: 18px; line-height: 1.72;
+    color: var(--ink-2);
+    margin-bottom: 22px;
+  }
+  .now-body p b { color: var(--ink); font-weight: 500; }
+  .now-link {
+    color: var(--red);
+    border-bottom: 1px solid rgba(0,29,217,0.35);
+    transition: border-color 0.2s;
+  }
+  .now-link:hover { border-color: var(--red); }
+  .now-foot {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; color: var(--ink-3);
+    font-style: italic;
+  }
+
   /* ==================== SCENE 8.5: LINKEDIN RECS (Sophie-black plate) ==================== */
   .scene-voices {
     background: var(--ink);
@@ -876,6 +1012,39 @@
   }
   .contact-links a:hover { color: var(--red); border-color: var(--red); }
   .contact-links a .arrow { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 18px; margin-left: 4px; }
+
+  /* Utility buttons: download resume + save vCard */
+  .contact-utility {
+    display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap;
+  }
+  .contact-util {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 20px 14px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+    transition: border-color 0.25s, transform 0.25s, background 0.25s;
+    background: transparent;
+  }
+  .contact-util:hover {
+    border-color: var(--red);
+    color: var(--red);
+    transform: translateY(-1px);
+    background: rgba(0,29,217,0.04);
+  }
+  .contact-util-ico {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--red);
+  }
+  .contact-util-ico svg { width: 100%; height: 100%; display: block; }
+  .contact-util-meta {
+    font-size: 10px; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 400;
+    margin-left: 6px; padding-left: 10px; border-left: 1px solid var(--line);
+  }
+  .contact-util:hover .contact-util-meta { color: var(--red); border-color: rgba(0,29,217,0.35); }
 
   /* ==================== SCENE 10: AI TOOL (full Klein Blue plate) ====================
      SIGNATURE MOVE #5: Cinematic reveal via overlay recession.
@@ -1047,7 +1216,7 @@
       <span class="word">Ash</span> <span class="word"><em>Mofidi</em></span>
     </h1>
     <p class="hero-sub">
-      <b>Ten years</b> building AI platforms that ship to millions. Three zero-to-one, one patent, $50M+ in GMV I can point at. Looking for the fourth worth building.
+      <b>Ten years</b> building complex global platforms that ship to millions. Three zero-to-one, one patent, $50M+ in GMV I can point at. Looking for the fourth worth building.
     </p>
   </div>
   <div class="hero-meta">
@@ -1090,8 +1259,27 @@
       I'm the PM who writes the first doc. Who recruits the founding engineers. Who sits with the lawyers at 9am and the ML team at 4pm and keeps the story the same in both rooms. Three zero-to-one platforms. One patent. <b>$50M+ in GMV I can point at.</b>
     </p>
     <p>
-      I'm looking for the next platform worth building, ideally where <b>AI meets pricing, risk, or compliance</b> at scale. FAANG or fintech, either compounds my bets.
+      Specifically hunting: the <b>AI product where compliance review is the hard part</b>, the <b>pricing platform where sub-second latency is the moat</b>, or the <b>cross-border system where regulation is the feature</b>. FAANG or fintech. Either one compounds my bets.
     </p>
+  </div>
+</section>
+
+<!-- SCENE 2.5: LOCATION DATELINE (editorial pause between intro and the-line) -->
+<section class="dateline" aria-label="Based in Silicon Valley, California, Pacific Time">
+  <div class="dateline-geo" aria-hidden="true">
+    <svg viewBox="0 0 88 54" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 8,8 C 12,14 9,22 14,28 C 18,33 22,37 28,40 L 36,42 L 46,41 L 56,36 L 64,28 L 70,18 L 74,10" opacity="0.55"/>
+      <path d="M 80,12 C 78,20 74,28 68,34 C 60,40 50,45 40,46 L 30,45 L 22,43" opacity="0.35"/>
+      <circle class="dateline-pulse" cx="50" cy="40" r="3.5"/>
+      <circle class="dateline-dot" cx="50" cy="40" r="3.5"/>
+    </svg>
+  </div>
+  <div class="dateline-text">
+    <span class="dateline-coord">37.39° N · 122.08° W</span>
+    <span class="dateline-sep">·</span>
+    <span class="dateline-place">Silicon Valley, CA</span>
+    <span class="dateline-sep">·</span>
+    <span class="dateline-time"><span id="pt-time">·</span> PT</span>
   </div>
 </section>
 
@@ -1236,6 +1424,23 @@
   </p>
 </section>
 
+<!-- SCENE 8.2: NOW - what I'm thinking / reading / building this month -->
+<section class="scene scene-now" id="now" aria-label="What I'm thinking about right now">
+  <div class="now-wrap">
+    <div class="now-head">
+      <span class="eyebrow"><span class="now-dot" aria-hidden="true"></span>Now</span>
+      <span class="now-date" id="nowDate">·</span>
+    </div>
+    <h2 class="now-title">What I'm thinking about <em>this month</em>.</h2>
+    <div class="now-body">
+      <p>I'm turning over one question: <b>what makes an AI feature defensible in commerce?</b> When the model is the moat. When the wrapper is. When neither is, and the moat has to be distribution. Most AI product work in 2026 will get humbled by this question. The teams that have thought carefully about it will compound.</p>
+      <p><b>Reading slowly:</b> Gwern's old essays on scaling, Ben Thompson's weekend pieces, and the AWS Builders' Library. Short-form is mostly noise right now.</p>
+      <p><b>Quietly building:</b> extending the <a href="/pm-command-center.html" class="now-link">PM Command Center</a> to draft weekly stakeholder updates in my voice, not a template's. The test: can the output survive my own edits?</p>
+    </div>
+    <div class="now-foot">Updated monthly. Written in the first person, edited before it's pretty.</div>
+  </div>
+</section>
+
 <!-- SCENE 8.5: TESTIMONIALS (real LinkedIn recommendations, auto-rotating) -->
 <section class="scene-voices reveal" aria-label="LinkedIn recommendations">
   <div class="voices-wrap">
@@ -1324,6 +1529,20 @@
       <a href="https://www.linkedin.com/in/ashkanmofidi/" target="_blank" rel="noopener">LinkedIn<span class="arrow">↗</span></a>
       <a href="https://github.com/ashkanmofidi" target="_blank" rel="noopener">GitHub<span class="arrow">↗</span></a>
     </div>
+    <div class="contact-utility">
+      <a class="contact-util" href="/ashkan-mofidi-resume.pdf" download>
+        <span class="contact-util-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </span>
+        Download resume<span class="contact-util-meta">PDF · one page</span>
+      </a>
+      <a class="contact-util" href="/ash-mofidi.vcf" download>
+        <span class="contact-util-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6 18c1-2.5 3.5-4 6-4s5 1.5 6 4"/></svg>
+        </span>
+        Save contact<span class="contact-util-meta">vCard · .vcf</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -1377,6 +1596,35 @@
       hero.classList.add('ready');
       requestAnimationFrame(() => hero.classList.add('in'));
     });
+  })();
+
+  // ====== "Now" section: stamp the current month =======
+  (function setupNowDate() {
+    const el = document.getElementById('nowDate');
+    if (!el) return;
+    try {
+      const t = new Date().toLocaleDateString('en-US', {
+        month: 'long', year: 'numeric', timeZone: 'America/Los_Angeles',
+      });
+      el.textContent = t;
+    } catch (e) { el.textContent = 'This month'; }
+  })();
+
+  // ====== Live PT clock in the location dateline =======
+  (function setupPTClock() {
+    const el = document.getElementById('pt-time');
+    if (!el) return;
+    function tick() {
+      try {
+        const t = new Date().toLocaleTimeString('en-US', {
+          timeZone: 'America/Los_Angeles',
+          hour: 'numeric', minute: '2-digit', hour12: true,
+        });
+        el.textContent = t;
+      } catch (e) { el.textContent = '·'; }
+    }
+    tick();
+    setInterval(tick, 30000);
   })();
 
   // ====== Progress bar =======

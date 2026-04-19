@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Ash Mofidi · Command Center</title>
-<meta name="theme-color" content="#100e0b" />
+<meta name="theme-color" content="#f1ecdd" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=ash2" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=ash2" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=ash2" />
@@ -16,20 +16,20 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root {
-    --bg: #100e0b;
-    --bg-soft: #1a1613;
-    --bg-card: #15120f;
-    --ink: #f5f0e6;
-    --ink-dim: #948b7c;
-    --ink-faint: #4a4238;
-    --persimmon: #ff6a3d;
-    --persimmon-soft: #ff8862;
-    --sage: #b8c9a8;
-    --green: #3fae6a;
-    --amber: #f5b942;
-    --red: #e55843;
-    --line: rgba(245,240,230,0.08);
-    --line-strong: rgba(245,240,230,0.16);
+    --bg: #f1ecdd;
+    --bg-soft: #e8e2d0;
+    --bg-card: #f6f1e3;
+    --ink: #0c1530;
+    --ink-dim: #51607a;
+    --ink-faint: #95a0b5;
+    --persimmon: #1b3ba8;
+    --persimmon-soft: #2450c8;
+    --sage: #1b7a42;
+    --green: #1b7a42;
+    --amber: #b88a3a;
+    --red: #a8243b;
+    --line: rgba(12,21,48,0.1);
+    --line-strong: rgba(12,21,48,0.2);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -44,7 +44,7 @@
   ::selection { background: var(--persimmon); color: var(--bg); }
 
   .ambient { position: fixed; inset:0; pointer-events:none; z-index:0;
-    background: radial-gradient(ellipse 60% 40% at 50% -10%, rgba(255,106,61,0.05), transparent 55%); }
+    background: radial-gradient(ellipse 60% 40% at 50% -10%, rgba(27,59,168,0.05), transparent 55%); }
   .grain { position: fixed; inset:0; pointer-events:none; z-index:1; opacity:0.04; mix-blend-mode:overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
@@ -54,14 +54,14 @@
     padding: 24px 40px;
     border-bottom: 1px solid var(--line);
     font-size: 13px; color: var(--ink-dim);
-    background: rgba(16,14,11,0.8);
+    background: rgba(241,236,221,0.85);
     backdrop-filter: blur(10px);
     position: sticky; top: 0;
   }
   .mark { display:flex; align-items:center; gap:12px;
     font-family:'Fraunces',serif; font-weight:500; font-size:17px; color:var(--ink); letter-spacing:-0.02em; }
   .mark-dot { width:8px; height:8px; border-radius:50%; background:var(--persimmon);
-    box-shadow:0 0 10px rgba(255,106,61,0.7); animation: pulse 2s ease-in-out infinite; }
+    box-shadow:0 0 10px rgba(27,59,168,0.7); animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.25)} }
   .mark small { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:400;
     letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-dim); margin-left:12px; }
@@ -73,7 +73,7 @@
     letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim);
   }
   .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green);
-    box-shadow:0 0 10px rgba(63,174,106,0.6); animation: breathe 2.4s ease-in-out infinite; }
+    box-shadow:0 0 10px rgba(27,122,66,0.6); animation: breathe 2.4s ease-in-out infinite; }
   @keyframes breathe { 0%,100%{opacity:1} 50%{opacity:0.3} }
   .logout-btn {
     background:transparent; color:var(--ink-dim); border:1px solid var(--line);
@@ -165,7 +165,7 @@
   }
   td { padding:12px 10px; border-bottom:1px solid var(--line); color:var(--ink); vertical-align:top; }
   tr:last-child td { border-bottom:none; }
-  tr:hover td { background: rgba(255,106,61,0.03); }
+  tr:hover td { background: rgba(27,59,168,0.03); }
   td.ts, td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); }
   td.q { max-width: 420px; line-height:1.45; }
   td.badge { }
@@ -175,9 +175,9 @@
     font-family:'JetBrains Mono',monospace; font-size:10px;
     letter-spacing:0.08em; text-transform:uppercase;
   }
-  .badge.ok { background:rgba(63,174,106,0.12); color:var(--green); }
-  .badge.refused { background:rgba(229,88,67,0.12); color:var(--red); }
-  .badge.chip { background:rgba(245,185,66,0.12); color:var(--amber); }
+  .badge.ok { background:rgba(27,122,66,0.12); color:var(--green); }
+  .badge.refused { background:rgba(168,36,59,0.12); color:var(--red); }
+  .badge.chip { background:rgba(184,138,58,0.12); color:var(--amber); }
 
   /* top-topics bars */
   .top-list { display:flex; flex-direction:column; gap:10px; }
@@ -194,7 +194,7 @@
     padding:8px 14px; border-radius:8px; font-family:inherit; font-size:12px;
     cursor:pointer; transition: all 0.2s;
   }
-  .export-btn:hover { background: rgba(255,106,61,0.1); }
+  .export-btn:hover { background: rgba(27,59,168,0.1); }
 
   /* login screen */
   .login-wrap {
@@ -240,12 +240,12 @@
   }
   .pw-btn:hover { background: var(--persimmon-soft); }
   .login-error {
-    background: rgba(229,88,67,0.08); border: 1px solid rgba(229,88,67,0.3); color: var(--red);
+    background: rgba(168,36,59,0.08); border: 1px solid rgba(168,36,59,0.3); color: var(--red);
     padding: 12px 16px; border-radius:10px; font-size:13px; margin-bottom:24px;
   }
 
   .kv-warn {
-    background: rgba(245,185,66,0.08); border:1px solid rgba(245,185,66,0.25);
+    background: rgba(184,138,58,0.08); border:1px solid rgba(184,138,58,0.25);
     border-radius:12px; padding: 18px 22px; margin-bottom:32px;
     font-size:13px; line-height:1.55; color:var(--ink);
   }
@@ -397,7 +397,7 @@
     for (let i = 0; i <= 4; i++) {
       const y = pad.t + ih - (ih * i / 4);
       const val = Math.round(maxQ * i / 4);
-      html += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="rgba(245,240,230,0.05)" />`;
+      html += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="rgba(12,21,48,0.08)" />`;
       html += `<text class="chart-axis-label" x="${pad.l - 6}" y="${y + 3}" text-anchor="end">${val}</text>`;
     }
 
@@ -423,7 +423,7 @@
     html += `<path class="chart-line-v" d="${pathV}" />`;
     html += `<path class="chart-line-q" d="${pathQ}" />`;
     html += dotsHtml;
-    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 12}" text-anchor="end" fill="rgba(255,106,61,0.7)">● questions</text>`;
+    html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 12}" text-anchor="end" fill="rgba(27,59,168,0.7)">● questions</text>`;
     html += `<text class="chart-axis-label" x="${w - pad.r}" y="${pad.t + 24}" text-anchor="end" fill="rgba(184,201,168,0.7)">● visitors</text>`;
     svg.innerHTML = html;
   }

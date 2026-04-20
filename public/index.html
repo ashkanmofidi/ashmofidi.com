@@ -183,7 +183,8 @@
   .scene-hero {
     height: 100vh; min-height: 680px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    padding: 40px;
+    /* Top pad clears the fixed 72px nav. Bottom pad reserves space for absolute .hero-meta (bottom:40) and .hero-scroll-hint (~152px tall region) so the flex-centered stack never collides with them, even on a 680px viewport. */
+    padding: 100px 40px 160px;
     position: relative;
     max-width: none;
   }
@@ -270,7 +271,8 @@
   }
 
   .hero-sub {
-    margin-top: 36px;
+    /* `auto` side margins center the 640px block inside the wider hero-stack; without them, text-align: center centers the lines WITHIN the block, but the block itself sits left. */
+    margin: 40px auto 0;
     font-family: 'Fraunces', serif;
     font-style: italic; font-weight: 300;
     font-size: clamp(19px, 2.2vw, 28px);
@@ -343,7 +345,8 @@
      Fades in after the sub-headline word reveal so it doesn't fight for attention.
      ================================================================== */
   .hero-coords {
-    margin-top: 28px;
+    /* 36px gives a subtle decreasing rhythm from the hero (label→name 48, name→sub 40, sub→coords 36). */
+    margin: 36px auto 0;
     display: flex; justify-content: center; flex-wrap: wrap; align-items: center;
     gap: 10px 14px;
     font-family: 'JetBrains Mono', monospace;
@@ -767,7 +770,8 @@
     font-weight: 300;
     font-size: clamp(40px, 5vw, 62px);
     line-height: 1; letter-spacing: -0.035em;
-    margin: 0 0 16px;
+    /* 24px gives the 62px display head proper breathing room above the italic 18px subtitle; 16px reads cramped at desktop sizes. */
+    margin: 0 0 24px;
   }
   .studies-head h2 em { font-style: italic; color: var(--red); }
   .studies-head p {
@@ -1369,6 +1373,8 @@
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav.topnav { padding: 18px 22px; }
+    /* Mobile nav is ~64px; reserve 88px top. Bottom 140px covers the (slightly taller) wrapped meta + scroll hint on phones. */
+    .scene-hero { padding: 88px 22px 140px; }
     section.scene, .chapter { padding-left: 22px; padding-right: 22px; }
     .scene-intro { grid-template-columns: 1fr; gap: 48px; }
     .portrait-wrap { max-width: 420px; }
@@ -1378,8 +1384,14 @@
     .studies-grid { grid-template-columns: 1fr; gap: 56px; }
     .hero-meta { left: 22px; right: 22px; }
     .scene-beyond, .scene-contact, .scene-tool, footer { padding-left: 22px; padding-right: 22px; }
+    /* On phones, the 180px editorial pauses read as empty voids — tighten to match the scroll rhythm at mobile scale. */
+    .scene-line { padding-top: 110px; padding-bottom: 110px; }
+    .scene-beyond { padding-top: 120px; padding-bottom: 120px; }
+    /* Contact top was 160 (sized for a tall display head); at mobile heading sizes, 100px keeps the greeting framed without feeling airless. */
+    .scene-contact { padding-top: 100px; }
     nav.topnav .links { gap: 14px; }
-    footer { flex-direction: column; gap: 12px; text-align: center; }
+    /* When the footer stacks into a column on mobile, 12px is too tight between meta rows; 20px reads as intentional breathing rather than leftover gap. */
+    footer { flex-direction: column; gap: 20px; text-align: center; }
   }
 </style>
 </head>

@@ -159,6 +159,7 @@ async function logInteraction(entry) {
       kv.hincrby('metric:daily:' + todayKey(), entry.refused ? 'ask_refused' : 'ask_answered', 1),
       kv.hincrby('metric:total', entry.refused ? 'ask_refused' : 'ask_answered', 1),
       kv.sadd('metric:visitors:' + todayKey(), entry.ipHash).then(() => kv.expire('metric:visitors:' + todayKey(), 60 * 60 * 24 * 40)),
+      kv.sadd('metric:visitors:all_time', entry.ipHash),
     ]);
   } catch (e) { console.error('log_error', e && e.message); }
 }

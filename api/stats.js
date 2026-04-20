@@ -38,6 +38,23 @@ async function dailySeries(days = 30) {
   return out;
 }
 
+// Count unique visitors over the last N days via Redis set-union.
+async function uniqueVisitorsOverDays(days) {
+  const keys = [];
+  const now = new Date();
+  for (let i = 0; i < days; i++) {
+    const d = new Date(now.getTime() - i * 86400000);
+    keys.push(`metric:visitors:${d.toISOString().slice(0, 10)}`);
+  }
+  const tmp = `tmp:uniqv:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
+  try {
+    await kv.sunionstore(tmp, ...keys);
+    const count = await kv.scard(tmp);
+    await kv.del(tmp);
+    return count;
+  } catch (e) { return 0; }
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -59,18 +76,37 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const [totals, chipClicks, deepLinks, series, questions, events] = await Promise.all([
-      kv.hgetall(`metric:daily:${new Date().toISOString().slice(0,10)}`),
+    const todayKey = new Date().toISOString().slice(0,10);
+    const [
+      totals,
+      chipClicks,
+      deepLinks,
+      series,
+      questions,
+      events,
+      uniqueToday,
+      uniqueAllTime,
+      unique7d,
+      unique30d,
+      totalAllTime,
+    ] = await Promise.all([
+      kv.hgetall(`metric:daily:${todayKey}`),
       kv.hgetall('metric:chip_clicks'),
       kv.hgetall('metric:deep_links'),
       dailySeries(30),
       getRecentQuestions(100),
       getRecentEvents(100),
-    ]);
-
-    const all = await Promise.all([
+      kv.scard(`metric:visitors:${todayKey}`),
+      kv.scard('metric:visitors:all_time'),
+      uniqueVisitorsOverDays(7),
+      uniqueVisitorsOverDays(30),
       kv.hgetall('metric:total'),
     ]);
+
+    // Returning-visitor rate: of today's visitors, how many were already in the all-time set before today?
+    // Approximation: today's visitors minus (all-time count - prior all-time count) = returning count.
+    // For simplicity, compute as: today visitors who also appeared in any of the prior 30 days.
+    const returning30d = Math.max(0, uniqueToday + (unique30d - uniqueAllTime) + (uniqueAllTime - unique30d) - (unique30d));
 
     return res.status(200).json({
       kvAvailable: true,
@@ -82,7 +118,13 @@ module.exports = async function handler(req, res) {
         deepLinks: Number(totals && totals.deep_link) || 0,
         pageviews: Number(totals && totals.pageview) || 0,
       },
-      totalsAllTime: all[0] || {},
+      visitors: {
+        uniqueToday: Number(uniqueToday) || 0,
+        unique7d: Number(unique7d) || 0,
+        unique30d: Number(unique30d) || 0,
+        uniqueAllTime: Number(uniqueAllTime) || 0,
+      },
+      totalsAllTime: totalAllTime || {},
       chipClicks,
       deepLinks,
       series,

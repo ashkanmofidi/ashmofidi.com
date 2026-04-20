@@ -73,6 +73,7 @@ module.exports = async function handler(req, res) {
       kv.incr(`metric:events:${type}`),
       kv.hincrby(`metric:daily:${todayKey()}`, type, 1),
       kv.sadd(`metric:visitors:${todayKey()}`, ipHash).then(() => kv.expire(`metric:visitors:${todayKey()}`, 60 * 60 * 24 * 40)),
+      kv.sadd('metric:visitors:all_time', ipHash),
     ]);
 
     if (type === 'chip_click' && meta.key) {

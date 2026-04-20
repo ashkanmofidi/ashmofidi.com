@@ -1166,6 +1166,136 @@
   }
   .reveal.in { opacity: 1; transform: none; }
 
+  /* =========================================================
+     DAILY OMEN - floating card, bottom-right
+     Per-visitor via /api/omen. PST-locked. New omen each Pacific
+     midnight, sequenced across 50 omens. "Keep it" copies the text.
+     ========================================================= */
+  .omen {
+    position: fixed; right: 28px; bottom: 28px; z-index: 200;
+    width: 400px; max-width: calc(100vw - 36px);
+    background: #0e0e0e;
+    border: 1px solid rgba(241,236,221,0.1);
+    border-radius: 18px;
+    padding: 26px 24px 18px;
+    box-shadow:
+      0 40px 80px -24px rgba(14,14,14,0.5),
+      0 0 40px -16px rgba(0,29,217,0.3);
+    opacity: 0; transform: translateY(28px) scale(0.96);
+    transition: opacity 0.8s cubic-bezier(.2,.8,.2,1), transform 0.8s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none;
+    color: #f1ecdd;
+  }
+  .omen.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .omen.dismissing { opacity: 0; transform: translateY(14px) scale(0.98); pointer-events: none; }
+
+  .omen::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit;
+    background: conic-gradient(from 140deg, transparent 0deg, rgba(0,29,217,0.5) 60deg, transparent 180deg, transparent 360deg);
+    mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+    mask-composite: exclude; -webkit-mask-composite: xor;
+    padding: 1px; pointer-events: none; opacity: 0.55;
+    animation: omenShimmer 10s linear infinite;
+  }
+  @keyframes omenShimmer { to { transform: rotate(360deg); } }
+
+  .omen-sparkle { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: inherit; }
+  .omen-sparkle span {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    background: #001dd9; opacity: 0;
+    box-shadow: 0 0 10px #001dd9;
+  }
+  @keyframes omenSpark {
+    0% { opacity: 0; transform: scale(0); }
+    30% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.4) translateY(-22px); }
+  }
+
+  /* Custom guide-star (hand-drawn 4-point, elongated vertical axis),
+     sitting in a cream notch on the card's top edge. */
+  .omen-ornament {
+    position: absolute; top: -18px; left: 24px;
+    background: #f1ecdd;
+    padding: 6px 10px 4px; line-height: 1;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    box-sizing: border-box;
+  }
+  .omen-ornament svg {
+    width: 18px; height: 18px; display: block;
+    color: #001dd9;
+    animation: omenStarSpin 16s linear infinite;
+  }
+  @keyframes omenStarSpin { to { transform: rotate(360deg); } }
+
+  .omen-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(241,236,221,0.92);
+    margin: 10px 0 18px;
+    font-weight: 500;
+  }
+  .omen-label { display: inline-flex; align-items: center; gap: 10px; }
+  .omen-label::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: #4d6fff;
+    box-shadow: 0 0 10px rgba(77,111,255,0.8);
+    animation: omenBreathe 2s ease-in-out infinite;
+  }
+  @keyframes omenBreathe {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.15); }
+  }
+  .omen-dismiss {
+    background: none; border: none; color: rgba(241,236,221,0.75);
+    font-size: 22px; cursor: pointer; padding: 4px 10px;
+    border-radius: 6px; transition: all 0.2s;
+    line-height: 1;
+  }
+  .omen-dismiss:hover { color: #f1ecdd; background: rgba(241,236,221,0.1); }
+
+  .omen-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 400; font-style: italic;
+    font-size: 22px; line-height: 1.42;
+    letter-spacing: -0.005em;
+    color: #f5f0e3;
+    margin: 10px 0 24px;
+    min-height: 90px;
+    font-variation-settings: "opsz" 48;
+  }
+  .omen-text .word {
+    display: inline-block; opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s cubic-bezier(.2,.8,.2,1), transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .omen-text .word.in { opacity: 1; transform: none; }
+
+  .omen-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(241,236,221,0.72);
+    font-weight: 500;
+  }
+  .omen-meta .keep {
+    background: none; border: 1px solid rgba(241,236,221,0.35);
+    color: rgba(241,236,221,0.92);
+    padding: 8px 16px; border-radius: 999px;
+    font-family: inherit; font-size: 11px; letter-spacing: 0.16em;
+    cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .omen-meta .keep:hover { border-color: #4d6fff; color: #4d6fff; background: rgba(77,111,255,0.08); }
+  .omen-meta .keep.kept { border-color: #4d6fff; color: #4d6fff; background: rgba(77,111,255,0.12); }
+
+  @media (max-width: 520px) {
+    .omen { left: 16px; right: 16px; bottom: 16px; width: auto; padding: 22px 20px 14px; }
+    .omen-text { font-size: 17px; }
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav.topnav { padding: 18px 22px; }
@@ -1562,6 +1692,26 @@
   </div>
 </section>
 
+<div class="omen" id="omen" role="dialog" aria-live="polite" aria-label="A daily omen from Ash">
+  <span class="omen-ornament" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <!-- Custom 4-point guide-star: elongated vertical + horizontal axes with a center pinhole. -->
+      <path d="M12 1 L12.7 10.3 L13.1 11.3 L14.1 11.7 L23 12 L14.1 12.3 L13.1 12.7 L12.7 13.7 L12 23 L11.3 13.7 L10.9 12.7 L9.9 12.3 L1 12 L9.9 11.7 L10.9 11.3 L11.3 10.3 Z"/>
+      <circle cx="12" cy="12" r="1.2" fill="#0e0e0e"/>
+    </svg>
+  </span>
+  <div class="omen-sparkle" aria-hidden="true"></div>
+  <div class="omen-head">
+    <span class="omen-label"><span id="omen-day-label">An omen for you</span></span>
+    <button class="omen-dismiss" id="omen-dismiss" aria-label="Dismiss">×</button>
+  </div>
+  <div class="omen-text" id="omen-text"></div>
+  <div class="omen-meta">
+    <span id="omen-cycle"></span>
+    <button class="keep" id="omen-keep" aria-label="Copy this omen">Keep it</button>
+  </div>
+</div>
+
 <footer>
   <span>© 2026 Ash Mofidi</span>
   <span>Designed and built by hand</span>
@@ -1625,6 +1775,89 @@
     }
     tick();
     setInterval(tick, 30000);
+  })();
+
+  // ====== Daily Omen (PST-locked, per-visitor sequenced) =======
+  (function setupOmen() {
+    const omenEl = document.getElementById('omen');
+    if (!omenEl) return;
+
+    async function fetchOmen() {
+      try {
+        const r = await fetch('/api/omen', { credentials: 'omit' });
+        if (!r.ok) return null;
+        return await r.json();
+      } catch (e) { return null; }
+    }
+
+    function splitWords(text) {
+      return text.split(/(\s+)/).map(t =>
+        t.trim() ? '<span class="word">' + t.replace(/[<>]/g,'') + '</span>' : t
+      ).join('');
+    }
+
+    function spawnSparkles(container, n) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement('span');
+        const left = 10 + Math.random() * 80;
+        const top = 20 + Math.random() * 60;
+        const delay = Math.random() * 0.8;
+        s.style.left = left + '%';
+        s.style.top = top + '%';
+        s.style.animation = 'omenSpark 1.6s ' + delay + 's ease-out forwards';
+        frag.appendChild(s);
+      }
+      container.appendChild(frag);
+      setTimeout(() => container.innerHTML = '', 3000);
+    }
+
+    (async function() {
+      const data = await fetchOmen();
+      if (!data || !data.text) return;
+      const dismissedKey = 'omen-dismissed-' + data.day + '-' + (data.cycle || 1);
+      if (sessionStorage.getItem(dismissedKey)) return;
+
+      const dayLabel = document.getElementById('omen-day-label');
+      const cycleEl = document.getElementById('omen-cycle');
+      const textEl = document.getElementById('omen-text');
+      const keepBtn = document.getElementById('omen-keep');
+      const dismissBtn = document.getElementById('omen-dismiss');
+      const sparkles = omenEl.querySelector('.omen-sparkle');
+
+      const greeting = data.returning
+        ? (data.sameDay ? 'Your omen today' : 'What came next · Day ' + data.day)
+        : 'An omen for you · Day 1';
+      dayLabel.textContent = greeting;
+      cycleEl.textContent = (data.cycle > 1 ? 'cycle ' + data.cycle + ' · ' : '') + 'ash mofidi';
+      textEl.innerHTML = splitWords(data.text);
+
+      setTimeout(() => {
+        omenEl.classList.add('show');
+        spawnSparkles(sparkles, 14);
+        const words = textEl.querySelectorAll('.word');
+        words.forEach((w, i) => setTimeout(() => w.classList.add('in'), 280 + i * 45));
+      }, 1800);
+
+      keepBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(data.text + '  · via ashmofidi.com');
+          keepBtn.textContent = 'Copied';
+          keepBtn.classList.add('kept');
+          setTimeout(() => { keepBtn.textContent = 'Keep it'; keepBtn.classList.remove('kept'); }, 2000);
+        } catch {
+          keepBtn.textContent = 'Copy failed';
+        }
+      });
+
+      const dismiss = () => {
+        sessionStorage.setItem(dismissedKey, '1');
+        omenEl.classList.remove('show');
+        omenEl.classList.add('dismissing');
+        setTimeout(() => omenEl.style.display = 'none', 700);
+      };
+      dismissBtn.addEventListener('click', dismiss);
+    })();
   })();
 
   // ====== Progress bar =======

@@ -275,8 +275,6 @@
     font-style: italic; font-weight: 300;
     font-size: clamp(19px, 2.2vw, 28px);
     color: var(--ink-2);
-    opacity: 0;
-    animation: fadeDown 1.4s cubic-bezier(.2,.8,.2,1) 2600ms forwards;
     max-width: 640px;
     line-height: 1.42;
     letter-spacing: -0.01em;
@@ -285,6 +283,45 @@
     font-style: normal;
     font-weight: 500;
     color: var(--ink);
+  }
+  /* ============================================================
+     Hero sub-headline reveal.
+     Concept: the sentence "crystallizes" — each word fades in from
+     blurred + slightly below at a reading cadence. As the LAST word
+     of each key stat lands, a thin cobalt underline sweeps under it —
+     like a writer underlining while writing, not a second editorial pass.
+     Delays are driven by --i (word/stat index) so everything stays in sync.
+     ============================================================ */
+  .hero-sub .w {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+    animation: heroWordReveal 680ms cubic-bezier(.2,.8,.2,1) forwards;
+    animation-delay: calc(2600ms + var(--i) * 45ms);
+    will-change: opacity, filter, transform;
+  }
+  @keyframes heroWordReveal {
+    to { opacity: 1; filter: blur(0); transform: none; }
+  }
+  .hero-sub .stat { position: relative; }
+  .hero-sub .stat::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1.5px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: heroStatSweep 520ms cubic-bezier(.7,.1,.3,1) forwards;
+    animation-delay: calc(2600ms + var(--i) * 45ms + 180ms);
+  }
+  @keyframes heroStatSweep {
+    to { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-sub .w { opacity: 1; filter: none; transform: none; animation: none; }
+    .hero-sub .stat::after { transform: scaleX(1); animation: none; }
   }
 
   .hero-meta {
@@ -296,6 +333,107 @@
     color: var(--ink-3);
     opacity: 0;
     animation: fadeDown 1.2s cubic-bezier(.2,.8,.2,1) 2000ms forwards;
+  }
+  /* ==================================================================
+     Hero location strip.
+     A dense, all-live signal sitting under the sub-headline:
+       [tiny SF Bay map w/ pulsing cobalt dot] [animated weather icon + °F/°C]
+        · SILICON VALLEY, CA · 🟢 HH:MM:SS PT
+     Each element is live-sourced; nothing is cosmetic boilerplate.
+     Fades in after the sub-headline word reveal so it doesn't fight for attention.
+     ================================================================== */
+  .hero-coords {
+    margin-top: 28px;
+    display: flex; justify-content: center; flex-wrap: wrap; align-items: center;
+    gap: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-3);
+    opacity: 0;
+    animation: fadeDown 1.2s cubic-bezier(.2,.8,.2,1) 4600ms forwards;
+  }
+  .hero-coords .dot { opacity: .55; }
+
+  /* SF Bay schematic — ported from the original Scene 2.5 dateline, miniaturized for the hero strip. The pulse radiates from the Silicon Valley peninsula. */
+  .hero-coords .hero-geo {
+    width: 58px; height: 36px;
+    color: var(--ink-2);
+    display: inline-flex; align-items: center; justify-content: center;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .hero-coords .hero-geo svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .hero-coords .hero-geo-dot { fill: var(--red); }
+  .hero-coords .hero-geo-pulse {
+    fill: none; stroke: var(--red); stroke-width: 1;
+    transform-origin: center;
+    animation: heroGeoPulse 3s ease-out infinite;
+  }
+  @keyframes heroGeoPulse {
+    0%   { r: 3.5; opacity: 0.8; }
+    100% { r: 14;  opacity: 0; }
+  }
+
+  /* Weather: live current conditions for San Jose via Open-Meteo (no API key). Icon animates per condition; temp shows both °F and °C. Fades in once data lands so there's no placeholder flicker. */
+  .hero-coords .hero-weather {
+    display: inline-flex; align-items: center; gap: 8px;
+    opacity: 0;
+    transition: opacity 600ms ease;
+    color: var(--ink-2); font-weight: 500;
+  }
+  .hero-coords .hero-weather.is-loaded { opacity: 1; }
+  .hero-coords .hero-weather-icon {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink-2);
+  }
+  .hero-coords .hero-weather-icon svg { width: 100%; height: 100%; overflow: visible; }
+  .hero-coords .hero-weather-temp {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
+  .hero-coords .hero-weather-temp .c-alt { opacity: 0.55; margin-left: 4px; }
+
+  /* Condition-specific animations — subtle enough to be noticed on a second look, not screaming. */
+  .wx-sun-rays  { transform-origin: 12px 12px; animation: wxSunRotate 22s linear infinite; }
+  .wx-cloud     { transform-origin: center; animation: wxCloudDrift 5s ease-in-out infinite; }
+  .wx-drop      { animation: wxRainFall 1.2s ease-in infinite; }
+  .wx-drop--2   { animation-delay: 0.35s; }
+  .wx-drop--3   { animation-delay: 0.7s; }
+  .wx-bolt      { transform-origin: 12px 16px; animation: wxBoltFlash 3.2s steps(12, end) infinite; }
+  @keyframes wxSunRotate  { to { transform: rotate(360deg); } }
+  @keyframes wxCloudDrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(1.2px); } }
+  @keyframes wxRainFall   { 0% { transform: translateY(-2px); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(3px); opacity: 0; } }
+  @keyframes wxBoltFlash  { 0%,88%,100% { opacity: 1; } 90%,96% { opacity: 0.15; } }
+  @media (prefers-reduced-motion: reduce) {
+    .wx-sun-rays, .wx-cloud, .wx-drop, .wx-bolt { animation: none; }
+    .hero-geo-pulse { animation: none; opacity: 0; }
+  }
+
+  /* Silicon Valley styled in the site's signature cobalt (var --red is actually #001dd9). */
+  .hero-coords .hero-place { color: var(--red); font-weight: 500; }
+
+  /* "Live" indicator: saturated green + soft radiating pulse — the universal signal for an active, real-time value. */
+  .hero-coords .live-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34,197,94,0.55);
+    animation: heroLivePulse 2s ease-out infinite;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+  @keyframes heroLivePulse {
+    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+    70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+  .hero-coords .hero-time { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-weight: 500; }
+  .hero-coords #heroClock { font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 640px) {
+    .hero-coords { font-size: 11px; letter-spacing: 0.12em; gap: 8px 10px; }
+    .hero-coords .hero-geo { width: 48px; height: 30px; }
+    .hero-coords .hero-weather-icon { width: 16px; height: 16px; }
   }
   .hero-scroll-hint {
     position: absolute; bottom: 80px; left: 50%;
@@ -454,74 +592,6 @@
     line-height: 1.65;
   }
   .intro-text p b { color: var(--ink); font-weight: 500; }
-
-  /* ==================== SCENE 2.5: LOCATION DATELINE ==================== */
-  /* Minimalist location signal. Not a map. A typographic dateline with a
-     tiny abstracted SF Bay schematic, a pulsing cobalt dot on the peninsula,
-     coordinates, and a live PT clock. Cream-on-cream, zero visual pollution. */
-  .dateline {
-    max-width: 1100px;
-    margin: -60px auto -40px;
-    padding: 40px;
-    display: flex; align-items: center; justify-content: center;
-    gap: 28px; flex-wrap: wrap;
-    position: relative;
-  }
-  .dateline::before, .dateline::after {
-    content: ""; flex: 1; height: 1px;
-    background: linear-gradient(to right, transparent, var(--line-strong), transparent);
-    min-width: 60px; max-width: 180px;
-  }
-  .dateline-geo {
-    color: var(--ink-2);
-    width: 120px; height: 72px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-  }
-  .dateline-geo svg { width: 100%; height: 100%; display: block; }
-  .dateline-dot {
-    fill: var(--red);
-  }
-  .dateline-pulse {
-    fill: none; stroke: var(--red); stroke-width: 1;
-    transform-origin: center;
-    animation: datelinePulse 3s ease-out infinite;
-  }
-  @keyframes datelinePulse {
-    0% { r: 3.5; opacity: 0.8; }
-    100% { r: 20; opacity: 0; }
-  }
-  .dateline-text {
-    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px; letter-spacing: 0.1em;
-    color: var(--ink-2); text-transform: uppercase;
-    line-height: 1.5;
-    font-weight: 500;
-  }
-  .dateline-coord { color: var(--ink); font-weight: 500; }
-  .dateline-sep { color: var(--ink-4); }
-  .dateline-place { color: var(--red); font-weight: 500; }
-  .dateline-time {
-    color: var(--ink);
-    font-weight: 500;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .dateline-time::before {
-    content: ""; width: 8px; height: 8px; border-radius: 50%;
-    background: #3fae6a; box-shadow: 0 0 10px rgba(63,174,106,0.7);
-    animation: datelineLive 2.4s ease-in-out infinite;
-  }
-  @keyframes datelineLive {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  @media (max-width: 640px) {
-    .dateline { padding: 32px 20px 20px; gap: 16px; }
-    .dateline::before, .dateline::after { display: none; }
-    .dateline-text { font-size: 13px; gap: 12px; justify-content: center; letter-spacing: 0.08em; }
-    .dateline-geo { width: 96px; height: 58px; }
-  }
 
   /* ==================== SCENE 3: THE LINE ==================== */
   .scene-line {
@@ -1345,9 +1415,32 @@
     <h1 class="hero-name">
       <span class="word">Ash</span> <span class="word"><em>Mofidi</em></span>
     </h1>
-    <p class="hero-sub">
-      <b>Ten years</b> building complex global platforms that ship to millions. Three zero-to-one, one patent, $50M+ in GMV I can point at. Looking for the fourth worth building.
+    <!-- Each word is its own animated inline-block; .stat wrappers carry --i = index of their LAST word so the underline sweep fires in sync with that word landing. aria-label preserves the sentence for screen readers since the visual DOM is split. -->
+    <p class="hero-sub" aria-label="Ten years building complex global platforms that ship to millions. Three zero-to-one, one patent, $50M+ in GMV I can point at. Looking for the fourth worth building.">
+      <b class="stat" style="--i:1"><span class="w" style="--i:0">Ten</span> <span class="w" style="--i:1">years</span></b> <span class="w" style="--i:2">building</span> <span class="w" style="--i:3">complex</span> <span class="w" style="--i:4">global</span> <span class="w" style="--i:5">platforms</span> <span class="w" style="--i:6">that</span> <span class="w" style="--i:7">ship</span> <span class="w" style="--i:8">to</span> <span class="w" style="--i:9">millions.</span> <span class="w" style="--i:10">Three</span> <span class="w" style="--i:11">zero-to-one,</span> <span class="w" style="--i:12">one</span> <span class="w" style="--i:13">patent,</span> <span class="stat" style="--i:16"><span class="w" style="--i:14">$50M+</span> <span class="w" style="--i:15">in</span> <span class="w" style="--i:16">GMV</span></span> <span class="w" style="--i:17">I</span> <span class="w" style="--i:18">can</span> <span class="w" style="--i:19">point</span> <span class="w" style="--i:20">at.</span> <span class="w" style="--i:21">Looking</span> <span class="w" style="--i:22">for</span> <span class="w" style="--i:23">the</span> <span class="stat" style="--i:26"><span class="w" style="--i:24">fourth</span> <span class="w" style="--i:25">worth</span> <span class="w" style="--i:26">building.</span></span>
     </p>
+    <!-- Hero location strip: visible before any scroll. Tiny SF Bay map (pulsing cobalt dot on the peninsula) + live San Jose weather (°F/°C, animated icon) + Silicon Valley + ticking PT clock with seconds and a green "live" pulse. Every value is sourced live. -->
+    <div class="hero-coords" aria-label="Silicon Valley, California — live weather and local time">
+      <span class="hero-geo" aria-hidden="true">
+        <svg viewBox="0 0 88 54" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 8,8 C 12,14 9,22 14,28 C 18,33 22,37 28,40 L 36,42 L 46,41 L 56,36 L 64,28 L 70,18 L 74,10" opacity="0.55"/>
+          <path d="M 80,12 C 78,20 74,28 68,34 C 60,40 50,45 40,46 L 30,45 L 22,43" opacity="0.35"/>
+          <circle class="hero-geo-pulse" cx="50" cy="40" r="3.5"/>
+          <circle class="hero-geo-dot" cx="50" cy="40" r="3.5"/>
+        </svg>
+      </span>
+      <span class="hero-weather" id="heroWeather" aria-label="Current weather in San Jose">
+        <span class="hero-weather-icon" id="heroWeatherIcon" aria-hidden="true"></span>
+        <span class="hero-weather-temp" id="heroWeatherTemp">&mdash;&deg;F<span class="c-alt">&middot; &mdash;&deg;C</span></span>
+      </span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span class="hero-place">Silicon Valley, CA</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span class="hero-time">
+        <span class="live-dot" aria-hidden="true"></span>
+        <time id="heroClock" datetime="">&mdash;:&mdash;:&mdash; PT</time>
+      </span>
+    </div>
   </div>
   <div class="hero-meta">
     <span>N° 04 · 2026</span>
@@ -1391,25 +1484,6 @@
     <p>
       Specifically hunting: the <b>AI product where compliance review is the hard part</b>, the <b>pricing platform where sub-second latency is the moat</b>, or the <b>cross-border system where regulation is the feature</b>. FAANG or fintech. Either one compounds my bets.
     </p>
-  </div>
-</section>
-
-<!-- SCENE 2.5: LOCATION DATELINE (editorial pause between intro and the-line) -->
-<section class="dateline" aria-label="Based in Silicon Valley, California, Pacific Time">
-  <div class="dateline-geo" aria-hidden="true">
-    <svg viewBox="0 0 88 54" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M 8,8 C 12,14 9,22 14,28 C 18,33 22,37 28,40 L 36,42 L 46,41 L 56,36 L 64,28 L 70,18 L 74,10" opacity="0.55"/>
-      <path d="M 80,12 C 78,20 74,28 68,34 C 60,40 50,45 40,46 L 30,45 L 22,43" opacity="0.35"/>
-      <circle class="dateline-pulse" cx="50" cy="40" r="3.5"/>
-      <circle class="dateline-dot" cx="50" cy="40" r="3.5"/>
-    </svg>
-  </div>
-  <div class="dateline-text">
-    <span class="dateline-coord">37.39° N · 122.08° W</span>
-    <span class="dateline-sep">·</span>
-    <span class="dateline-place">Silicon Valley, CA</span>
-    <span class="dateline-sep">·</span>
-    <span class="dateline-time"><span id="pt-time">·</span> PT</span>
   </div>
 </section>
 
@@ -1760,23 +1834,6 @@
     } catch (e) { el.textContent = 'This month'; }
   })();
 
-  // ====== Live PT clock in the location dateline =======
-  (function setupPTClock() {
-    const el = document.getElementById('pt-time');
-    if (!el) return;
-    function tick() {
-      try {
-        const t = new Date().toLocaleTimeString('en-US', {
-          timeZone: 'America/Los_Angeles',
-          hour: 'numeric', minute: '2-digit', hour12: true,
-        });
-        el.textContent = t;
-      } catch (e) { el.textContent = '·'; }
-    }
-    tick();
-    setInterval(tick, 30000);
-  })();
-
   // ====== Daily Omen (PST-locked, per-visitor sequenced) =======
   (function setupOmen() {
     const omenEl = document.getElementById('omen');
@@ -2116,6 +2173,89 @@
     }
     toolInput.value = '';
   });
+
+  // ====== Live San Jose weather (Open-Meteo, no API key, no tracking) =======
+  // Innovative signal: the hero shows the actual current conditions where Ash lives, with an animated icon that matches the weather code, and temperature in BOTH °F and °C so it reads the same to global visitors. Fails silently if the API is unreachable — weather is a bonus, not load-bearing.
+  (function heroWeather(){
+    const root   = document.getElementById('heroWeather');
+    const iconEl = document.getElementById('heroWeatherIcon');
+    const tempEl = document.getElementById('heroWeatherTemp');
+    if (!root || !iconEl || !tempEl) return;
+
+    // WMO weather-code buckets → animated icon keys.
+    function codeToIcon(code, isDay) {
+      if (code === 0) return isDay ? 'clear-day' : 'clear-night';
+      if (code >= 1 && code <= 3) return isDay ? 'cloudy-day' : 'cloudy-night';
+      if (code === 45 || code === 48) return 'fog';
+      if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 'rain';
+      if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'snow';
+      if (code >= 95 && code <= 99) return 'thunder';
+      return 'cloudy-day';
+    }
+
+    const ICONS = {
+      'clear-day':     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><g class="wx-sun-rays"><line x1="12" y1="2.5" x2="12" y2="4.8"/><line x1="12" y1="19.2" x2="12" y2="21.5"/><line x1="2.5" y1="12" x2="4.8" y2="12"/><line x1="19.2" y1="12" x2="21.5" y2="12"/><line x1="5.2" y1="5.2" x2="6.8" y2="6.8"/><line x1="17.2" y1="17.2" x2="18.8" y2="18.8"/><line x1="5.2" y1="18.8" x2="6.8" y2="17.2"/><line x1="17.2" y1="6.8" x2="18.8" y2="5.2"/></g><circle cx="12" cy="12" r="3.8" fill="currentColor" fill-opacity="0.18"/></svg>',
+      'clear-night':   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z" fill="currentColor" fill-opacity="0.15"/></svg>',
+      'cloudy-day':    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="9" r="2.6" fill="currentColor" fill-opacity="0.18"/><g class="wx-cloud"><path d="M16.5 17.5H8.5a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4 3.5 3.5 0 0 1-1.6 6.6Z" fill="currentColor" fill-opacity="0.1"/></g></svg>',
+      'cloudy-night':  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><g class="wx-cloud"><path d="M16.5 17.5H8.5a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4 3.5 3.5 0 0 1-1.6 6.6Z" fill="currentColor" fill-opacity="0.14"/></g></svg>',
+      'fog':           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><g class="wx-cloud"><line x1="3" y1="9" x2="21" y2="9"/><line x1="5" y1="13" x2="19" y2="13"/><line x1="3" y1="17" x2="21" y2="17"/></g></svg>',
+      'rain':          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 14.5H8.5a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4 3.5 3.5 0 0 1-1.6 6.6Z" fill="currentColor" fill-opacity="0.12"/><line class="wx-drop" x1="9" y1="18" x2="9" y2="21"/><line class="wx-drop wx-drop--2" x1="12" y1="18" x2="12" y2="21"/><line class="wx-drop wx-drop--3" x1="15" y1="18" x2="15" y2="21"/></svg>',
+      'snow':          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M16.5 14.5H8.5a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4 3.5 3.5 0 0 1-1.6 6.6Z" fill="currentColor" fill-opacity="0.12"/><circle class="wx-drop" cx="9" cy="19" r="0.8" fill="currentColor" stroke="none"/><circle class="wx-drop wx-drop--2" cx="12" cy="19" r="0.8" fill="currentColor" stroke="none"/><circle class="wx-drop wx-drop--3" cx="15" cy="19" r="0.8" fill="currentColor" stroke="none"/></svg>',
+      'thunder':       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 14.5H8.5a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4 3.5 3.5 0 0 1-1.6 6.6Z" fill="currentColor" fill-opacity="0.12"/><path class="wx-bolt" d="M12 15l-2 4h2l-1 3 3-4h-2l1-3z" fill="currentColor" stroke="none"/></svg>'
+    };
+
+    async function fetchWeather(){
+      try {
+        // San Jose lat/lon; the display label stays "Silicon Valley, CA" as requested.
+        const url = 'https://api.open-meteo.com/v1/forecast?latitude=37.3382&longitude=-121.8863&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit';
+        const r = await fetch(url, { cache: 'no-store' });
+        if (!r.ok) throw new Error('weather ' + r.status);
+        const data = await r.json();
+        const tempF = Math.round(data.current.temperature_2m);
+        const tempC = Math.round((tempF - 32) * 5 / 9);
+        const iconKey = codeToIcon(data.current.weather_code, !!data.current.is_day);
+        iconEl.innerHTML = ICONS[iconKey] || ICONS['cloudy-day'];
+        tempEl.innerHTML = tempF + '\u00B0F<span class="c-alt">\u00B7 ' + tempC + '\u00B0C</span>';
+        root.classList.add('is-loaded');
+      } catch (e) {
+        // Weather is decorative — hide rather than show a broken state.
+        root.style.display = 'none';
+      }
+    }
+    fetchWeather();
+    // Refresh every 15 minutes: fresh enough to feel live, light enough not to hammer a free API.
+    setInterval(fetchWeather, 15 * 60 * 1000);
+  })();
+
+  // Hero clock — renders live Pacific Time with seconds so the tick is visible; pauses when the tab is hidden so we're not waking CPU in background tabs.
+  (function heroClock(){
+    const el = document.getElementById('heroClock');
+    if (!el) return;
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Los_Angeles',
+      hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
+    });
+    let timer = null;
+    function tick(){
+      const now = new Date();
+      el.textContent = fmt.format(now) + ' PT';
+      el.setAttribute('datetime', now.toISOString());
+    }
+    function start(){
+      if (timer) return;
+      tick();
+      // Align to the next whole second so the tick feels honest rather than drifting.
+      const msToNextSecond = 1000 - (Date.now() % 1000);
+      timer = setTimeout(function loop(){ tick(); timer = setTimeout(loop, 1000); }, msToNextSecond);
+    }
+    function stop(){
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+    document.addEventListener('visibilitychange', function(){
+      document.hidden ? stop() : start();
+    });
+    start();
+  })();
 </script>
 </body>
 </html>
